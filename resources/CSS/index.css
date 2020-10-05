@@ -1,0 +1,427 @@
+
+@font-face {
+    src: url("Inter-Regular.otf");
+    /* src: url("Inter-Medium.otf"); 
+    src: url("Inter-Semibold.otf"); */
+    font-family: Inter;
+    font-weight: 400px;
+}
+
+@font-face {
+    font-family: Inter;
+    src: url("Inter-SemiBold.otf");
+    font-weight: 800px;
+}
+
+@font-face {
+    font-family: Inter; 
+    src: url("Inter-Medium.otf");
+    font-weight: 600px;
+}
+
+
+body {
+     margin: 0;
+     font-family:Inter;
+     font-weight: 500;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.main {
+    margin: 0 50px;
+}
+
+header {
+    background: FDFDFD;
+}
+
+/* styling the navbar */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* .navbar-links {
+    display: flex;
+    
+}
+
+.navbar-links div {
+    padding: 0 20px;
+}
+
+a {
+    color: #1C1C1C; 
+    text-decoration: none;
+}
+
+a:hover {
+    transition: 0.2s;
+    color: red
+} */
+
+ul li {
+    display: inline;
+    text-align: center;
+}
+
+.navbar-name a {
+    display: inline-block;
+    width: 100px;
+    padding: .75rem 0;
+    margin: 0;
+    text-decoration: none;
+    color: #333;
+}
+
+.navbar-links a {
+    display: inline-block;
+    width: 70px;
+    padding: .75rem 0;
+    margin: 0;
+    text-decoration: none;
+    color: #333;
+}
+hr {
+    height: .20rem;
+    width: 50%;
+    margin: 0;
+    background: #FF9B70;
+    border: none;
+    transition: .3s ease-in-out;
+}
+
+
+.two:hover ~ hr {
+    margin-left: 50%;
+  }
+  
+  /* .three:hover ~ hr {
+    margin-left: 50%;
+  } */
+  
+
+/* .navbar {
+    position: sticky; 
+    float: right;
+    font-size: 16px;
+}
+
+.web-title {
+    float: left; 
+    padding: 10px 0; 
+    
+}
+
+.navbar ul {
+    margin: 0 96px; 
+    padding: 0; 
+    width: 80%;
+    list-style: none; 
+    padding-right: 96px;
+    font-size: 16px;
+}
+
+.navbar li {
+    display: inline-block;
+    margin-left: 40px;
+    padding-top: 24px;
+
+}
+
+a{
+    color: #1C1C1C; 
+    text-decoration: none;
+}
+a:hover ~ hr{
+    
+}
+
+hr {
+    height: .25rem;
+    width: 25%;
+    margin: 0;
+    background: tomato;
+    border: none;
+    transition: .3s ease-in-out;
+} */
+
+
+/* header section */
+.header {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    column-gap: 72px;
+    padding: 48px 48px 184px 48px; 
+}
+
+.headleft {
+    font-family: Inter;
+    font-weight: normal;
+    font-size: 23px;
+}
+
+.imgOfme{
+    
+    -webkit-transition: -webkit-transform .8s ease-in-out;
+            transition:         transform .8s ease-in-out;
+}
+
+
+.imgOfme:hover {
+    -webkit-transform: rotate(8deg);
+            transform: rotate(8deg);
+  }
+
+/* trying to put image on hover */
+/* .scroll:hover{
+    url("/Users/jayliquek/Desktop/JayLisWebsite/resources/images/Arrow.png"), auto;
+} */
+
+
+  /* Responsive Cards */ 
+
+.Recentwork{
+    /* box-sizing: border-box; */
+}
+
+.grid a {
+    text-decoration: none;
+    color: black;
+}
+
+.card {
+  background-color: #FDFDFD; 
+  padding: 0px;
+  text-align: center;
+  background: linear-gradient(145deg, #ffffff, #e4e4e4);
+box-shadow:  36px 36px 79px #d5d5d5, 
+             -36px -36px 79px #ffffff;
+  position: relative; 
+  text-align: left;
+  color: black;
+}
+
+/* Hover effect for each card */
+.card:hover {
+    transition: all 0.2s ease-out;
+    box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
+    top: -4px;
+    background-color:  #FDFDFD;
+  }
+
+.card:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -16px;
+    right: -16px;
+    background:  #FDFDFD;
+    height: 32px;
+    width: 32px;
+    transform: scale(2);
+    transform-origin: 50% 50%;
+    transition: transform 0.19s ease-out;
+  }
+
+.card:hover:before {
+    transform: scale(2.15);
+  }
+
+
+
+.grid {
+    display: grid;
+    padding: 0 96px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 16px;
+}
+
+/* .title {
+    position: absolute; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} */
+
+
+/* about section */ 
+.about {
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 16px ;
+    padding: 64px 96px 120px;
+}
+
+.leftabt {
+    font-family: Inter;
+    font-weight: 800;
+    font-size: 22px;
+}
+
+.rightabt {
+    font-family: Inter;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+
+
+/* Footer styling */ 
+.footer {
+    height: 310px; 
+    background-color:#1C1C1C;
+    /* bottom: 0;  */
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 16px ;
+    padding: 48px 146px;
+    color: white; 
+    
+}
+
+.leftfoot {
+    font-family: Inter;
+    font-weight: 800;
+    font-size: 22px;
+}
+
+.rightfoot {
+    font-family: Inter;
+    font-size:16px;
+   
+}
+
+.hoverlink {
+    color: white; 
+    text-decoration: none;
+}
+
+a.hoverlink {
+    position: relative;
+}
+
+.hoverlink:before{
+    content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #FFF;
+  visibility: visible;
+  transition: all 0.3s ease-in-out;
+}
+
+.hoverlink:hover:before {
+    visibility: visible;
+    width: 100%;
+}
+
+
+
+
+/* for blog post */ 
+.container{
+    width: 640px;
+    overflow:hidden;
+    display:block;
+    height: 360px;
+    text-align:center;
+}
+
+.container video {
+    margin-left: -21px;
+}
+
+/* make it responsive */
+@media screen and (max-width: 1200px){
+    .tablecol {
+        width: 100%; 
+        display: block; 
+        margin-bottom: 20px; 
+    }
+    .about {
+        width: 80%; 
+        display: block; 
+        margin-bottom: 20px; 
+    }
+    .rightfoot {
+        width: 80%; 
+        display: block; 
+        margin-bottom: 20px; 
+    }
+}
+
+@media screen and (max-width: 1200px){
+    .grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .about {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .footer {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+
+
+
+/* post1 page */
+.overview {
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 64px ;
+    padding: 64px 96px 64px;
+    background-color: black;
+    color: #FDFDFD;
+    
+}
+
+.breakdown{
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 24px ;
+    padding: 16px 96px 64px;
+    background-color: black;
+    color: #FDFDFD;
+}
+
+.casestudy{
+    padding: 64px 96px;
+}
+
+
+
+.final {
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 16px ;
+    padding: 64px 96px;
+}
+
+.Takeaways {
+    font-family: Inter;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.metrics {
+    font-family: Inter;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.container img{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* .imagebox img{ 
+
+} */
