@@ -204,6 +204,7 @@ box-shadow:  36px 36px 79px #d5d5d5,
   position: relative; 
   text-align: left;
   color: black;
+  transition-duration: 500ms;
 }
 
 /* Hover effect for each card */
@@ -228,7 +229,7 @@ box-shadow:  36px 36px 79px #d5d5d5,
     transition: transform 0.19s ease-out;
   }
 
-.card:hover:before {
+.card::before:hover {
     transform: scale(2.15);
   }
 
