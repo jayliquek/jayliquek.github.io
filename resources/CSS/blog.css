@@ -1,0 +1,161 @@
+@font-face {
+    src: url("Inter-Regular.otf");
+    /* src: url("Inter-Medium.otf"); 
+    src: url("Inter-Semibold.otf"); */
+    font-family: Inter;
+    font-weight: 400px;
+}
+
+@font-face {
+    font-family: Inter;
+    src: url("Inter-SemiBold.otf");
+    font-weight: 800px;
+}
+
+@font-face {
+    font-family: Inter; 
+    src: url("Inter-Medium.otf");
+    font-weight: 600px;
+}
+/* navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    font-family:Inter;
+     font-weight: 500;
+     margin-left: -0;
+    /* overflow: hidden; */
+}
+
+.navbar ul li {
+    display: inline;
+    text-align: center;
+}
+
+.navbar-name a {
+    display: inline-block;
+    width: 100px;
+    padding: .75rem 0;
+    margin: 0;
+    text-decoration: none;
+    color: #333;
+}
+
+.navbar-links a {
+    display: inline-block;
+    width: 70px;
+    padding: .75rem 0;
+    margin: 0;
+    text-decoration: none;
+    color: #333;
+}
+hr {
+    height: .20rem;
+    width: 50%;
+    margin: 0;
+    background: #FF9B70;
+    border: none;
+    transition: .3s ease-in-out;
+}
+
+
+.two:hover ~ hr {
+    margin-left: 50%;
+  }
+
+.main {
+    padding: 0 96px;
+}
+
+.mainLayout {
+    display: grid; 
+    grid-template-columns: 1fr 3fr;
+}
+
+.circle {
+    height: 300px;
+    position: relative;
+    width: 300px;
+}
+
+.writings {
+    margin: 124px;
+}
+
+.textincircle {
+    background: radial-gradient(
+    ellipse at center,
+    rgba(0, 128, 172, 1) 0%,
+    rgba(0, 128, 172, 1) 70%,
+    rgba(0, 128, 172, 0) 70.3%
+  );
+  height: 100%;
+  width: 100%;
+  color: white;
+  position: relative;
+  margin: 0;
+}
+
+.text p {
+    text-align: center;
+    font-size:16px;
+    height: 100%;
+    padding: 0;
+}
+
+
+/* Footer styling */ 
+.footer {
+    height: 310px; 
+    background-color:#1C1C1C;
+    /* bottom: 0;  */
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 16px ;
+    padding: 48px 146px 64px;
+    color: white; 
+    
+}
+
+.leftfoot {
+    font-family: Inter;
+    font-weight: 800;
+    font-size: 22px;
+}
+
+.rightfoot {
+    font-family: Inter;
+    font-size:16px;
+   
+}
+
+.selfplug{
+    font-size: 14px;
+    text-align: center;
+}
+
+.hoverlink {
+    color: white; 
+    text-decoration: none;
+}
+
+a.hoverlink {
+    position: relative;
+}
+
+.hoverlink:before{
+    content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #FFF;
+  visibility: visible;
+  transition: all 0.3s ease-in-out;
+}
+
+.hoverlink:hover:before {
+    visibility: visible;
+    width: 100%;
+}

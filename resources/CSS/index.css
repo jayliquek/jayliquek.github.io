@@ -45,30 +45,13 @@ header {
 .navbar {
     display: flex;
     justify-content: space-between;
+    overflow: hidden;
 }
-
-/* .navbar-links {
-    display: flex;
-    
-}
-
-.navbar-links div {
-    padding: 0 20px;
-}
-
-a {
-    color: #1C1C1C; 
-    text-decoration: none;
-}
-
-a:hover {
-    transition: 0.2s;
-    color: red
-} */
 
 .navbar ul li {
     display: inline;
     text-align: center;
+    font-family: Inter;
 }
 
 .navbar-name a {
@@ -200,6 +183,7 @@ hr {
   /* background-color: #FDFDFD;  */
   padding: 0px;
   text-align: left;
+    color: #FDFDFD;
   background: linear-gradient(145deg, #ffffff, #e4e4e4);
     box-shadow:  36px 36px 79px #d5d5d5, 
              -36px -36px 79px #ffffff;
@@ -212,6 +196,7 @@ hr {
 
 .card h3 {
     padding-left: 16px;
+    font-weight: lighter;
     
 }
 
@@ -435,10 +420,15 @@ a.hoverlink {
 .container img{
     max-width: 100%;
     max-height: 100%;
+    margin: auto;
+    display: block; 
+    text-align: center;
 }
 
 .imagebox img{ 
     max-width:  900px;
     max-height: 450px;
-    text-align: center;
+    /* display: block; 
+    text-align: center; */
+    
 }
