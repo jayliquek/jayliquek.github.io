@@ -24,6 +24,7 @@ body {
      margin: 0;
      font-family:Inter;
      font-weight: 500;
+     /* padding: 0 96px; */
 }
 
 html {
@@ -32,6 +33,7 @@ html {
 
 .main {
     margin: 0 50px;
+    
 }
 
 header {
@@ -64,7 +66,7 @@ a:hover {
     color: red
 } */
 
-ul li {
+.navbar ul li {
     display: inline;
     text-align: center;
 }
@@ -163,7 +165,10 @@ hr {
     font-family: Inter;
     font-weight: normal;
     font-size: 23px;
+    padding-right: 128px;
 }
+
+
 
 .imgOfme{
     
@@ -185,9 +190,6 @@ hr {
 
   /* Responsive Cards */ 
 
-.Recentwork{
-    /* box-sizing: border-box; */
-}
 
 .grid a {
     text-decoration: none;
@@ -195,16 +197,22 @@ hr {
 }
 
 .card {
-  background-color: #FDFDFD; 
+  /* background-color: #FDFDFD;  */
   padding: 0px;
-  text-align: center;
+  text-align: left;
   background: linear-gradient(145deg, #ffffff, #e4e4e4);
-box-shadow:  36px 36px 79px #d5d5d5, 
+    box-shadow:  36px 36px 79px #d5d5d5, 
              -36px -36px 79px #ffffff;
   position: relative; 
   text-align: left;
-  color: black;
-  transition-duration: 500ms;
+  /* color: black; */
+  transition-duration: 800ms;
+  
+}
+
+.card h3 {
+    padding-left: 16px;
+    
 }
 
 /* Hover effect for each card */
@@ -230,7 +238,7 @@ box-shadow:  36px 36px 79px #d5d5d5,
   }
 
 .card::before:hover {
-    transform: scale(2.15);
+    transform: scale(2.9);
   }
 
 
@@ -239,7 +247,7 @@ box-shadow:  36px 36px 79px #d5d5d5,
     display: grid;
     padding: 0 96px;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 16px;
+    grid-gap: 40px;
 }
 
 /* .title {
@@ -280,7 +288,7 @@ box-shadow:  36px 36px 79px #d5d5d5,
     display: grid; 
     grid-template-columns: repeat(2, 1fr);
     column-gap: 16px ;
-    padding: 48px 146px;
+    padding: 48px 146px 64px;
     color: white; 
     
 }
@@ -295,6 +303,11 @@ box-shadow:  36px 36px 79px #d5d5d5,
     font-family: Inter;
     font-size:16px;
    
+}
+
+.selfplug{
+    font-size: 14px;
+    text-align: center;
 }
 
 .hoverlink {
@@ -382,6 +395,7 @@ a.hoverlink {
     background-color: black;
     color: #FDFDFD;
     
+    
 }
 
 .breakdown{
@@ -423,6 +437,8 @@ a.hoverlink {
     max-height: 100%;
 }
 
-/* .imagebox img{ 
-
-} */
+.imagebox img{ 
+    max-width:  900px;
+    max-height: 450px;
+    text-align: center;
+}
