@@ -1,48 +1,51 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Helping 400 migrant workers learn english during COVID-19</title>
-        <link rel="stylesheet" href="CSS/index.css"/>
-    </head>
-    <body>
-        <div class="main">
-            <div class="navbar">
-                <div class="navbar-name">
-                    <ul>
-                        <li class="home"><a href = "index.html">Jay Li Quek</a></li>
-                    </ul>
-                </div>
-                <div class="navbar-links">
-                    <ul>
-                        <li class="one"><a href="#about">About</a></li><!--
-                     --><li class="two"><a href="blog.html">Blog</a></li><!--
-                     --><!---->
-                     
-                        <hr />
-                    </ul>
-                
-                </div>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helping 400 migrant workers learn english during COVID-19</title>
+    <link rel="stylesheet" href="CSS/index.css" />
+</head>
+
+<body>
+    <div class="main">
+        <div class="navbar">
+            <div class="navbar-name">
+                <ul>
+                    <li class="home"><a href="index.html">Jay Li Quek</a></li>
+                </ul>
             </div>
-        </div>  
+            <div class="navbar-links">
+                <ul>
+                    <li class="one"><a href="#about">About</a></li>
+                    <li class="two"><a href="blog.html">Blog</a></li>
+                    <hr />
+                </ul>
 
+            </div>
+        </div>
+    </div>
 
+    <header class="preview">
+        <div class="previewcontainer">
             <div class="overview">
-                <div class = "overleft">
+                <div class="overleft">
                     <div class="container">
-                            <video width="640" height="360" autoplay loop muted>
-                                <source src="./images/ScreeningMockup.mp4" type="video/mp4" style="width: 50vw; min-width: 220px;">
-                            </video>
+                        <video width="640" height="360" autoplay loop muted>
+                            <source src="./images/ScreeningMockup.mp4" type="video/mp4"
+                                style="width: 50vw; min-width: 220px;">
+                        </video>
                     </div>
                 </div>
-                <div class = "overright">
+                <div class="overright">
                     <h2>Overview</h2>
-                    <p>Helped a non-profit make better matches between migrant workers and volunteers so that migrant workers were able to up-skill and learn a language during the lockdown period in COVID-19.</p>
+                    <p>Helped a non-profit make better matches between migrant workers and volunteers so that migrant
+                        workers were able to up-skill and learn a language during the lockdown period in COVID-19.</p>
                 </div>
 
             </div>
-            <div class ="breakdown">
+            <div class="breakdown">
                 <div class="tools">
                     <h3>Tools</h3>
                     <p>Figma</p>
@@ -71,125 +74,193 @@
                     <p>June 2020 - October 2020</p>
                 </div>
             </div>
-            <div class="casestudy">
-                <h2>Problem</h2>
-                <p>The COVID-19 outbreak within migrant worker dormitories in Singapore resulted in a government-ordered quarantine. Migrant workers were unable to go out to work and battled boredom and anxiety. It's Raining Raincoats (IRR), a non-profit helping migrant workers in Singapore, wanted to substitute this frustration with education by matching migrant workers with volunteers to teach them English during quarantine. The high influx of requests made the manual process of using 16 excel sheets to match potential students arduous and inefficient, resulting in only 30% of the students to be matched.</p>
-                <br>
-                <h2>User Research Insights</h2>
-                <ul>"There are multiple excel sheets with different color codes that makes things confusing for volunteers"</ul>
-                <ul>"Our matching sheet needs to be constantly updated and checked" </ul>
-                <ul>"We don't keep a history of the matches"</ul>
-                <ul>"There are multiple sheets to reassign students and volunteers" </ul>
-                <ul>"Often having to refer to 2 or more sheets during the matching process which is tedious and time consuming" </ul>
-                <br>
-
-                <h2>Tackling the multiple excel sheets <br>(Making the screening, matching and follow up process clear)</h2> 
-                <p>After identifying the main processes undertaken at IRR into four parts: Screening, matching, notifying and following up with matches, dropped out. I used these steps to flesh out the main pages of the internal management system and explored the information architecture and placement of the navigation bar. </p>
-                <br>
-                <img src="./images/IRR Nav Bar + Layout.png" alt="Avatar" style="width:100%"> 
-                <p>Above, I explored the layout of the main processes and how these processes may differ for students and teachers. </p>             
-                <p>During our user interviews, we noticed that there some cases needed urgent following up and IRR team would have trouble keeping track of teachers and students. Thus <b>A</b>, made sense as red notifications would alert the user on the urgency of individuals that needed following up with. However, the navigation bar felt overwhelming and repetitive with some processes that were similar for both teachers and students. Additionally, as IRR have separate teams that manage students and teachers, it seemed more appropriate to go for B so each communication team would not be confused by tasks needed to be done by the other team. Though it made the process easier for each communication team, it still was repetitive. </p>       
-                <p>Thus, I explored creating a simpler tab bar that highlighted the main processes and only showed students or teachers within the tabs in <b>C</b>. This design highlights the 4 main processes, and since only students are screened and only teachers need following up, separating the categories by teachers and students seemed redundant. <b>C</b> was beneficial as it took up less space, and allowed for more fields within tables if needed. </p>
-                <p>We finalized on <b>D</b> which combined the simple processes but added a section for profiles of students and teachers, which enabled users to have  an overview of the statuses of all students and teachers instead of going into separate tabs. The "dropped out" tab was removed as no actions needed to be undertaken when either a student or teacher has dropped out and users were still able to view anyone who dropped out within the profiles tabs.  <b>D</b> helped reduced the amount of tabs being toggled between and made the processes clear. </p>
-            
-                
-                <h2>Simplify the screening process </h2>
-                <p><b>Simplify</b> – I explored several interfaces to speed up and ease the screening process. Its Raining Raincoats screeners make about more than 30 calls a day and this process needed to be quick. After narrowing down the key details needed for screening such as (interest to learn english and english proficiency), I analyzed which features would allow IRR to screen students in bulk.</p>
-                <br>
-                <img src="./images/IRR Screening Process Explorations.png" alt="Screening Process Explorations" style="width:100%"> 
-                <br>
-                <p>While <b>A</b>s drag and drop feature would have helped screeners create a visual on who is left to screen. Since this process is usually done in bulk simultaneously by a few screeners, only viewing 5 students could get confusing and does not make get use of the screen. Thus I stuck with a table showcasing all students that had to be screen, shown in <b>B</b> and <b>C</b>. While <b>B</b> allows users to focus on selecting a proficiency, it prevented screeners from double checking other important details with students. Substituting a modal pop up for a in-line drop down, in <b>C</b> helped screeners double check other details.</p>
-                <br>
-                <div class="imagebox">
-                    <img src="./images/IRR Dropdown Iteration.png" alt="IRR Dropdown Iteration" style="width:89%"> 
- 
-                </div>
-                
-                <br>
-                <p><b>Applying to context and removing redundancy</b> – After testing, users gave feedback about the after selection box that the description is cut off and does not improve readability when double-checking. I realized the description was slightly redundant and only needed to maintain consistency amongst screeners on the proficiency of students and iterated it from <b>A</b> to <b>B</b>.</p>
-                
-                <br>
-                <h2>Ensuring students are matched properly.</h2>
-                <p>To replace the manual process of referring to 2 excel sheets and matching students. We ideated an automated process that would generate a few matches based on a student and teacher's native language, english proficiency and any second languages that a teacher might have. </p>
-                <br>
-                <div class="imagebox">
-                    <img src="./images/IRR Suggestions for Teacher Matches.png" alt="IRR Suggestions for Teacher Matches" style="width:100%"> 
-                </div>
-                
-                <br>
-                <p>Upon reviewing with the IRR team, we were given feedback that it would be ideal to have slightly more options as well as the option to search by company of volunteers. Modal pop up <b>A</b> did not provide context to why an "80% match" is good and would be hard to differentiate which volunteer is best suited if there are similar matches. </p>
-                <br>
-                <img src="./images/IRR Suggestions for Teacher Matches (Iteration).png" alt="IRR Suggestions for Teacher Matches (Iteration)" style="width:100%"> 
-                <br>
-                <p>I ideated options <b>C</b> and <b>D</b> to see how the search bar option would pan out.</p>
-                <p><b>Consistency</b> – <b>D</b>'s search bar is consistent with the existing search bar that we use to search within the table. To reduce confusion the CTA button was taken away and users were either able to select a teacher to match directly or close the pop up. </p>
-
-
-                <br>
-                <h2>Solution</h2>
-                <p>Creating an internal management system that streamlined the screening, matching and follow up processes so the IRR team could have an updated details of each migrant worker and volunteer that is waiting to be paired up. </p>
-                <br>
-                <h3>Screening Final Prototype</h3>
-                
-                <video width="640" height="360" autoplay class="Prototype">
-                    <source src="./images/ScreeningMockup.mp4" type="video/mp4">
-                    <source src="movie.ogg" type="video/ogg">
-                    Your browser does not support the video tag.
-                </video>
-                
-                <h3>Matching Final Prototype</h3>
-                <video width="640" height="360" autoplay class="Prototype">
-                    <source src="./images/MatchingMock.mp4" type="video/mp4">
-                    <source src="movie.ogg" type="video/ogg">
-                    Your browser does not support the video tag.
-                </video>
-                <div class="Final">
-                    <div class="Takeaways">
-                        <h2>Takeaways</h2>
-                        <ul> 
-                            <li>Leart to work with a team of 6 remotely on a 12 hour time difference </li>
-                            <li>Learnt the importance of documentation and using tools such as Jira to communicate with engineers </li>
-                            <li>Learnt how to conduct a remote design sprint and engage a team of engineers, users, designers and product manager. </li>
-                            <li>Worked with the Buefy Design library  + design systems </li>
-                            <li>Learnt about information hierarchy and informationa architecute when designing tables </li>
-                        </ul>
-                        
-                        
-                    </div>
-                    <div class="metrics">
-                      
-                        <p>This product will be pushed out by early 2021. </p>
-                        <h2>Key metrics to look out for:</h2>
-                        <ul>
-                            <li>If there is an increase in number of students being matched within a day </li>
-                            <li>The duration it takes to re-match a teacher volunteer to a student after one has dropped out.</li>
-                        </ul>
-                        
-                    </div>
-                </div>
-            </div>
-            
         </div>
-        
-        </footer> <footer class = "footer">
-            <div class = "leftfoot">
-                <p>Reach me</p>
-            </div>
-            <div class = "rightfoot">
-                <p>My mom used to tell me not to talk to strangers, but the internet has some pretty cool people. If you have a thought or just want to say hello, feel free to drop me an email.  </p>
-                <br>
-                <br>
-                
-                <a href = "mailto: jayliquek@gmail.com" class="hoverlink">jayliquek@gmail.com</a><br><br>
-                <a href="https://www.linkedin.com/in/jayliquek/" class="hoverlink">Linkedin</a>
-            </div>
-            
-        </footer> 
-        <div class = "selfplug">
-            <p>Designed & developed by Jay Li</p>
+    </header>
+
+    <div class="casestudy">
+        <h2>Problem</h2>
+        <p>The COVID-19 outbreak within migrant worker dormitories in Singapore resulted in a
+            government-ordered quarantine. Migrant workers were unable to go out to work and battled
+            boredom and anxiety. It's Raining Raincoats (IRR), a non-profit helping migrant workers in
+            Singapore, wanted to substitute this frustration with education by matching migrant workers
+            with volunteers to teach them English during quarantine. The high influx of requests made
+            the manual process of using 16 excel sheets to match potential students arduous and
+            inefficient, resulting in only 30% of the students to be matched.</p>
+        <br>
+        <h2>User Research Insights</h2>
+        <ul>"There are multiple excel sheets with different color codes that makes things confusing for
+            volunteers"</ul>
+        <ul>"Our matching sheet needs to be constantly updated and checked" </ul>
+        <ul>"We don't keep a history of the matches"</ul>
+        <ul>"There are multiple sheets to reassign students and volunteers" </ul>
+        <ul>"Often having to refer to 2 or more sheets during the matching process which is tedious and
+            time consuming" </ul>
+        <br>
+
+        <h2>Tackling the multiple excel sheets <br>(Making the screening, matching and follow up process
+            clear)</h2>
+        <p>After identifying the main processes undertaken at IRR into four parts: Screening, matching,
+            notifying and following up with matches, dropped out. I used these steps to flesh out the
+            main pages of the internal management system and explored the information architecture and
+            placement of the navigation bar. </p>
+        <br>
+        <img src="./images/IRR Nav Bar + Layout.png" alt="Avatar" style="width:100%">
+        <p>Above, I explored the layout of the main processes and how these processes may differ for
+            students and teachers. </p>
+        <p>During our user interviews, we noticed that there some cases needed urgent following up and
+            IRR team would have trouble keeping track of teachers and students. Thus <b>A</b>, made
+            sense as red notifications would alert the user on the urgency of individuals that needed
+            following up with. However, the navigation bar felt overwhelming and repetitive with some
+            processes that were similar for both teachers and students. Additionally, as IRR have
+            separate teams that manage students and teachers, it seemed more appropriate to go for B so
+            each communication team would not be confused by tasks needed to be done by the other team.
+            Though it made the process easier for each communication team, it still was repetitive. </p>
+        <p>Thus, I explored creating a simpler tab bar that highlighted the main processes and only
+            showed students or teachers within the tabs in <b>C</b>. This design highlights the 4 main
+            processes, and since only students are screened and only teachers need following up,
+            separating the categories by teachers and students seemed redundant. <b>C</b> was beneficial
+            as it took up less space, and allowed for more fields within tables if needed. </p>
+        <p>We finalized on <b>D</b> which combined the simple processes but added a section for profiles
+            of students and teachers, which enabled users to have an overview of the statuses of all
+            students and teachers instead of going into separate tabs. The "dropped out" tab was removed
+            as no actions needed to be undertaken when either a student or teacher has dropped out and
+            users were still able to view anyone who dropped out within the profiles tabs. <b>D</b>
+            helped reduced the amount of tabs being toggled between and made the processes clear. </p>
+
+
+        <h2>Simplify the screening process </h2>
+        <p><b>Simplify</b> – I explored several interfaces to speed up and ease the screening process.
+            Its Raining Raincoats screeners make about more than 30 calls a day and this process needed
+            to be quick. After narrowing down the key details needed for screening such as (interest to
+            learn english and english proficiency), I analyzed which features would allow IRR to screen
+            students in bulk.</p>
+        <br>
+        <img src="./images/IRR Screening Process Explorations.png" alt="Screening Process Explorations"
+            style="width:100%">
+        <br>
+        <p>While <b>A</b>s drag and drop feature would have helped screeners create a visual on who is
+            left to screen. Since this process is usually done in bulk simultaneously by a few
+            screeners, only viewing 5 students could get confusing and does not make get use of the
+            screen. Thus I stuck with a table showcasing all students that had to be screen, shown in
+            <b>B</b> and <b>C</b>. While <b>B</b> allows users to focus on selecting a proficiency, it
+            prevented screeners from double checking other important details with students. Substituting
+            a modal pop up for a in-line drop down, in <b>C</b> helped screeners double check other
+            details.</p>
+        <br>
+        <div class="imagebox">
+            <img src="./images/IRR Dropdown Iteration.png" alt="IRR Dropdown Iteration" style="width:89%">
+
         </div>
-           
-    </body>
+
+        <br>
+        <p><b>Applying to context and removing redundancy</b> – After testing, users gave feedback about
+            the after selection box that the description is cut off and does not improve readability
+            when double-checking. I realized the description was slightly redundant and only needed to
+            maintain consistency amongst screeners on the proficiency of students and iterated it from
+            <b>A</b> to <b>B</b>.</p>
+
+        <br>
+        <h2>Ensuring students are matched properly.</h2>
+        <p>To replace the manual process of referring to 2 excel sheets and matching students. We
+            ideated an automated process that would generate a few matches based on a student and
+            teacher's native language, english proficiency and any second languages that a teacher might
+            have. </p>
+        <br>
+        <div class="imagebox">
+            <img src="./images/IRR Suggestions for Teacher Matches.png" alt="IRR Suggestions for Teacher Matches">
+        </div>
+
+        <br>
+        <p>Upon reviewing with the IRR team, we were given feedback that it would be ideal to have
+            slightly more options as well as the option to search by company of volunteers. Modal pop up
+            <b>A</b> did not provide context to why an "80% match" is good and would be hard to
+            differentiate which volunteer is best suited if there are similar matches. </p>
+        <br>
+        <div class="imagebox">
+            <img src="./images/IRR Suggestions for Teacher Matches (Iteration).png"
+                alt="IRR Suggestions for Teacher Matches (Iteration)">
+        </div>
+        <br>
+        <p>I ideated options <b>C</b> and <b>D</b> to see how the search bar option would pan out.</p>
+        <p><b>Consistency</b> – <b>D</b>'s search bar is consistent with the existing search bar that we
+            use to search within the table. To reduce confusion the CTA button was taken away and users
+            were either able to select a teacher to match directly or close the pop up. </p>
+
+
+        <br>
+        <h2>Solution</h2>
+        <p>Creating an internal management system that streamlined the screening, matching and follow up
+            processes so the IRR team could have an updated details of each migrant worker and volunteer
+            that is waiting to be paired up. </p>
+        <br>
+        <h3>Screening Final Prototype</h3>
+
+        <video class="postvid" width="640" height="360" autoplay class="Prototype">
+            <source src="./images/ScreeningMockup.mp4" type="video/mp4">
+            <source src="movie.ogg" type="video/ogg">
+            Your browser does not support the video tag.
+        </video>
+
+        <h3>Matching Final Prototype</h3>
+        <video class="postvid" width="640" height="360" autoplay class="Prototype">
+            <source src="./images/MatchingMock.mp4" type="video/mp4">
+            <source src="movie.ogg" type="video/ogg">
+            Your browser does not support the video tag.
+        </video>
+        <div class="Final">
+            <div class="Takeaways">
+                <h2>Takeaways</h2>
+                <ul>
+                    <li>Leart to work with a team of 6 remotely on a 12 hour time difference </li>
+                    <li>Learnt the importance of documentation and using tools such as Jira to
+                        communicate with engineers </li>
+                    <li>Learnt how to conduct a remote design sprint and engage a team of engineers,
+                        users, designers and product manager. </li>
+                    <li>Worked with the Buefy Design library + design systems </li>
+                    <li>Learnt about information hierarchy and informationa architecute when designing
+                        tables </li>
+                </ul>
+
+
+            </div>
+            <div class="metrics">
+
+                <p>This product will be pushed out by early 2021. </p>
+                <h2>Key metrics to look out for:</h2>
+                <ul>
+                    <li>If there is an increase in number of students being matched within a day </li>
+                    <li>The duration it takes to re-match a teacher volunteer to a student after one has
+                        dropped out.</li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    </footer>
+    <footer class="footer">
+        <div class="leftfoot">
+            <p>Reach me</p>
+        </div>
+        <div class="rightfoot">
+            <p>My mom used to tell me not to talk to strangers, but the internet has some pretty cool
+                people. If you have a thought or just want to say hello, feel free to drop me an email. </p>
+            <br>
+            <br>
+
+            <a href="mailto: jayliquek@gmail.com" class="hoverlink">jayliquek@gmail.com</a><br><br>
+            <a href="https://www.linkedin.com/in/jayliquek/" class="hoverlink">Linkedin</a>
+        </div>
+
+    </footer>
+    <div class="selfplug">
+        <p>Designed & developed by Jay Li</p>
+    </div>
+
+</body>
 
 </div>
+
 </html>

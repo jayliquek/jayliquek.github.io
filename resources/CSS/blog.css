@@ -1,22 +1,4 @@
-@font-face {
-    src: url("Inter-Regular.otf");
-    /* src: url("Inter-Medium.otf"); 
-    src: url("Inter-Semibold.otf"); */
-    font-family: Inter;
-    font-weight: 400px;
-}
-
-@font-face {
-    font-family: Inter;
-    src: url("Inter-SemiBold.otf");
-    font-weight: 800px;
-}
-
-@font-face {
-    font-family: Inter; 
-    src: url("Inter-Medium.otf");
-    font-weight: 600px;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 /* navbar */
 .navbar {
     display: flex;

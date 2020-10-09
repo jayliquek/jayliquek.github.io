@@ -1,30 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
-@font-face {
-    src: url("Inter-Regular.otf");
-    /* src: url("Inter-Medium.otf"); 
-    src: url("Inter-Semibold.otf"); */
-    font-family: Inter;
-    font-weight: 400px;
-}
-
-@font-face {
-    font-family: Inter;
-    src: url("Inter-SemiBold.otf");
-    font-weight: 800px;
-}
-
-@font-face {
-    font-family: Inter; 
-    src: url("Inter-Medium.otf");
-    font-weight: 600px;
-}
 
 
 body {
      margin: 0;
-     font-family:Inter;
-     font-weight: 500;
-     /* padding: 0 96px; */
+     font-family:Inter, sans-serif; 
+     font-weight: 400;
+     line-height: 1.4;
 }
 
 html {
@@ -37,7 +19,7 @@ html {
 }
 
 header {
-    background: FDFDFD;
+    background: #FDFDFD;
 }
 
 /* styling the navbar */
@@ -383,17 +365,25 @@ a.hoverlink {
     
 }
 
+.previewcontainer {
+    padding: 0 100px;
+}
+
+.preview {
+    background-color: black;
+}
+
 .breakdown{
     display: grid; 
     grid-template-columns: repeat(4, 1fr);
     column-gap: 24px ;
     padding: 16px 96px 64px;
-    background-color: black;
+    /* background-color: black; */
     color: #FDFDFD;
 }
 
 .casestudy{
-    padding: 64px 96px;
+    padding: 64px 256px;
 }
 
 
@@ -425,10 +415,9 @@ a.hoverlink {
     text-align: center;
 }
 
-.imagebox img{ 
-    max-width:  900px;
-    max-height: 450px;
-    /* display: block; 
-    text-align: center; */
-    
+.imagebox img, .postvid{ 
+    width: 80%;
+    max-width: 800px;
+    display: block; 
+    margin: 0 auto;     
 }
