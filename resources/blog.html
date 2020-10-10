@@ -43,7 +43,9 @@
                 <h1>Writings</h1>
                 <hr class="underline"/>
                 <div class="blogposts">
-                    <a href="/" class="bpost"></a>  
+                    <a href="blogpost1.html" class="bpost">
+                        <h3> Internal gymnastics of being a creative </h3>
+                    </a>  
                     <div class="date">
                         <p>October 6 2020</p>
                     </div>
@@ -92,5 +94,18 @@
     <div class = "selfplug">
         <p>Designed & developed by Jay Li</p>
     </div>
+    <script>       
+        function main() {
+            let circle = document.getElementById("circle");
+            function handleHover(event) {
+                let popup = document.getElementById("popup");
+                popup.className = "visible";
+                circle.className = "hovered";
+            }
+
+            circle.addEventListener("mouseenter", handleHover);
+        }
+        window.onload = main; 
+    </script>
 </body>
 </html>

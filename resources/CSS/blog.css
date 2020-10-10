@@ -72,22 +72,40 @@ hr {
 
 .circle {
     height: 300px;
-    position: relative;
     width: 300px;
+    position: relative;
     border-radius: 300px;
     background-color: black;
     display: flex; 
     align-items: center;
     justify-content: center;
+    color: #FDFDFD;
+    z-index:2;
+}
+
+.circle:hover{
+    background-color: #FDFDFD;
+    color: black;
+    z-index: 2;
+}
+
+.circle:hover::after{
+    content: "This space houses the trough of things I have encountered, watched, read and tinkered with since starting this site. I hope to use this space to speak my mind about more ethical tech, document progress on projects I have made, and share delightful encounters in my everyday life. \a Have a gander through my brain. ";
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    bottom: 0;
+    right: 0;
+    background-color: black;
+    color: #FDFDFD;
+    z-index: -1;
 }
 
 .writings {
     margin: 104px;
     min-height: 30vh;
-}
-
-.textincircle {
-    color: #FDFDFD;
 }
 
 .text p {
@@ -152,4 +170,9 @@ a.hoverlink {
 .hoverlink:hover:before {
     visibility: visible;
     width: 100%;
+}
+
+/* Formatting blog posts */
+.bpost {
+    text-decoration: none;
 }
