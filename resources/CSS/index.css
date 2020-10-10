@@ -55,7 +55,7 @@ header {
 }
 hr {
     height: .20rem;
-    width: 50%;
+    width: 33%;
     margin: 0;
     background: #FF9B70;
     border: none;
@@ -64,8 +64,11 @@ hr {
 
 
 .two:hover ~ hr {
-    margin-left: 50%;
+    margin-left: 33%;
   }
+.three:hover ~hr {
+    margin-left: 66%
+}
   
   /* .three:hover ~ hr {
     margin-left: 50%;
@@ -298,8 +301,6 @@ a.hoverlink {
 }
 
 
-
-
 /* for blog post */ 
 .container{
     width: 640px;
@@ -414,4 +415,8 @@ a.hoverlink {
     max-width: 800px;
     display: block; 
     margin: 0 auto;     
+}
+
+#work {
+    margin-bottom: 60px;
 }

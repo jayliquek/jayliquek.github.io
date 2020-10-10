@@ -13,15 +13,13 @@ body {
 .navbar {
     display: flex;
     justify-content: space-between;
-    font-family:Inter;
-     font-weight: 400;
-     margin-left: -0;
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 .navbar ul li {
     display: inline;
     text-align: center;
+    font-family: Inter;
 }
 
 .navbar-name a {
@@ -43,11 +41,19 @@ body {
 }
 hr {
     height: .20rem;
-    width: 50%;
+    width: 33%;
     margin: 0;
     background: #FF9B70;
     border: none;
     transition: .3s ease-in-out;
+}
+
+
+.two:hover ~ hr {
+    margin-left: 33%;
+  }
+.three:hover ~hr {
+    margin-left: 66%
 }
 
 .underline{
@@ -57,12 +63,10 @@ hr {
 }
 
 
-.two:hover ~ hr {
-    margin-left: 50%;
-  }
+
 
 .main {
-    padding: 0 96px;
+    /* padding: 0 96px; */
 }
 
 .mainLayout {
