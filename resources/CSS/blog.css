@@ -87,7 +87,7 @@ hr {
     z-index:2;
 }
 
-.circle:hover{
+/* .circle:hover{
     background-color: #FDFDFD;
     color: black;
     z-index: 2;
@@ -105,7 +105,7 @@ hr {
     background-color: black;
     color: #FDFDFD;
     z-index: -1;
-}
+} */
 
 .writings {
     margin: 104px;
@@ -179,4 +179,14 @@ a.hoverlink {
 /* Formatting blog posts */
 .bpost {
     text-decoration: none;
+    color:black;
+}
+
+.bpost:hover{
+    color:#FF9B70;
+}
+
+.date {
+    margin-top: -16px;
+    margin-bottom: 32px;
 }
