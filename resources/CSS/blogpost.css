@@ -10,3 +10,10 @@ body {
 .content {
     padding: 64px 256px;
 }
+
+.imagebox img, .postvid{ 
+    width: 80%;
+    max-width: 800px;
+    display: block; 
+    margin: 0 auto;     
+}
