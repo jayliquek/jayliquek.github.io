@@ -173,10 +173,16 @@ hr {
   
 }
 
-.card h3 p {
-    padding-left: 16px;
-    font-weight: lighter;
+.card h3 {
+    padding-left: 32px;
+    /*font-weight: lighter;*/
     
+}
+
+.card p {
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-bottom: 8px;
 }
 
 /* Hover effect for each card */
@@ -241,8 +247,6 @@ hr {
     font-weight: normal;
     font-size: 16px;
 }
-
-
 
 /* Footer styling */ 
 .footer {
