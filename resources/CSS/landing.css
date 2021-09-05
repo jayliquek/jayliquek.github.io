@@ -40,7 +40,8 @@ ul {
 li {
     list-style: none;
     position: relative;
-    padding-bottom: 12px;
+    padding-bottom: 8px;
+    line-height: 1.2;
     
 }
 
@@ -48,18 +49,34 @@ li::before {
     background: url(/Users/jayliquek/Desktop/JayLisWebsite/resources/images/star-empty.png) no-repeat left center;
     background-size: contain;
     content: '';
-    width: 20px !important;
-    height: 20px !important;
+    width: 20px;
+    height: 20px;
     display: block;
     float: left;
     padding-right: 6px;
     position: absolute;
     left: -28px;
 } 
-li.star::hover {
-    color: hotpink;
+
+@keyframes star-rotate {
+    0% {
+        transform: rotate(0);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
+li:hover::before {
+    background: url(/Users/jayliquek/Desktop/JayLisWebsite/resources/icons/star-highlight.png) no-repeat left center;
+    transform-origin: 10px 10px;
+    animation: star-rotate linear 2.5s infinite;
+}
+
+li:hover {
+    color: #7095D3;
+}
 
 .star {
   padding-top: 2px;
@@ -67,7 +84,7 @@ li.star::hover {
 }
 
 .greeting {
-    padding-top: 96px;
+    padding-top: 15vh;
     padding-left: 104px;
     font-family: FrankfurterPlain;
     font-size: 30px;
