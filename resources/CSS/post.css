@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+
+@font-face {
+    font-family: UbuntuTitling-Bold;
+    src: url("UbuntuTitling-Bold.ttf")  format("truetype");
+}
+
+a {
+    font-family: UbuntuTitling-Bold;
+    color: #1E4C99;
+    text-decoration: none;
+    padding-bottom: 44px;
+}
+
+body {
+    margin: 0;
+    font-family:Inter, sans-serif; 
+    font-weight: 400;
+    line-height: 1.8;
+}
+
+html {
+   scroll-behavior: smooth;
+}
+
+.main {
+   margin: 0 50px;
+   
+}
+
+header {
+    background: #EFEBE2;
+}
+
+.container{
+    width: 640px;
+    overflow:hidden;
+    display:block;
+    height: 360px;
+    text-align:center;
+}
+
+.container video {
+    margin-left: -21px;
+}
+
+/* make it responsive */
+@media screen and (max-width: 1200px){
+    .tablecol {
+        width: 100%; 
+        display: block; 
+        margin-bottom: 20px; 
+    }
+    .about {
+        width: 80%; 
+        display: block; 
+        margin-bottom: 20px; 
+    }
+    .rightfoot {
+        width: 80%; 
+        display: block; 
+        margin-bottom: 20px; 
+    }
+}
+
+@media screen and (max-width: 1200px){
+    .grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .about {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .footer {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+.overview {
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 64px ;
+    padding: 64px 96px 64px;
+    background-color: black;
+    color: #EFEBE2;
+    
+    
+}
+
+.previewcontainer {
+    padding: 0 100px;
+}
+
+.preview {
+    background-color: black;
+}
+
+.breakdown{
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 24px ;
+    padding: 16px 96px 64px;
+    /* background-color: black; */
+    color: #EFEBE2;
+}
+
+.casestudy{
+    padding: 64px 256px;
+}
+
+
+.final {
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 16px ;
+    padding: 64px 96px;
+}
+
+.Takeaways {
+    font-family: UbuntuTitling-Bold;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.metrics {
+    font-family: UbuntuTitling-Bold;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.container img{
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+    display: block; 
+    text-align: center;
+}
+
+.imagebox img, .postvid{ 
+    width: 80%;
+    max-width: 800px;
+    display: block; 
+    margin: 0 auto;     
+}
+
+#work {
+    margin-bottom: 60px;
+}
