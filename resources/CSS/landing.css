@@ -51,7 +51,7 @@ li {
 }
 
 li::before { 
-    background: url(./images/star-empty.png) no-repeat left center;
+    background: url("./images/star-empty.png") no-repeat left center;
     background-size: contain;
     content: '';
     width: 20px;
@@ -74,7 +74,7 @@ li::before {
 }
 
 li:hover::before {
-    background: url(./icons/star-highlight.png) no-repeat left center;
+    background: url("./icons/star-highlight.png") no-repeat left center;
     transform-origin: 10px 10px;
     animation: star-rotate linear 2.5s infinite;
 }
@@ -125,13 +125,5 @@ li:hover {
     width: 24px;
 }
 
-
-
-
-/* .icons::after {
-content: "";
-  clear: both;
-  display: table;
-} */
 
 
