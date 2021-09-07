@@ -3,11 +3,17 @@
 @font-face {
     font-family: FrankfurterPlain;
     src: url("FrankfurterPlain.otf") format("opentype");
+    src: url("FrankfurterPlain.woff") format("woff");
+    src: url("FrankfurterPlain.ttf") format("truetype");
+    src: url("FrankfurterPlain.svg#svgFrankfurterPlain") format("svg");
 }
 
 @font-face {
     font-family: UbuntuTitling-Bold;
     src: url("UbuntuTitling-Bold.ttf")  format("truetype");
+    src: url("UbuntuTitling-Bold.woff")  format("woff");
+    src: url("UbuntuTitling-Bold.otf")  format("opentype");
+    src: url("UbuntuTitling-Bold.svg#svgUbuntuTitling-Bold")  format("svg");
 }
     
 
@@ -51,7 +57,7 @@ li {
 }
 
 li::before { 
-    background: url("./images/star-empty.png") no-repeat left center;
+    background: url("/Users/jayliquek/Desktop/JayLisWebsite/resources/images/star-empty.png") no-repeat left center;
     background-size: contain;
     content: '';
     width: 20px;
@@ -74,7 +80,7 @@ li::before {
 }
 
 li:hover::before {
-    background: url("./icons/star-highlight.png") no-repeat left center;
+    background: url("/Users/jayliquek/Desktop/JayLisWebsite/resources/icons/star-highlight.png") no-repeat left center;
     transform-origin: 10px 10px;
     animation: star-rotate linear 2.5s infinite;
 }
