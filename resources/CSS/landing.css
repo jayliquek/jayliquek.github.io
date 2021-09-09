@@ -9,11 +9,12 @@
 }
 
 @font-face {
-    font-family: UbuntuTitling-Bold;
-    src: url("UbuntuTitling-Bold.ttf")  format("truetype");
-    src: url("UbuntuTitling-Bold.woff")  format("woff");
-    src: url("UbuntuTitling-Bold.otf")  format("opentype");
-    src: url("UbuntuTitling-Bold.svg#svgUbuntuTitling-Bold")  format("svg");
+    font-family: 'ubuntu_titlingbold';
+    src: url('ubuntutitling-bold-webfont.woff2') format('woff2'),
+         url('ubuntutitling-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
 }
     
 
