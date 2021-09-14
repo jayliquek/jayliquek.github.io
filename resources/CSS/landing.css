@@ -4,7 +4,7 @@
     font-family: FrankfurterPlain;
     src: url("FrankfurterPlain.otf") format("opentype");
     src: url("FrankfurterPlain.woff") format("woff");
-    src: url("FrankfurterPlain.ttf") format("truetype");
+    src: url("resources/CSS/frankfurter font/FrankfurterPlain.otf") format("truetype");
     src: url("FrankfurterPlain.svg#svgFrankfurterPlain") format("svg");
 }
 
