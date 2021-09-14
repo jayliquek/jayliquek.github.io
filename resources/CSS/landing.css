@@ -58,7 +58,7 @@ li {
 }
 
 li::before { 
-    background: url("/Users/jayliquek/Desktop/JayLisWebsite/resources/images/star-empty.png") no-repeat left center;
+    background: url("/resources/images/star-empty.png") no-repeat left center;
     background-size: contain;
     content: '';
     width: 20px;
@@ -81,7 +81,7 @@ li::before {
 }
 
 li:hover::before {
-    background: url("/Users/jayliquek/Desktop/JayLisWebsite/resources/icons/star-highlight.png") no-repeat left center;
+    background: url("/resources/icons/star-highlight.png") no-repeat left center;
     transform-origin: 10px 10px;
     animation: star-rotate linear 2.5s infinite;
 }
