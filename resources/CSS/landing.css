@@ -2,19 +2,12 @@
 
 @font-face {
     font-family: FrankfurterPlain;
-    src: url("FrankfurterPlain.otf") format("opentype");
-    src: url("FrankfurterPlain.woff") format("woff");
-    src: url("resources/CSS/frankfurter font/FrankfurterPlain.otf") format("truetype");
-    src: url("FrankfurterPlain.svg#svgFrankfurterPlain") format("svg");
+    src: url("./frankfurter/FrankfurterPlain.otf") format("opentype");
 }
 
 @font-face {
-    font-family: 'ubuntu_titlingbold';
-    src: url('ubuntutitling-bold-webfont.woff2') format('woff2'),
-         url('ubuntutitling-bold-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
+    font-family: 'UbuntuTitling-Bold';
+    src: url("./ubuntu_titling/UbuntuTitling-Bold.ttf") format("opentype");
 }
     
 
