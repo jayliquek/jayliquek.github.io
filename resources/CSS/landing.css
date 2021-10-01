@@ -86,14 +86,14 @@ li:hover {
 
 .greeting {
     padding-top: 15vh;
-    padding-left: 104px;
+    padding-left: 10vw;
     font-family: FrankfurterPlain;
     font-size: 30px;
     color: #335691;
 }
 
 .header-desc {
-    padding-left: 104px;
+    padding-left: 10vw;
     font-family: UbuntuTitling-Bold;
     color: #1E4C99;
     font-size: 24px;
@@ -103,7 +103,7 @@ li:hover {
 }
 
 .projects {
-    padding-left: 104px;
+    padding-left: 10vw;
     padding-top: 36px;
     font-family: UbuntuTitling-Bold;
     color: #1E4C99;
@@ -113,7 +113,7 @@ li:hover {
 .social {
     font-size: 0px;
     padding-top: 56px;
-    padding-left: 104px;
+    padding-left: 10vw;
 }
 
 .icons {
