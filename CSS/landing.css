@@ -54,13 +54,13 @@ li::before {
     background: url(../images/smile-glyph.png) no-repeat left center;
     background-size: contain;
     content: '';
-    width: 20px;
-    height: 20px;
+    width: 36px;
+    height: 36px;
     display: block;
     float: left;
-    padding-right: 6px;
+    padding-right: 24px;
     position: absolute;
-    left: -28px;
+    left: -38px;
 }
 
 @keyframes star-rotate {
@@ -75,7 +75,7 @@ li::before {
 
 li:hover::before {
     background: url(../icons/smile-glyph.png) no-repeat left center;
-    transform-origin: 10px 10px;
+    transform-origin: 18px 18px;
     animation: star-rotate linear 2.5s infinite;
 }
 
