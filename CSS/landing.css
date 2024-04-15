@@ -9,12 +9,12 @@
     font-family: 'UbuntuTitling-Bold';
     src: url("./ubuntu_titling/UbuntuTitling-Bold.ttf") format("opentype");
 }
-    
+
 
 body {
-    background-color:#EFEBE2;
+    background-color: #EFEBE2;
     margin-top: 0;
-    margin-left: 0; 
+    margin-left: 0;
     margin-right: 0;
 }
 
@@ -26,12 +26,12 @@ a {
 .bannerimage {
     width: 100%;
     height: 44px;
-    overflow: hidden; 
+    overflow: hidden;
     padding: 0;
-  }
+}
 
 .bannerimage img {
-    display: block;    
+    display: block;
 }
 
 ul {
@@ -39,7 +39,7 @@ ul {
     width: 70vw;
     max-width: 800px;
     margin-left: 28px;
-   
+
 }
 
 li {
@@ -47,11 +47,11 @@ li {
     position: relative;
     padding-bottom: 8px;
     line-height: 1.2;
-    
+
 }
 
-li::before { 
-    background: url(../images/star-empty.png) no-repeat left center;
+li::before {
+    background: url(../images/smile-glyph.png) no-repeat left center;
     background-size: contain;
     content: '';
     width: 20px;
@@ -61,7 +61,7 @@ li::before {
     padding-right: 6px;
     position: absolute;
     left: -28px;
-} 
+}
 
 @keyframes star-rotate {
     0% {
@@ -74,7 +74,7 @@ li::before {
 }
 
 li:hover::before {
-    background: url(../icons/star-highlight.png) no-repeat left center;
+    background: url(../icons/smile-glyph.png) no-repeat left center;
     transform-origin: 10px 10px;
     animation: star-rotate linear 2.5s infinite;
 }
@@ -99,7 +99,7 @@ li:hover {
     font-size: 24px;
     width: 80vw;
     max-width: 800px;
-    line-height: 1.2; 
+    line-height: 1.2;
 }
 
 .projects {
@@ -124,6 +124,3 @@ li:hover {
     height: 24px;
     width: 24px;
 }
-
-
-
