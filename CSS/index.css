@@ -3,10 +3,10 @@
 
 
 body {
-     margin: 0;
-     font-family: Inter, sans-serif; 
-     font-weight: 400;
-     line-height: 1.8;
+    margin: 0;
+    font-family: Inter, sans-serif;
+    font-weight: 400;
+    line-height: 1.8;
 }
 
 html {
@@ -14,8 +14,8 @@ html {
 }
 
 .main {
-    margin: 0 50px;
-    
+    margin: 0 100px;
+
 }
 
 header {
@@ -53,6 +53,7 @@ header {
     text-decoration: none;
     color: #333;
 }
+
 hr {
     height: .20rem;
     width: 33%;
@@ -63,17 +64,18 @@ hr {
 }
 
 
-.two:hover ~ hr {
+.two:hover~hr {
     margin-left: 33%;
-  }
-.three:hover ~hr {
+}
+
+.three:hover~hr {
     margin-left: 66%
 }
-  
-  /* .three:hover ~ hr {
+
+/* .three:hover ~ hr {
     margin-left: 50%;
   } */
-  
+
 
 /* .navbar {
     position: sticky; 
@@ -120,7 +122,7 @@ hr {
     display: grid;
     grid-template-columns: 3fr 1fr;
     column-gap: 72px;
-    padding: 48px 48px 184px 48px; 
+    padding: 48px 48px 184px 48px;
 }
 
 .headleft {
@@ -132,17 +134,17 @@ hr {
 
 
 
-.imgOfme{
-    
+.imgOfme {
+
     -webkit-transition: -webkit-transform .8s ease-in-out;
-            transition:         transform .8s ease-in-out;
+    transition: transform .8s ease-in-out;
 }
 
 
 .imgOfme:hover {
     -webkit-transform: rotate(8deg);
-            transform: rotate(8deg);
-  }
+    transform: rotate(8deg);
+}
 
 /* trying to put image on hover */
 /* .scroll:hover{
@@ -150,7 +152,7 @@ hr {
 } */
 
 
-  /* Responsive Cards */ 
+/* Responsive Cards */
 
 
 .grid a {
@@ -159,24 +161,24 @@ hr {
 }
 
 .card {
-  /* background-color: #FDFDFD;  */
-  padding: 0px;
-  text-align: left;
+    /* background-color: #FDFDFD;  */
+    padding: 0px;
+    text-align: left;
     color: #FDFDFD;
-  background: linear-gradient(145deg, #ffffff, #e4e4e4);
-    box-shadow:  36px 36px 79px #d5d5d5, 
-             -36px -36px 79px #ffffff;
-  position: relative; 
-  text-align: left;
-  /* color: black; */
-  transition-duration: 800ms;
-  
+    background: linear-gradient(145deg, #ffffff, #e4e4e4);
+    box-shadow: 36px 36px 79px #d5d5d5,
+        -36px -36px 79px #ffffff;
+    position: relative;
+    text-align: left;
+    /* color: black; */
+    transition-duration: 800ms;
+
 }
 
 .card h3 {
     padding-left: 32px;
     /*font-weight: lighter;*/
-    
+
 }
 
 .card p {
@@ -190,8 +192,8 @@ hr {
     transition: all 0.2s ease-out;
     box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
     top: -4px;
-    background-color:  #FDFDFD;
-  }
+    background-color: #FDFDFD;
+}
 
 .card:before {
     content: "";
@@ -199,17 +201,17 @@ hr {
     z-index: -1;
     top: -16px;
     right: -16px;
-    background:  #FDFDFD;
+    background: #FDFDFD;
     height: 32px;
     width: 32px;
     transform: scale(2);
     transform-origin: 50% 50%;
     transition: transform 0.19s ease-out;
-  }
+}
 
 .card::before:hover {
     transform: scale(2.9);
-  }
+}
 
 
 
@@ -228,11 +230,11 @@ hr {
 } */
 
 
-/* about section */ 
+/* about section */
 .about {
-    display: grid; 
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 16px ;
+    column-gap: 16px;
     padding: 64px 96px 120px;
 }
 
@@ -248,17 +250,17 @@ hr {
     font-size: 16px;
 }
 
-/* Footer styling */ 
+/* Footer styling */
 .footer {
-    height: 310px; 
-    background-color:#1C1C1C;
+    height: 310px;
+    background-color: #1C1C1C;
     /* bottom: 0;  */
-    display: grid; 
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 16px ;
+    column-gap: 16px;
     padding: 48px 146px 64px;
-    color: white; 
-    
+    color: white;
+
 }
 
 .leftfoot {
@@ -269,17 +271,17 @@ hr {
 
 .rightfoot {
     font-family: Inter;
-    font-size:16px;
-   
+    font-size: 16px;
+
 }
 
-.selfplug{
+.selfplug {
     font-size: 14px;
     text-align: center;
 }
 
 .hoverlink {
-    color: white; 
+    color: white;
     text-decoration: none;
 }
 
@@ -287,16 +289,16 @@ a.hoverlink {
     position: relative;
 }
 
-.hoverlink:before{
+.hoverlink:before {
     content: "";
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background-color: #FFF;
-  visibility: visible;
-  transition: all 0.3s ease-in-out;
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #FFF;
+    visibility: visible;
+    transition: all 0.3s ease-in-out;
 }
 
 .hoverlink:hover:before {
@@ -305,13 +307,13 @@ a.hoverlink {
 }
 
 
-/* for blog post */ 
-.container{
+/* for blog post */
+.container {
     width: 640px;
-    overflow:hidden;
-    display:block;
+    overflow: hidden;
+    display: block;
     height: 360px;
-    text-align:center;
+    text-align: center;
 }
 
 .container video {
@@ -319,31 +321,35 @@ a.hoverlink {
 }
 
 /* make it responsive */
-@media screen and (max-width: 1200px){
+@media screen and (max-width: 1200px) {
     .tablecol {
-        width: 100%; 
-        display: block; 
-        margin-bottom: 20px; 
+        width: 100%;
+        display: block;
+        margin-bottom: 20px;
     }
+
     .about {
-        width: 80%; 
-        display: block; 
-        margin-bottom: 20px; 
+        width: 80%;
+        display: block;
+        margin-bottom: 20px;
     }
+
     .rightfoot {
-        width: 80%; 
-        display: block; 
-        margin-bottom: 20px; 
+        width: 80%;
+        display: block;
+        margin-bottom: 20px;
     }
 }
 
-@media screen and (max-width: 1200px){
+@media screen and (max-width: 1200px) {
     .grid {
         grid-template-columns: repeat(1, 1fr);
     }
+
     .about {
         grid-template-columns: repeat(1, 1fr);
     }
+
     .footer {
         grid-template-columns: repeat(1, 1fr);
     }
@@ -354,14 +360,14 @@ a.hoverlink {
 
 /* post1 page */
 .overview {
-    display: grid; 
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 64px ;
+    column-gap: 64px;
     padding: 64px 96px 64px;
     background-color: black;
     color: #FDFDFD;
-    
-    
+
+
 }
 
 .previewcontainer {
@@ -372,25 +378,25 @@ a.hoverlink {
     background-color: black;
 }
 
-.breakdown{
-    display: grid; 
+.breakdown {
+    display: grid;
     grid-template-columns: repeat(4, 1fr);
-    column-gap: 24px ;
+    column-gap: 24px;
     padding: 16px 96px 64px;
     /* background-color: black; */
     color: #FDFDFD;
 }
 
-.casestudy{
+.casestudy {
     padding: 64px 256px;
 }
 
 
 
 .final {
-    display: grid; 
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 16px ;
+    column-gap: 16px;
     padding: 64px 96px;
 }
 
@@ -406,19 +412,20 @@ a.hoverlink {
     font-size: 16px;
 }
 
-.container img{
+.container img {
     max-width: 100%;
     max-height: 100%;
     margin: auto;
-    display: block; 
+    display: block;
     text-align: center;
 }
 
-.imagebox img, .postvid{ 
+.imagebox img,
+.postvid {
     width: 80%;
     max-width: 800px;
-    display: block; 
-    margin: 0 auto;     
+    display: block;
+    margin: 0 auto;
 }
 
 #work {
