@@ -76,25 +76,3 @@ rows.forEach(row => {
 });
 
 
-// ── Mobile tap-to-expand ──────────────────────────────────────────
-const expandRows = document.querySelectorAll('.work-expand');
-
-rows.forEach(row => {
-    row.addEventListener('click', () => {
-        if (!isMobile()) return;
-
-        const idx    = row.dataset.index;
-        const expand = document.querySelector(`.work-expand[data-index="${idx}"]`);
-        const isOpen = expand.classList.contains('open');
-
-        // Collapse all
-        expandRows.forEach(e => e.classList.remove('open'));
-        rows.forEach(r => r.classList.remove('expanded'));
-
-        // Open this one if it was closed
-        if (!isOpen) {
-            expand.classList.add('open');
-            row.classList.add('expanded');
-        }
-    });
-});

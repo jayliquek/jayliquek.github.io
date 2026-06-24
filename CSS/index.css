@@ -347,71 +347,12 @@ body {
     .work-row td {
         font-size: 15px;
         padding: 13px 0;
-        cursor: pointer;
+        cursor: default;
     }
 
-    /* Active/expanded row */
-    .work-row.expanded .cell-focus {
-        color: var(--blue);
-    }
-
-    .work-row.expanded .pointer {
-        opacity: 1;
-    }
-
-    /* Remove divider between row and its expanded content */
-    .work-row.expanded td {
-        border-bottom: none;
-    }
-
-    /* Show expand rows on mobile */
+    /* Expand rows hidden on mobile (no tap interaction) */
     .work-expand {
-        display: none; /* toggled by JS */
-    }
-
-    .work-expand.open {
-        display: table-row;
-    }
-
-    .work-expand td {
-        padding: 0;
-        border-bottom: 2px solid var(--text);
-    }
-
-    .expand-inner {
-        padding: 0 0 16px;
-        padding-left: 56px; /* align with focus column */
-        animation: expandReveal 0.32s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-
-    @keyframes expandReveal {
-        from {
-            opacity: 0;
-            transform: translateY(-6px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .expand-summary {
-        font-size: 14px;
-        color: rgba(26, 26, 26, 0.6);
-        margin-bottom: 14px;
-        line-height: 1.5;
-    }
-
-    .expand-preview {
-        width: 100%;
-        aspect-ratio: 16 / 9;
-        border-radius: 8px;
-        overflow: hidden;
-        position: relative;
-    }
-
-    .expand-preview--placeholder {
-        background: #ccc9bf;
+        display: none;
     }
 
     .tv-error-mini {
