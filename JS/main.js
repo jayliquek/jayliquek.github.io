@@ -61,12 +61,15 @@ function hidePreview() {
 }
 
 rows.forEach(row => {
-    row.addEventListener('mouseenter', () => {
+    const focusCell = row.querySelector('.cell-focus');
+    if (!focusCell) return;
+
+    focusCell.addEventListener('mouseenter', () => {
         if (isMobile()) return;
         showPreview(row.dataset.preview);
     });
 
-    row.addEventListener('mouseleave', () => {
+    focusCell.addEventListener('mouseleave', () => {
         if (isMobile()) return;
         hidePreview();
     });

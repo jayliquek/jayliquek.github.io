@@ -245,11 +245,11 @@ body {
 }
 
 /* ── Hover state (desktop) ── */
-.work-row:hover .cell-focus {
+.cell-focus:hover {
     color: var(--blue);
 }
 
-.work-row:hover .pointer {
+.cell-focus:hover .pointer {
     opacity: 1;
 }
 
