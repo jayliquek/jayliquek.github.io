@@ -232,7 +232,7 @@ body {
     cursor: default;
 }
 
-.work-row:last-of-type td {
+.work-table tbody tr:nth-last-child(2) td {
     border-bottom: none;
 }
 
