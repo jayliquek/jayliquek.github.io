@@ -232,7 +232,7 @@ body {
     cursor: default;
 }
 
-.work-table tbody tr:nth-last-child(2) td {
+.work-row[data-index="4"] td {
     border-bottom: none;
 }
 
@@ -263,13 +263,14 @@ body {
     display: grid;
     grid-template-columns: 200px 1fr;
     gap: 0 32px;
-    padding: 44px 0;
+    padding: 64px 0;
     border-top: 1px dashed var(--border);
     align-items: start;
 }
 
 .info-row + .info-row {
     border-top: none;
+    padding-top: 0;
 }
 
 .info-label {
@@ -397,7 +398,7 @@ body {
     .info-row {
         grid-template-columns: 1fr;
         gap: 8px;
-        padding: 28px 0;
+        padding: 40px 0;
     }
 
     .info-content {
