@@ -268,6 +268,10 @@ body {
     align-items: start;
 }
 
+.info-row + .info-row {
+    border-top: none;
+}
+
 .info-label {
     font-family: 'Geist Mono', monospace;
     font-size: 13px;
