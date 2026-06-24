@@ -57,7 +57,7 @@ body {
     position: absolute;
     right: 0;
     top: 0;
-    width: min(696px, calc(100% - 490px));
+    width: min(696px, 58%);
     aspect-ratio: 16 / 9;
     border-radius: 8px;
     overflow: hidden;
@@ -208,8 +208,8 @@ body {
     table-layout: fixed;
 }
 
-.col-year   { width: 130px; }
-.col-focus  { width: 360px; }
+.col-year   { width: 11%; }
+.col-focus  { width: 31%; }
 .col-summary { width: auto; }
 
 .table-header-row th {
