@@ -289,14 +289,22 @@ body {
     color: var(--text);
 }
 
-/* ── Social icon ── */
-.social-icon {
+/* ── Online links ── */
+.online-links {
+    display: flex;
+    gap: 32px;
+    align-items: baseline;
+}
+
+.online-link {
+    font-family: 'Geist', sans-serif;
+    font-size: 19px;
     color: var(--text);
-    display: inline-block;
+    text-decoration: none;
     transition: opacity 0.15s ease;
 }
 
-.social-icon:hover {
+.online-link:hover {
     opacity: 0.5;
 }
 
