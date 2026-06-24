@@ -373,6 +373,18 @@ body {
     .expand-inner {
         padding: 0 0 16px;
         padding-left: 56px; /* align with focus column */
+        animation: expandReveal 0.32s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes expandReveal {
+        from {
+            opacity: 0;
+            transform: translateY(-6px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .expand-summary {
