@@ -429,4 +429,8 @@ body {
     .info-content {
         font-size: 16px;
     }
+
+    .online-link {
+        font-size: 16px;
+    }
 }
