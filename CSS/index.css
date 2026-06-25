@@ -370,6 +370,13 @@ body {
         color: #666;
         margin-top: 2px;
         line-height: 1.4;
+        overflow: hidden;
+        animation: accordionReveal 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes accordionReveal {
+        from { max-height: 0;    opacity: 0; margin-top: 0; }
+        to   { max-height: 60px; opacity: 1; margin-top: 2px; }
     }
 
     /* Tap to show preview on mobile */
