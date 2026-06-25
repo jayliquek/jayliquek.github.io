@@ -253,6 +253,11 @@ body {
     opacity: 1;
 }
 
+/* ── Mobile summary (hidden on desktop) ── */
+.cell-summary-mobile {
+    display: none;
+}
+
 /* ── Expand rows (mobile only, hidden on desktop) ── */
 .work-expand {
     display: none;
@@ -348,6 +353,15 @@ body {
         font-size: 15px;
         padding: 13px 0;
         cursor: default;
+    }
+
+    /* Summary folded under focus title on mobile */
+    .cell-summary-mobile {
+        display: block;
+        font-size: 13px;
+        color: #666;
+        margin-top: 4px;
+        line-height: 1.4;
     }
 
     /* Expand rows hidden on mobile (no tap interaction) */
