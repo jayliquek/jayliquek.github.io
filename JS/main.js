@@ -82,11 +82,23 @@ rows.forEach(row => {
         const isOpen = expand.classList.contains('open');
 
         document.querySelectorAll('.work-expand').forEach(e => e.classList.remove('open'));
-        rows.forEach(r => r.classList.remove('expanded'));
+        rows.forEach(r => r.classList.remove('expanded', 'row-shifted'));
+        document.querySelectorAll('.work-expand').forEach(e => e.classList.remove('row-shifted'));
 
         if (!isOpen) {
             expand.classList.add('open');
             row.classList.add('expanded');
+
+            // Animate rows and dividers below the expanded one
+            let found = false;
+            document.querySelectorAll('.work-row, .work-expand').forEach(el => {
+                if (found && el !== expand) {
+                    el.classList.remove('row-shifted');
+                    void el.offsetWidth; // force reflow to restart animation
+                    el.classList.add('row-shifted');
+                }
+                if (el === row) found = true;
+            });
         }
     });
 });

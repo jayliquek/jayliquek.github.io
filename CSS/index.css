@@ -388,12 +388,22 @@ body {
 
     .expand-inner {
         padding: 0 0 16px;
-        animation: expandReveal 0.28s cubic-bezier(0.4, 0, 1, 1) forwards;
+        animation: expandReveal 0.22s ease forwards;
     }
 
     @keyframes expandReveal {
-        from { opacity: 0; transform: translateY(-6px); }
-        to   { opacity: 1; transform: translateY(0); }
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+
+    @keyframes rowFadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+
+    .work-row.row-shifted td,
+    .work-expand.row-shifted td {
+        animation: rowFadeIn 0.3s ease forwards;
     }
 
     /* Description already shown inline — hide it in the expand row */
