@@ -364,9 +364,53 @@ body {
         line-height: 1.4;
     }
 
-    /* Expand rows hidden on mobile (no tap interaction) */
+    /* Tap to show preview on mobile */
     .work-expand {
         display: none;
+    }
+
+    .work-expand.open {
+        display: table-row;
+    }
+
+    .work-row.expanded td {
+        border-bottom: none;
+    }
+
+    .work-expand td {
+        padding: 0;
+        border-bottom: 1px dashed var(--border);
+    }
+
+    .work-row[data-index="4"].expanded td {
+        border-bottom: none;
+    }
+
+    .expand-inner {
+        padding: 0 0 16px;
+        animation: expandReveal 0.32s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes expandReveal {
+        from { opacity: 0; transform: translateY(-6px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Description already shown inline — hide it in the expand row */
+    .expand-summary {
+        display: none;
+    }
+
+    .expand-preview {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        border-radius: 8px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .expand-preview--placeholder {
+        background: #ccc9bf;
     }
 
     .tv-error-mini {

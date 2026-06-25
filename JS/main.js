@@ -14,6 +14,7 @@ function drawNoise(canvas) {
     function tick() {
         const w = canvas.width;
         const h = canvas.height;
+        if (!w || !h) { requestAnimationFrame(tick); return; }
         const img = ctx.createImageData(w, h);
         const d = img.data;
 
@@ -72,6 +73,21 @@ rows.forEach(row => {
     focusCell.addEventListener('mouseleave', () => {
         if (isMobile()) return;
         hidePreview();
+    });
+
+    focusCell.addEventListener('click', () => {
+        if (!isMobile()) return;
+        const idx    = row.dataset.index;
+        const expand = document.querySelector(`.work-expand[data-index="${idx}"]`);
+        const isOpen = expand.classList.contains('open');
+
+        document.querySelectorAll('.work-expand').forEach(e => e.classList.remove('open'));
+        rows.forEach(r => r.classList.remove('expanded'));
+
+        if (!isOpen) {
+            expand.classList.add('open');
+            row.classList.add('expanded');
+        }
     });
 });
 
