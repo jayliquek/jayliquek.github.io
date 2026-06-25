@@ -371,7 +371,7 @@ body {
         margin-top: 2px;
         line-height: 1.4;
         overflow: hidden;
-        animation: accordionReveal 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+        animation: accordionReveal 0.28s ease-out;
     }
 
     @keyframes accordionReveal {
