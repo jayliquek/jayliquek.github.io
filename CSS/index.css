@@ -201,6 +201,14 @@ body {
     background: #ccc9bf;
 }
 
+/* ── Image preview ── */
+.preview-image {
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 /* ── Work table ── */
 .work-table {
     width: 100%;
@@ -267,7 +275,7 @@ body {
 .info-row {
     display: grid;
     grid-template-columns: 11% 1fr;
-    gap: 0 32px;
+    gap: 0;
     padding: 64px 0;
     border-top: 1px dashed var(--border);
     align-items: start;
@@ -421,6 +429,13 @@ body {
 
     .expand-preview--placeholder {
         background: #ccc9bf;
+    }
+
+    .expand-preview-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
     }
 
     .tv-error-mini {

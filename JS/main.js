@@ -40,20 +40,20 @@ if (noiseCanvas) drawNoise(noiseCanvas);
 const panel        = document.getElementById('previewPanel');
 const tvError      = document.getElementById('tvError');
 const placeholder  = document.getElementById('previewPlaceholder');
+const previewImage = document.getElementById('previewImage');
 const rows         = document.querySelectorAll('.work-row');
 
 function isMobile() {
     return window.matchMedia('(max-width: 768px)').matches;
 }
 
-function showPreview(type) {
-    if (type === 'tv') {
-        tvError.style.display     = 'block';
-        placeholder.style.display = 'none';
-    } else {
-        tvError.style.display     = 'none';
-        placeholder.style.display = 'block';
-    }
+function showPreview(type, imgSrc) {
+    tvError.style.display      = type === 'tv' ? 'block' : 'none';
+    previewImage.style.display = type === 'image' ? 'block' : 'none';
+    placeholder.style.display  = (type === 'tv' || type === 'image') ? 'none' : 'block';
+
+    if (type === 'image' && imgSrc) previewImage.src = imgSrc;
+
     panel.classList.add('visible');
 }
 
@@ -67,7 +67,7 @@ rows.forEach(row => {
 
     focusCell.addEventListener('mouseenter', () => {
         if (isMobile()) return;
-        showPreview(row.dataset.preview);
+        showPreview(row.dataset.preview, row.dataset.img);
     });
 
     focusCell.addEventListener('mouseleave', () => {
