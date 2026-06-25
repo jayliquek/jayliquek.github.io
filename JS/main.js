@@ -61,6 +61,36 @@ function hidePreview() {
     panel.classList.remove('visible');
 }
 
+// Keep the preview vertically aligned with the "Share sheet on Facebook"
+// row (centered), nudged up 40px. Recomputed on load + resize.
+function positionPreview() {
+    if (isMobile()) { panel.style.top = ''; return; }
+    const section   = document.querySelector('.work-section');
+    const shareRow  = document.querySelector('.work-row[data-index="2"]');
+    if (!section || !shareRow) return;
+
+    const sr = section.getBoundingClientRect();
+    const rr = shareRow.getBoundingClientRect();
+    const rowCenter = (rr.top + rr.height / 2) - sr.top;
+    panel.style.top = (rowCenter - panel.offsetHeight / 2 - 40) + 'px';
+}
+
+positionPreview();
+window.addEventListener('resize', positionPreview);
+window.addEventListener('load', positionPreview);
+if (previewImage) previewImage.addEventListener('load', positionPreview);
+
+// Replay the "tuck under" animation when the layout collapses to mobile
+const mobileMQ = window.matchMedia('(max-width: 768px)');
+mobileMQ.addEventListener('change', (e) => {
+    if (!e.matches) return;
+    document.querySelectorAll('.cell-summary-mobile').forEach(el => {
+        el.style.animation = 'none';
+        void el.offsetWidth; // force reflow
+        el.style.animation = '';
+    });
+});
+
 rows.forEach(row => {
     const focusCell = row.querySelector('.cell-focus');
     if (!focusCell) return;
