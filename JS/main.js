@@ -80,17 +80,6 @@ window.addEventListener('resize', positionPreview);
 window.addEventListener('load', positionPreview);
 if (previewImage) previewImage.addEventListener('load', positionPreview);
 
-// Replay the "tuck under" animation when the layout collapses to mobile
-const mobileMQ = window.matchMedia('(max-width: 768px)');
-mobileMQ.addEventListener('change', (e) => {
-    if (!e.matches) return;
-    document.querySelectorAll('.cell-summary-mobile').forEach(el => {
-        el.style.animation = 'none';
-        void el.offsetWidth; // force reflow
-        el.style.animation = '';
-    });
-});
-
 rows.forEach(row => {
     const focusCell = row.querySelector('.cell-focus');
     if (!focusCell) return;
