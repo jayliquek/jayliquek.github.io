@@ -266,7 +266,7 @@ body {
 /* ── Info sections ── */
 .info-row {
     display: grid;
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: 11% 1fr;
     gap: 0 32px;
     padding: 64px 0;
     border-top: 1px dashed var(--border);
@@ -289,7 +289,7 @@ body {
 
 .info-content {
     font-family: 'Geist', sans-serif;
-    font-size: 19px;
+    font-size: 24px;
     line-height: 1.5;
     color: var(--text);
 }
@@ -303,7 +303,7 @@ body {
 
 .online-link {
     font-family: 'Geist', sans-serif;
-    font-size: 19px;
+    font-size: 24px;
     color: var(--text);
     text-decoration: none;
     transition: opacity 0.15s ease;
@@ -360,7 +360,7 @@ body {
         display: block;
         font-size: 13px;
         color: #666;
-        margin-top: 4px;
+        margin-top: 2px;
         line-height: 1.4;
     }
 
@@ -388,7 +388,7 @@ body {
 
     .expand-inner {
         padding: 0 0 16px;
-        animation: expandReveal 0.32s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        animation: expandReveal 0.28s cubic-bezier(0.4, 0, 1, 1) forwards;
     }
 
     @keyframes expandReveal {
