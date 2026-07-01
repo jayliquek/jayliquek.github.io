@@ -47,18 +47,39 @@ function isMobile() {
     return window.matchMedia('(max-width: 900px)').matches;
 }
 
+let lastType     = null;   // type of the previously shown preview
+let lastHideTime = 0;      // when the previous preview was hidden
+
+function triggerChannelFlip() {
+    tvError.classList.remove('channel-flip');
+    void tvError.offsetWidth; // force reflow to restart the animation
+    tvError.classList.add('channel-flip');
+}
+
+tvError.addEventListener('animationend', (e) => {
+    if (e.animationName === 'channelFlip') tvError.classList.remove('channel-flip');
+});
+
 function showPreview(type, imgSrc) {
+    // Flipping directly from one TV channel to another → CRT channel-change effect
+    const gap = performance.now() - lastHideTime;
+    const isChannelFlip = type === 'tv' && lastType === 'tv' && gap < 400;
+
     tvError.style.display      = type === 'tv' ? 'block' : 'none';
     previewImage.style.display = type === 'image' ? 'block' : 'none';
     placeholder.style.display  = (type === 'tv' || type === 'image') ? 'none' : 'block';
 
     if (type === 'image' && imgSrc) previewImage.src = imgSrc;
 
+    if (isChannelFlip) triggerChannelFlip();
+
+    lastType = type;
     panel.classList.add('visible');
 }
 
 function hidePreview() {
     panel.classList.remove('visible');
+    lastHideTime = performance.now();
 }
 
 // Keep the preview vertically aligned with the "Share sheet on Facebook"
