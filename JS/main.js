@@ -44,7 +44,7 @@ const previewImage = document.getElementById('previewImage');
 const rows         = document.querySelectorAll('.work-row');
 
 function isMobile() {
-    return window.matchMedia('(max-width: 768px)').matches;
+    return window.matchMedia('(max-width: 900px)').matches;
 }
 
 function showPreview(type, imgSrc) {
@@ -81,7 +81,7 @@ window.addEventListener('load', positionPreview);
 if (previewImage) previewImage.addEventListener('load', positionPreview);
 
 // Replay the accordion reveal when the layout collapses to mobile
-const mobileMQ = window.matchMedia('(max-width: 768px)');
+const mobileMQ = window.matchMedia('(max-width: 900px)');
 mobileMQ.addEventListener('change', (e) => {
     if (!e.matches) return;
     document.querySelectorAll('.cell-summary-mobile').forEach(el => {

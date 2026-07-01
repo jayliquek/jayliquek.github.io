@@ -322,9 +322,9 @@ body {
 }
 
 /* ═══════════════════════════════
-   MOBILE  (≤ 768px)
+   MOBILE  (≤ 900px)
 ═══════════════════════════════ */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     :root {
         --page-pad: 24px;
     }
