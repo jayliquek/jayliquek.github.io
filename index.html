@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="./images/smile-glyph.png" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text x='8' y='8' font-size='17' text-anchor='middle' dominant-baseline='central' fill='%233B4EFF'>⧫</text></svg>" />
     <title>Jay Li Quek</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,6 +25,7 @@
                     <div class="tv-glitch-band"></div>
                 </div>
                 <img class="preview-image" id="previewImage" alt="" />
+                <video class="preview-video" id="previewVideo" muted loop playsinline preload="none"></video>
                 <div class="preview-placeholder" id="previewPlaceholder"></div>
             </div>
 
@@ -117,7 +118,7 @@
                         </td>
                     </tr>
                     <!-- Row 5 -->
-                    <tr class="work-row" data-index="4" data-preview="tv">
+                    <tr class="work-row" data-index="4" data-preview="video" data-video="./videos/music-notes.mp4">
                         <td class="cell-year">2023</td>
                         <td class="cell-focus">Messenger notes and notifications <span class="pointer">☜</span><span class="cell-summary-mobile">Owned Messenger's notification strategy and shipped Music Notes MVP</span></td>
                         <td class="cell-summary">Owned Messenger's notification strategy and shipped Music Notes MVP</td>
@@ -126,13 +127,8 @@
                         <td colspan="3">
                             <div class="expand-inner">
                                 <p class="expand-summary">Owned Messenger's notification strategy and shipped Music Notes MVP</p>
-                                <div class="expand-preview">
-                                    <div class="tv-error-mini">
-                                        <div class="tv-bars"></div>
-                                        <div class="tv-bottom"></div>
-                                        <div class="tv-scanlines"></div>
-                                        <div class="tv-glitch-band"></div>
-                                    </div>
+                                <div class="expand-preview expand-preview--video">
+                                    <video class="expand-preview-video" src="./videos/music-notes.mp4" muted loop playsinline preload="none"></video>
                                 </div>
                             </div>
                         </td>
