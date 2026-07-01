@@ -454,6 +454,14 @@ body {
         display: block;
     }
 
+    /* A <video> has no intrinsic size until it buffers, so reserve the 16:9
+       box up front. This makes it scale exactly like the image (full width,
+       correct height) with no layout shift while it loads. */
+    .expand-preview-video {
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+    }
+
     .tv-error-mini {
         position: relative;
         width: 100%;
