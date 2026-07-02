@@ -41,24 +41,51 @@ const panel        = document.getElementById('previewPanel');
 const tvError      = document.getElementById('tvError');
 const placeholder  = document.getElementById('previewPlaceholder');
 const previewImage = document.getElementById('previewImage');
+const previewVideo = document.getElementById('previewVideo');
 const rows         = document.querySelectorAll('.work-row');
 
 function isMobile() {
     return window.matchMedia('(max-width: 768px)').matches;
 }
 
-function showPreview(type, imgSrc) {
+function showPreview(type, src) {
     tvError.style.display      = type === 'tv' ? 'block' : 'none';
     previewImage.style.display = type === 'image' ? 'block' : 'none';
-    placeholder.style.display  = (type === 'tv' || type === 'image') ? 'none' : 'block';
+    previewVideo.style.display = type === 'video' ? 'block' : 'none';
+    placeholder.style.display  = ['tv', 'image', 'video'].includes(type) ? 'none' : 'block';
 
-    if (type === 'image' && imgSrc) previewImage.src = imgSrc;
+    if (type === 'image' && src) previewImage.src = src;
+
+    if (type === 'video' && src) {
+        playPreviewVideo(src);
+    } else {
+        previewVideo.pause();
+    }
 
     panel.classList.add('visible');
 }
 
+function startPreviewVideo() {
+    previewVideo.play().catch(() => {});
+}
+
+// Play the preview video from the start. The first play() call kicks off
+// buffering for a just-set source (preload="none"); if it isn't ready yet the
+// 'canplay' listener starts playback the moment enough data has loaded. Using a
+// named handler means repeated hovers don't stack duplicate listeners.
+function playPreviewVideo(src) {
+    if (previewVideo.getAttribute('src') !== src) {
+        previewVideo.src = src;
+    } else {
+        try { previewVideo.currentTime = 0; } catch (e) { /* not seekable yet */ }
+    }
+    startPreviewVideo();
+    previewVideo.addEventListener('canplay', startPreviewVideo, { once: true });
+}
+
 function hidePreview() {
     panel.classList.remove('visible');
+    previewVideo.pause();
 }
 
 // Keep the preview vertically aligned with the "Share sheet on Facebook"
@@ -97,7 +124,7 @@ rows.forEach(row => {
 
     focusCell.addEventListener('mouseenter', () => {
         if (isMobile()) return;
-        showPreview(row.dataset.preview, row.dataset.img);
+        showPreview(row.dataset.preview, row.dataset.img || row.dataset.video);
     });
 
     focusCell.addEventListener('mouseleave', () => {
@@ -115,9 +142,19 @@ rows.forEach(row => {
         rows.forEach(r => r.classList.remove('expanded', 'row-shifted'));
         document.querySelectorAll('.work-expand').forEach(e => e.classList.remove('row-shifted'));
 
+        // Pause any expand videos when collapsing rows
+        document.querySelectorAll('.expand-preview-video').forEach(v => v.pause());
+
         if (!isOpen) {
             expand.classList.add('open');
             row.classList.add('expanded');
+
+            // Autoplay the video preview (if this row has one)
+            const vid = expand.querySelector('.expand-preview-video');
+            if (vid) {
+                vid.currentTime = 0;
+                vid.play().catch(() => {});
+            }
 
             // Animate rows and dividers below the expanded one
             let found = false;
