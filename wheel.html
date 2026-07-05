@@ -66,23 +66,6 @@
         }
         .hlink:hover { opacity: 1; color: var(--blue); }
 
-        .layout-toggle {
-            font-family: 'Geist Mono', monospace;
-            font-weight: 500;
-            font-size: 12px;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            color: var(--text);
-            background: rgba(0,0,0,0.05);
-            border: none;
-            border-radius: 999px;
-            padding: 6px 12px;
-            cursor: pointer;
-            opacity: 0.75;
-            transition: opacity 0.2s ease, color 0.2s ease, background 0.2s ease;
-        }
-        .layout-toggle:hover { opacity: 1; color: var(--blue); background: rgba(59,78,255,0.09); }
-
         /* ── About + Education ── */
         .info {
             max-width: 900px;
@@ -499,7 +482,6 @@
 </head>
 <body>
     <header class="site-header">
-        <button class="layout-toggle" id="layoutToggle">Layout · Centered</button>
         <a class="hlink" href="#info">About</a>
         <a class="hlink" href="https://www.linkedin.com/in/jayliquek/" target="_blank" rel="noopener">LinkedIn</a>
     </header>
@@ -571,8 +553,6 @@
 
     let index = 0;               // active project at the tip
     let angle = 0;               // current rotor angle (deg); active = index*STEP -> rotor at -index*STEP
-    let layoutMode = 'centered'; // 'centered' | 'bottom'
-    try { layoutMode = localStorage.getItem('wheelLayout') || 'centered'; } catch (e) {}
     const cards = [];
 
     // ── media builder (shared by wheel cards + expanded detail) ──
@@ -652,21 +632,6 @@
         armHint();   // re-arm — it returns if they get stuck again
     }
 
-    // ── layout toggle (centred ⟷ bottom) ──
-    const layoutToggle = document.getElementById('layoutToggle');
-    function setToggleLabel() {
-        layoutToggle.textContent = 'Layout · ' + (layoutMode === 'centered' ? 'Centered' : 'Bottom');
-    }
-    setToggleLabel();
-    layoutToggle.addEventListener('click', () => {
-        layoutMode = (layoutMode === 'centered') ? 'bottom' : 'centered';
-        try { localStorage.setItem('wheelLayout', layoutMode); } catch (e) {}
-        setToggleLabel();
-        rotor.classList.remove('animate');
-        layout();
-        render();
-    });
-
     // ── geometry ──
     // Dynamic vertical layout: guarantees a minimum gap between the headline and
     // the caption by shrinking the preview when vertical space is tight.
@@ -690,41 +655,22 @@
         const introBottom = intro.offsetTop + intro.offsetHeight;   // hero-relative
         const captionH = showcase.offsetHeight;
 
-        let frameW, showcaseY, captionTop;
-
-        if (layoutMode === 'centered') {
-            // preview centred vertically; description sits BELOW it
-            const baseFrameW = Math.min(392, vw * 0.78, maxFrameByArc);
-            const baseCardH = baseFrameW * 9 / 16 * ACTIVE_SCALE;
-            const MIN_GAP = 28, CARD_GAP = 40, BOT_PAD = Math.max(30, vh * 0.05);
-            const regionTop = introBottom + MIN_GAP;
-            const regionH = (vh - BOT_PAD) - regionTop;
-            let scale = 1, cardH = baseCardH;
-            if (cardH + CARD_GAP + captionH > regionH) {
-                scale = Math.max(0.4, (regionH - CARD_GAP - captionH) / baseCardH);
-                cardH = baseCardH * scale;
-            }
-            frameW = baseFrameW * scale;
-            const stackH = cardH + CARD_GAP + captionH;
-            const cardTop = regionTop + Math.max(0, (regionH - stackH) * 0.4);
-            showcaseY = cardTop + cardH;             // rim tip / card bottom
-            captionTop = showcaseY + CARD_GAP;       // description below the preview
-        } else {
-            // smaller preview near the bottom; description ABOVE it
-            const baseFrameW = Math.min(300, vw * 0.72, maxFrameByArc);
-            const baseCardH = baseFrameW * 9 / 16 * ACTIVE_SCALE;
-            const MIN_GAP = 32, CARD_GAP = 24, BOT_PAD = Math.max(28, vh * 0.06);
-            const cardBottomPref = vh - BOT_PAD;
-            const minCaptionTop = introBottom + MIN_GAP;
-            let scale = 1;
-            if (cardBottomPref - baseCardH - CARD_GAP - captionH < minCaptionTop) {
-                scale = Math.max(0.4, Math.min(1, (cardBottomPref - CARD_GAP - captionH - minCaptionTop) / baseCardH));
-            }
-            frameW = baseFrameW * scale;
-            const cardH = baseCardH * scale;
-            captionTop = Math.max(minCaptionTop, cardBottomPref - cardH - CARD_GAP - captionH);
-            showcaseY = captionTop + captionH + CARD_GAP + cardH;
+        // preview centred vertically; description sits BELOW it
+        const baseFrameW = Math.min(392, vw * 0.78, maxFrameByArc);
+        const baseCardH = baseFrameW * 9 / 16 * ACTIVE_SCALE;
+        const MIN_GAP = 28, CARD_GAP = 40, BOT_PAD = Math.max(30, vh * 0.05);
+        const regionTop = introBottom + MIN_GAP;
+        const regionH = (vh - BOT_PAD) - regionTop;
+        let scale = 1, cardH = baseCardH;
+        if (cardH + CARD_GAP + captionH > regionH) {
+            scale = Math.max(0.4, (regionH - CARD_GAP - captionH) / baseCardH);
+            cardH = baseCardH * scale;
         }
+        const frameW = baseFrameW * scale;
+        const stackH = cardH + CARD_GAP + captionH;
+        const cardTop = regionTop + Math.max(0, (regionH - stackH) * 0.4);
+        const showcaseY = cardTop + cardH;           // rim tip / card bottom
+        const captionTop = showcaseY + CARD_GAP;     // description below the preview
 
         const cy = showcaseY + cardR;
         root.style.setProperty('--frame-w', frameW + 'px');
