@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text x='8' y='8' font-size='17' text-anchor='middle' dominant-baseline='central' fill='%233B4EFF'>✦</text></svg>" />
     <title>Jay Li Quek — Wheel exploration</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,8 +46,8 @@
         /* ── Header ── */
         .site-header {
             position: fixed;
-            top: 22px;
-            right: 30px;
+            top: max(22px, env(safe-area-inset-top));
+            right: max(30px, env(safe-area-inset-right));
             z-index: 40;
             display: flex;
             align-items: center;
@@ -177,7 +177,7 @@
             inset: 0;
             overflow: hidden;
             cursor: grab;
-            touch-action: none;
+            touch-action: pan-y;   /* horizontal drag rotates the wheel; vertical swipe still scrolls to About */
         }
         .stage.dragging { cursor: grabbing; }
 
@@ -344,6 +344,26 @@
         /* active preview reads as tappable */
         .card.active .card-inner { cursor: zoom-in; }
 
+        /* ── Scroll cue (phones only): nudges the viewer that About is below ── */
+        .scroll-cue {
+            position: absolute;
+            left: 50%;
+            bottom: 16px;
+            transform: translateX(-50%);
+            z-index: 7;
+            color: rgba(26, 26, 26, 0.38);
+            pointer-events: none;
+            display: none;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            animation: cueBob 1.9s ease-in-out infinite;
+        }
+        @keyframes cueBob {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50%      { transform: translateX(-50%) translateY(5px); }
+        }
+        @media (prefers-reduced-motion: reduce) { .scroll-cue { animation: none; } }
+
         /* ── Expanded preview ── */
         .detail {
             position: fixed;
@@ -507,6 +527,10 @@
         </div>
 
         <div class="hint" id="hint" aria-hidden="true"></div>
+
+        <div class="scroll-cue" id="scrollCue" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
     </section>
 
     <section class="info" id="info">
@@ -550,6 +574,8 @@
     const stage = document.getElementById('stage');
     const showcase = document.getElementById('showcase');
     const intro = document.querySelector('.intro');
+    const heroEl = document.querySelector('.hero');
+    const scrollCue = document.getElementById('scrollCue');
 
     let index = 0;               // active project at the tip
     let angle = 0;               // current rotor angle (deg); active = index*STEP -> rotor at -index*STEP
@@ -668,9 +694,17 @@
         }
         const frameW = baseFrameW * scale;
         const stackH = cardH + CARD_GAP + captionH;
-        const cardTop = regionTop + Math.max(0, (regionH - stackH) * 0.4);
+        // desktop centres the stack in the hero; small screens (narrow phones OR
+        // short landscape) anchor it near the headline and trim the hero to fit the
+        // content — compact, no dead space, and never clips the caption
+        const isCompact = vw <= 640 || vh <= 600;
+        const cardTop = regionTop + Math.max(0, (regionH - stackH) * (isCompact ? 0.12 : 0.4));
         const showcaseY = cardTop + cardH;           // rim tip / card bottom
         const captionTop = showcaseY + CARD_GAP;     // description below the preview
+
+        if (isCompact) heroEl.style.height = Math.round(captionTop + captionH + 64) + 'px';
+        else heroEl.style.removeProperty('height');
+        scrollCue.style.display = isCompact ? 'block' : 'none';
 
         const cy = showcaseY + cardR;
         root.style.setProperty('--frame-w', frameW + 'px');
@@ -721,15 +755,18 @@
     }
 
     // ── drag to rotate ──
-    let dragging = false, startX = 0, startAngle = 0, dragged = false, pastEnd = false, startedAtLast = false;
+    let dragging = false, startX = 0, startY = 0, startAngle = 0, dragged = false, pastEnd = false, startedAtLast = false;
+    let isTouch = false, axisLock = null;   // on touch: lock to 'x' (rotate) or 'y' (let the page scroll)
     const DRAG_SENS = 0.16;   // deg per px
     const MAX_ANGLE = (N - 1) * STEP;
 
     function onDown(e) {
         noteActivity();
         dragging = true; dragged = false; pastEnd = false;
+        isTouch = !!e.touches; axisLock = null;
         startedAtLast = (index === N - 1);   // scroll-past only if we began on the last card
         startX = (e.touches ? e.touches[0].clientX : e.clientX);
+        startY = (e.touches ? e.touches[0].clientY : e.clientY);
         startAngle = angle;
         rotor.classList.remove('animate');
         stage.classList.add('dragging');
@@ -737,7 +774,13 @@
     function onMove(e) {
         if (!dragging) return;
         const x = (e.touches ? e.touches[0].clientX : e.clientX);
-        const dx = x - startX;
+        const y = (e.touches ? e.touches[0].clientY : e.clientY);
+        const dx = x - startX, dy = y - startY;
+        // on touch, decide once whether this gesture is a horizontal rotate or a vertical page-scroll
+        if (isTouch && axisLock === null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+            axisLock = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+        }
+        if (axisLock === 'y') return;   // vertical swipe — let the browser scroll to About
         if (Math.abs(dx) > 4) dragged = true;
         // dragging right rotates the wheel so earlier projects come to the tip
         const raw = startAngle - dx * DRAG_SENS;
@@ -907,6 +950,11 @@
     });
     document.getElementById('detailClose').addEventListener('click', closeDetail);
     window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDetail(); });
+
+    // fade the scroll cue away as soon as the viewer starts scrolling
+    window.addEventListener('scroll', () => {
+        scrollCue.style.opacity = window.scrollY > 24 ? '0' : '';
+    }, { passive: true });
 
     window.addEventListener('resize', () => { layout(); render(); });
     // headline height depends on the loaded serif font — re-measure once ready
