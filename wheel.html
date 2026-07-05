@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text x='8' y='8' font-size='17' text-anchor='middle' dominant-baseline='central' fill='%233B4EFF'>⧫</text></svg>" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text x='8' y='8' font-size='17' text-anchor='middle' dominant-baseline='central' fill='%233B4EFF'>✦</text></svg>" />
     <title>Jay Li Quek — Wheel exploration</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -87,7 +87,7 @@
         .info {
             max-width: 900px;
             margin: 0 auto;
-            padding: 120px 80px 140px;
+            padding: 48px 80px 140px;   /* tighter top: the hero already gives breathing room below the wheel */
             scroll-margin-top: 24px;
         }
         .info-row {
@@ -112,7 +112,7 @@
             max-width: 640px;
         }
         @media (max-width: 720px) {
-            .info { padding: 72px 24px 100px; }
+            .info { padding: 32px 24px 100px; }
             .info-row { grid-template-columns: 1fr; gap: 10px; padding: 22px 0; }
             .info-content { font-size: 16px; }
             .site-header { top: 18px; right: 20px; gap: 18px; }
@@ -272,6 +272,10 @@
             object-fit: cover;
             display: block;
         }
+        /* gallery previews are wider than 16:9 — show the whole mockup (no crop),
+           scaled to fit the same card, on a light backing instead of black bars */
+        .frame.gallery { background: #FAFAF7; }
+        .frame.gallery img { object-fit: contain; }
         .card-label {
             display: flex;
             justify-content: space-between;
@@ -583,6 +587,7 @@
             img.src = p.media.src; img.alt = p.focus; img.loading = 'lazy';
             frame.appendChild(img);
         } else if (p.media.type === 'gallery') {
+            frame.classList.add('gallery');
             const g = (idx == null) ? (p.media.previewIndex || 0) : idx;
             const img = document.createElement('img');
             img.src = p.media.srcs[g]; img.alt = p.focus; img.loading = 'lazy';
@@ -668,10 +673,20 @@
     function layout() {
         const vw = window.innerWidth, vh = window.innerHeight;
 
+        // keep the headline clear of the fixed header at every width (esp. narrow)
+        const headerBottom = document.querySelector('.site-header').getBoundingClientRect().bottom;
+        intro.style.top = Math.round(headerBottom + 22) + 'px';
+
         // rim radius scales with viewport width so the arc feels huge but proportional
         const R = Math.min(Math.max(vw * 0.95, 1050), 1650);
         const cardR = R + 24;
         const ACTIVE_SCALE = 1.12;
+        // Cap the preview width to the arc so neighbouring cards never overlap.
+        // Adjacent cards sit STEP° apart on the rim (chord below); the safe width
+        // was calibrated against the card tilt — ~300px at the 1050px-radius floor,
+        // rising to the full 392px once the arc is wide enough.
+        const chord = 2 * cardR * Math.sin((STEP * Math.PI / 180) / 2);
+        const maxFrameByArc = chord * 0.84 - 42;
         const introBottom = intro.offsetTop + intro.offsetHeight;   // hero-relative
         const captionH = showcase.offsetHeight;
 
@@ -679,7 +694,7 @@
 
         if (layoutMode === 'centered') {
             // preview centred vertically; description sits BELOW it
-            const baseFrameW = Math.min(392, vw * 0.78);
+            const baseFrameW = Math.min(392, vw * 0.78, maxFrameByArc);
             const baseCardH = baseFrameW * 9 / 16 * ACTIVE_SCALE;
             const MIN_GAP = 28, CARD_GAP = 40, BOT_PAD = Math.max(30, vh * 0.05);
             const regionTop = introBottom + MIN_GAP;
@@ -696,7 +711,7 @@
             captionTop = showcaseY + CARD_GAP;       // description below the preview
         } else {
             // smaller preview near the bottom; description ABOVE it
-            const baseFrameW = Math.min(300, vw * 0.72);
+            const baseFrameW = Math.min(300, vw * 0.72, maxFrameByArc);
             const baseCardH = baseFrameW * 9 / 16 * ACTIVE_SCALE;
             const MIN_GAP = 32, CARD_GAP = 24, BOT_PAD = Math.max(28, vh * 0.06);
             const cardBottomPref = vh - BOT_PAD;
@@ -838,7 +853,7 @@
     const detail = document.getElementById('detail');
     const detailCard = document.getElementById('detailCard');
     const detailMedia = document.getElementById('detailMedia');
-    let detailOpen = false, detailVideo = null;
+    let detailOpen = false, detailVideo = null, galleryTimer = null;
 
     // transform that maps the detail card onto the tapped preview (for a grow-from-source feel)
     function flipFrom(i) {
@@ -875,8 +890,15 @@
             setTimeout(() => { img.src = srcs[cur]; img.classList.remove('swap'); }, 150);
             [...dots.children].forEach((d, di) => d.classList.toggle('on', di === cur));
         }
+        // auto-advance every 2s until the viewer takes over
+        clearInterval(galleryTimer);
+        galleryTimer = setInterval(() => show(cur + 1), 2000);
         frame.style.cursor = 'pointer';
-        frame.addEventListener('click', (e) => { e.stopPropagation(); show(cur + 1); });
+        frame.addEventListener('click', (e) => {
+            e.stopPropagation();
+            clearInterval(galleryTimer); galleryTimer = null;   // stop auto-cycling once they interact
+            show(cur + 1);
+        });
     }
 
     function openDetail(i) {
@@ -921,6 +943,7 @@
         detailCard.style.transform = f.transform;
         detail.classList.remove('open');
         if (detailVideo) detailVideo.pause();
+        clearInterval(galleryTimer); galleryTimer = null;
 
         // cleanup after the collapse animation (timeout is reliable across browsers)
         setTimeout(() => {
