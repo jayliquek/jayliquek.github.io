@@ -68,35 +68,41 @@
 
         /* ── About + Education ── */
         .info {
-            max-width: 900px;
+            max-width: 720px;
             margin: 0 auto;
-            padding: 48px 80px 140px;   /* tighter top: the hero already gives breathing room below the wheel */
+            padding: 48px 40px 140px;   /* tighter top: the hero already gives breathing room below the wheel */
             scroll-margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 44px;                  /* separation between the About and Education blocks */
+            text-align: center;
         }
+        /* centred stack — title above description, mirroring the preview caption */
         .info-row {
-            display: grid;
-            grid-template-columns: 150px 1fr;
-            gap: 28px;
-            padding: 22px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;                  /* title -> description (matches the preview area) */
         }
         .info-label {
             font-family: 'Geist Mono', monospace;
             font-weight: 500;
             font-size: 12px;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.14em;     /* match the preview eyebrow */
             text-transform: uppercase;
             color: var(--blue);
-            padding-top: 5px;
         }
         .info-content {
             font-size: 18px;
             line-height: 1.6;
             color: var(--text);
-            max-width: 640px;
+            max-width: 600px;           /* ~66ch centred measure */
+            text-wrap: pretty;
         }
         @media (max-width: 720px) {
-            .info { padding: 32px 24px 100px; }
-            .info-row { grid-template-columns: 1fr; gap: 10px; padding: 22px 0; }
+            .info { padding: 32px 24px 100px; gap: 36px; }
+            .info-row { gap: 10px; }
             .info-content { font-size: 16px; }
             .site-header { top: 18px; right: 20px; gap: 18px; }
         }
@@ -682,7 +688,8 @@
         const captionH = showcase.offsetHeight;
 
         // preview centred vertically; description sits BELOW it
-        const baseFrameW = Math.min(392, vw * 0.78, maxFrameByArc);
+        // (hard cap kept a touch under the arc limit for more breathing room around the card)
+        const baseFrameW = Math.min(324, vw * 0.78, maxFrameByArc);
         const baseCardH = baseFrameW * 9 / 16 * ACTIVE_SCALE;
         const MIN_GAP = 28, CARD_GAP = 40, BOT_PAD = Math.max(30, vh * 0.05);
         const regionTop = introBottom + MIN_GAP;
