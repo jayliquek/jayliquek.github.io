@@ -16,6 +16,7 @@
             --text: #1a1a1a;
             --blue: #3B4EFF;
             --border: rgba(0, 0, 0, 0.18);
+            --measure: 520px;     /* shared text column: caption summary, about, education */
             /* wheel geometry (set by JS) */
             --R: 1300px;          /* rim radius */
             --cardR: 1330px;      /* radius cards are mounted at */
@@ -459,6 +460,8 @@
             letter-spacing: 0.14em;
             color: var(--blue);
             margin-bottom: 10px;
+            /* optically align the "2" of the year with the serif/sans below it */
+            text-indent: -2px;
         }
         .detail-focus {
             font-family: 'Instrument Serif', serif;
