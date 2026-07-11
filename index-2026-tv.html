@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text x='8' y='8' font-size='17' text-anchor='middle' dominant-baseline='central' fill='%233B4EFF'>⧫</text></svg>" />
+    <title>Jay Li Quek</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500&family=Geist+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./CSS/index.css">
+</head>
+<body>
+    <main class="page">
+        <h1 class="headline">Jay Li Quek is designing AI tools for work at Meta</h1>
+
+        <section class="work-section">
+            <!-- Desktop hover preview panel -->
+            <div class="preview-panel" id="previewPanel" aria-hidden="true">
+                <div class="tv-error" id="tvError">
+                    <div class="tv-bars"></div>
+                    <div class="tv-bottom"></div>
+                    <div class="tv-scanlines"></div>
+                    <canvas class="tv-noise" id="tvNoise"></canvas>
+                    <div class="tv-glitch-band"></div>
+                </div>
+                <img class="preview-image" id="previewImage" alt="" />
+                <video class="preview-video" id="previewVideo" muted loop playsinline preload="none"></video>
+                <div class="preview-placeholder" id="previewPlaceholder"></div>
+            </div>
+
+            <table class="work-table">
+                <thead>
+                    <tr class="table-header-row">
+                        <th class="col-year">Year</th>
+                        <th class="col-focus">Focus</th>
+                        <th class="col-summary">Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Row 1 -->
+                    <tr class="work-row" data-index="0" data-preview="tv">
+                        <td class="cell-year">2026</td>
+                        <td class="cell-focus">AI tools for work <span class="pointer">☜</span><span class="cell-summary-mobile">Defining Meta's internal AI coding assistant</span></td>
+                        <td class="cell-summary">Defining Meta's internal AI coding assistant</td>
+                    </tr>
+                    <tr class="work-expand" data-index="0">
+                        <td colspan="3">
+                            <div class="expand-inner">
+                                <p class="expand-summary">Defining Meta's internal AI coding assistant (in progress)</p>
+                                <div class="expand-preview">
+                                    <div class="tv-error-mini">
+                                        <div class="tv-bars"></div>
+                                        <div class="tv-bottom"></div>
+                                        <div class="tv-scanlines"></div>
+                                        <div class="tv-glitch-band"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 2 -->
+                    <tr class="work-row" data-index="1" data-preview="tv">
+                        <td class="cell-year">2026</td>
+                        <td class="cell-focus">Growth and sharing on Meta AI <span class="pointer">☜</span><span class="cell-summary-mobile">Built sharing and growth infrastructure across mobile and web from zero</span></td>
+                        <td class="cell-summary">Built sharing and growth infrastructure across mobile and web from zero</td>
+                    </tr>
+                    <tr class="work-expand" data-index="1">
+                        <td colspan="3">
+                            <div class="expand-inner">
+                                <p class="expand-summary">Built sharing and growth infrastructure across mobile and web from zero</p>
+                                <div class="expand-preview">
+                                    <div class="tv-error-mini">
+                                        <div class="tv-bars"></div>
+                                        <div class="tv-bottom"></div>
+                                        <div class="tv-scanlines"></div>
+                                        <div class="tv-glitch-band"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 3 -->
+                    <tr class="work-row" data-index="2" data-preview="image" data-img="./images/share-sheet-facebook.png">
+                        <td class="cell-year">2025</td>
+                        <td class="cell-focus">Share sheet on Facebook <span class="pointer">☜</span><span class="cell-summary-mobile">Led sharing strategy and launched cross-org quality work stream</span></td>
+                        <td class="cell-summary">Led sharing strategy and launched cross-org quality work stream</td>
+                    </tr>
+                    <tr class="work-expand" data-index="2">
+                        <td colspan="3">
+                            <div class="expand-inner">
+                                <p class="expand-summary">Led sharing strategy and launched cross-org quality work stream</p>
+                                <div class="expand-preview expand-preview--image">
+                                    <img class="expand-preview-img" src="./images/share-sheet-facebook.png" alt="Share sheet on Facebook preview" />
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 4 -->
+                    <tr class="work-row" data-index="3" data-preview="image" data-img="./images/messenger-growth.png">
+                        <td class="cell-year">2024</td>
+                        <td class="cell-focus">Messenger growth <span class="pointer">☜</span><span class="cell-summary-mobile">Scaled friending system and drove +2.5M friend accepts on Facebook</span></td>
+                        <td class="cell-summary">Scaled friending system and drove +2.5M friend accepts on Facebook</td>
+                    </tr>
+                    <tr class="work-expand" data-index="3">
+                        <td colspan="3">
+                            <div class="expand-inner">
+                                <p class="expand-summary">Scaled friending system and drove +2.5M friend accepts on Facebook</p>
+                                <div class="expand-preview expand-preview--image">
+                                    <img class="expand-preview-img" src="./images/messenger-growth.png" alt="Messenger growth preview" />
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 5 -->
+                    <tr class="work-row" data-index="4" data-preview="video" data-video="./videos/music-notes.mp4">
+                        <td class="cell-year">2023</td>
+                        <td class="cell-focus">Messenger notes and notifications <span class="pointer">☜</span><span class="cell-summary-mobile">Owned Messenger's notification strategy and shipped Music Notes MVP</span></td>
+                        <td class="cell-summary">Owned Messenger's notification strategy and shipped Music Notes MVP</td>
+                    </tr>
+                    <tr class="work-expand" data-index="4">
+                        <td colspan="3">
+                            <div class="expand-inner">
+                                <p class="expand-summary">Owned Messenger's notification strategy and shipped Music Notes MVP</p>
+                                <div class="expand-preview expand-preview--video">
+                                    <video class="expand-preview-video" src="./videos/music-notes.mp4" muted loop playsinline preload="none"></video>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="info-row">
+            <span class="info-label">Education</span>
+            <p class="info-content">Computer Science and Media, Culture and Communications, New York University</p>
+        </section>
+
+        <section class="info-row">
+            <span class="info-label">About</span>
+            <p class="info-content">Based in New York, NY, I work across product strategy and craft. I'm drawn to the systems layer—building scalable frameworks, setting direction across teams, and doing my best work in spaces that are still taking shape.</p>
+        </section>
+
+        <section class="info-row">
+            <span class="info-label">Online</span>
+            <div class="info-content online-links">
+                <a href="https://www.linkedin.com/in/jayliquek/" target="_blank" rel="noopener" class="online-link">Linkedin</a>
+            </div>
+        </section>
+    </main>
+
+    <script src="./JS/main.js"></script>
+</body>
+</html>
