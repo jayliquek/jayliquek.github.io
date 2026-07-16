@@ -9,26 +9,13 @@
     <link rel="stylesheet" href="CSS/blogpost.css"/>
     <link rel="stylesheet" href="CSS/index.css"/>
 
+    <script src="./JS/components.js"></script>
 </head>
 
     
 <body>
     <div class ="main">
-        <div class="navbar">
-            <div class="navbar-name">
-                <ul>
-                    <li class="home"><a href = "index.html">Jay Li Quek</a></li>
-                </ul>
-            </div>
-            <div class="navbar-links">
-                <ul>
-                    <li class="one"><a href="index.html#about">About</a></li>
-                    <li class="two"><a href="index.html#work">Work</a></li>
-                    <li class="three"><a href="blog.html">Blog</a></li>
-                    <hr />
-                </ul>
-            </div>
-        </div>
+        <site-nav></site-nav>
         <div class = "mainLayout">
             <!-- <p>This space houses the trough of things I have encountered, watched, read and tinkered with since starting this site. I hope to use this space to speak my mind about more ethical tech, document progress on projects I have made, and share delightful encounters in my everyday life. 
 
@@ -132,23 +119,7 @@
         </div>
     </div>
     
-    <footer class = "footer">
-        <div class = "leftfoot">
-            <p>Reach me</p>
-        </div>
-        <div class = "rightfoot">
-            <p>My mom used to tell me not to talk to strangers, but the internet has some pretty cool people. If you have a thought or just want to say hello, feel free to drop me an email.  </p>
-            <br>
-            <br>
-            
-            <a href = "mailto: jayliquek@gmail.com" class="hoverlink">jayliquek@gmail.com</a><br><br>
-            <a href="https://www.linkedin.com/in/jayliquek/" class="hoverlink">Linkedin</a>
-        </div>
-        
-    </footer> 
-    <div class = "selfplug">
-        <p>Designed & developed by Jay Li</p>
-    </div>
+    <site-footer></site-footer>
     <script>       
         function main() {
             let circle = document.getElementById("circle");
