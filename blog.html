@@ -152,8 +152,12 @@
     <script>       
         function main() {
             let circle = document.getElementById("circle");
+            let popup = document.getElementById("popup");
+            if (!circle || !popup) {
+                console.warn("Blog hover effect skipped: #circle or #popup not found.");
+                return;
+            }
             function handleHover(event) {
-                let popup = document.getElementById("popup");
                 popup.className = "visible";
                 circle.className = "hovered";
             }

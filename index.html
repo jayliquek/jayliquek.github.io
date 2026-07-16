@@ -576,6 +576,20 @@
         { year: '2023', focus: 'Messenger notes & notifications', summary: "Owned Messenger's notification strategy and shipped Music Notes", media: { type: 'video', src: './videos/music-notes.mp4' } },
     ];
 
+    // Start a video, tolerating the rejections browsers raise as a matter of
+    // course — autoplay policy (NotAllowedError) and playback interrupted by a
+    // fresh load or pause (AbortError) — while surfacing anything unexpected so
+    // real failures aren't hidden.
+    function safePlay(video) {
+        if (!video) return;
+        const p = video.play();
+        if (!p || typeof p.catch !== 'function') return;
+        p.catch((err) => {
+            if (err && (err.name === 'NotAllowedError' || err.name === 'AbortError')) return;
+            console.warn('Project video failed to play:', err);
+        });
+    }
+
     const STEP = 22;             // degrees between projects
     const N = PROJECTS.length;
     const root = document.documentElement;
@@ -746,7 +760,7 @@
         }, 190);
         // play only the active video
         cards.forEach((c) => { if (c._video) { c._video.pause(); } });
-        if (cards[index]._video) { cards[index]._video.play().catch(() => {}); }
+        if (cards[index]._video) { safePlay(cards[index]._video); }
     }
 
     function scrollToInfo() {
@@ -930,7 +944,7 @@
 
         detailOpen = true;
         detailVideo = media.querySelector('video');
-        if (detailVideo) detailVideo.play().catch(() => {});
+        if (detailVideo) safePlay(detailVideo);
     }
 
     function closeDetail() {
@@ -969,7 +983,16 @@
     window.addEventListener('resize', () => { layout(); render(); });
     // headline height depends on the loaded serif font — re-measure once ready
     window.addEventListener('load', () => { layout(); render(); });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { layout(); render(); });
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready
+            .then(() => { layout(); render(); })
+            .catch((err) => {
+                // Font loading isn't essential to positioning — re-run layout with
+                // whatever fonts are available rather than leaving the wheel unmeasured.
+                console.warn('Font readiness check failed; laying out with fallback fonts:', err);
+                layout(); render();
+            });
+    }
 
     // init — default to "Growth and sharing on Meta AI"
     layout();
