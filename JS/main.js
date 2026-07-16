@@ -1,10 +1,32 @@
 // ── TV noise canvas ──────────────────────────────────────────────
 const noiseCanvas = document.getElementById('tvNoise');
 
+// Start a video, tolerating the rejections browsers raise as a matter of
+// course — autoplay policy (NotAllowedError) and playback interrupted by a
+// fresh load or pause (AbortError) — while surfacing anything unexpected so
+// real failures aren't hidden.
+function safePlay(video) {
+    if (!video) return;
+    const p = video.play();
+    if (!p || typeof p.catch !== 'function') return;
+    p.catch((err) => {
+        if (err && (err.name === 'NotAllowedError' || err.name === 'AbortError')) return;
+        console.warn('Preview video failed to play:', err);
+    });
+}
+
 function drawNoise(canvas) {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     const panel = canvas.closest('.preview-panel');
+    if (!ctx) {
+        console.warn('TV noise: 2D canvas context unavailable; skipping animation.');
+        return;
+    }
+    if (!panel) {
+        console.warn('TV noise: no .preview-panel ancestor for the canvas; skipping animation.');
+        return;
+    }
 
     function resize() {
         canvas.width  = panel.offsetWidth;
@@ -66,7 +88,7 @@ function showPreview(type, src) {
 }
 
 function startPreviewVideo() {
-    previewVideo.play().catch(() => {});
+    safePlay(previewVideo);
 }
 
 // Play the preview video from the start. The first play() call kicks off
@@ -77,7 +99,15 @@ function playPreviewVideo(src) {
     if (previewVideo.getAttribute('src') !== src) {
         previewVideo.src = src;
     } else {
-        try { previewVideo.currentTime = 0; } catch (e) { /* not seekable yet */ }
+        // Rewinding can throw if the media isn't seekable yet; that's expected on
+        // a cold preview, so retry from the start once enough data has loaded.
+        try {
+            previewVideo.currentTime = 0;
+        } catch (e) {
+            previewVideo.addEventListener('loadeddata', () => {
+                try { previewVideo.currentTime = 0; } catch (err) { /* give up quietly */ }
+            }, { once: true });
+        }
     }
     startPreviewVideo();
     previewVideo.addEventListener('canplay', startPreviewVideo, { once: true });
@@ -153,7 +183,7 @@ rows.forEach(row => {
             const vid = expand.querySelector('.expand-preview-video');
             if (vid) {
                 vid.currentTime = 0;
-                vid.play().catch(() => {});
+                safePlay(vid);
             }
 
             // Animate rows and dividers below the expanded one
