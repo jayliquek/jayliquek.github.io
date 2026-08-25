@@ -596,7 +596,7 @@
         // Client-side soft gate. Shared password across all case studies.
         // NOTE: not real security — the value ships in the page source.
         password: 'greatday1',
-        hero: { src: '../videos/vibes-growth-flywheel.mp4', alt: 'Vibes playable and vibe check shown on two phones', aspect: '1280 / 716' },
+        hero: { src: '../videos/vibes-growth-flywheel.mp4', alt: 'Vibes playable and vibe check shown on two phones', aspect: '1280 / 716', cropLeft: 4, width: 860 },
         title: 'Kickstarting the growth flywheel on Vibes',
         subtitle: 'Building the sharing & growth infrastructure for a suite of new features',
         // Prev/next case studies (match the order on the homepage). Omit either to hide that side.
@@ -623,6 +623,7 @@
                 type: 'figure',
                 src: '../videos/vibes-playables.mov',
                 aspect: '1738 / 1476',
+                cropLeft: 4, width: 772,   /* 40px narrower than the shared asset width */
                 caption: 'Playables and vibe check',
             },
             {
@@ -656,7 +657,7 @@
                 type: 'figure',
                 src: '../videos/vibes-screenshot.mov',
                 aspect: '1740 / 1446',
-                cropLeft: 4, cropRight: 2,   /* trim thin side bleed */
+                cropLeft: 4, cropRight: 2, cropTop: 2,   /* trim thin side + top bleed */
                 caption: 'Screenshot detection and screenshot entry point in the comment section',
             },
             {
@@ -723,7 +724,10 @@
         // trim exact pixels off each side (overflow-hidden container required).
         let extra = item.cropScale ? `transform:scale(${item.cropScale});` : '';
         const cl = item.cropLeft || 0, cr = item.cropRight || 0;
+        const ct = item.cropTop || 0, cb = item.cropBottom || 0;
         if (cl || cr) extra += `width:calc(100% + ${cl + cr}px);margin-left:-${cl}px;`;
+        if (ct) extra += `margin-top:-${ct}px;`;
+        if (cb) extra += `margin-bottom:-${cb}px;`;
         if (item.type === 'video' || /\.(mp4|webm|mov)$/i.test(item.src)) {
             return `<video src="${esc(item.src)}" muted loop autoplay playsinline preload="metadata" style="aspect-ratio:${aspect};${extra}"></video>`;
         }
@@ -741,10 +745,14 @@
 
     function renderFigure(b) {
         // b.crop = target aspect-ratio string → container fixed to it, media covers it.
+        // b.width = per-figure width (px), overriding the shared --asset-w.
         const cropClass = b.crop ? ' crop' : '';
-        const cropStyle = b.crop ? ` style="aspect-ratio:${b.crop}"` : '';
+        const styles = [];
+        if (b.crop) styles.push(`aspect-ratio:${b.crop}`);
+        if (b.width) styles.push(`max-width:${b.width}px`);
+        const styleAttr = styles.length ? ` style="${styles.join(';')}"` : '';
         return `<figure class="reveal">
-            <div class="figure-media${cropClass}"${cropStyle}>${media(b, b.caption)}</div>
+            <div class="figure-media${cropClass}"${styleAttr}>${media(b, b.caption)}</div>
             ${b.caption ? `<figcaption>${esc(b.caption)}</figcaption>` : ''}
         </figure>`;
     }
@@ -815,7 +823,7 @@
         const team = (data.meta.team || []).map((t) => `<li>${esc(t)}</li>`).join('');
         const tools = (data.meta.tools || []).map((t) => `<li>${esc(t)}</li>`).join('');
         root.innerHTML = `
-            <div class="hero reveal">${media(Object.assign({ type: 'image' }, data.hero), 'Hero')}</div>
+            <div class="hero reveal"${data.hero.width ? ` style="max-width:${data.hero.width}px"` : ''}>${media(Object.assign({ type: 'image' }, data.hero), 'Hero')}</div>
 
             <div class="lede">
                 <h1 class="title">${esc(data.title)}</h1>
