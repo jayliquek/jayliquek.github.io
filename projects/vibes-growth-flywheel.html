@@ -53,7 +53,7 @@
             --measure: 68ch;             /* reading column cap */
             --slide-w: clamp(208px, 26vw, 264px);  /* phone width in the prototype */
             --slide-h: clamp(340px, 50vh, 470px);  /* shared gallery slide height */
-            --asset-w: 812px;            /* shared width for hero + figure assets */
+            --asset-w: 618px;            /* shared width for playables/screenshot/widgets */
             --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* ease-out-quint */
         }
 
@@ -180,7 +180,7 @@
         .fact li + li { margin-top: 2px; }
 
         /* ── Body blocks ── (case study starts here, below the facts' bottom padding) */
-        .body { margin-top: 40px; display: flex; flex-direction: column; gap: 64px; }
+        .body { margin-top: 40px; display: flex; flex-direction: column; gap: 56px; }
 
         .block-text { display: flex; flex-direction: column; gap: 14px; }
         .block-text .kicker { margin-bottom: 2px; }
@@ -623,7 +623,7 @@
                 type: 'figure',
                 src: '../videos/vibes-playables.mov',
                 aspect: '1738 / 1476',
-                cropLeft: 4, width: 772,   /* 40px narrower than the shared asset width */
+                cropLeft: 4,   /* uses the shared --asset-w (0.8x of the prior 772px) */
                 caption: 'Playables and vibe check',
             },
             {
