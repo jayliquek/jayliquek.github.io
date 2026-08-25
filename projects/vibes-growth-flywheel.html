@@ -46,11 +46,13 @@
             --blue: #3B4EFF;
             --green: #2C7A4B;            /* pros — earthy green tuned to the warm palette */
             --red: #B23A2E;              /* cons — brick red tuned to the warm palette */
-            --thumb-bg: #E4E2D9;         /* light backing behind mockups */
+            --thumb-bg: #E4E2D9;         /* light backing behind placeholders */
+            --asset-bg: #F1F1F1;         /* white backing to match on-white mockups */
             --surface: #F5F3EC;          /* lifted warm surface (modal card) */
             --hairline: rgba(26, 26, 26, 0.14);
             --measure: 68ch;             /* reading column cap */
-            --slide-w: clamp(208px, 26vw, 264px);  /* phone width in galleries / prototype */
+            --slide-w: clamp(208px, 26vw, 264px);  /* phone width in the prototype */
+            --slide-h: clamp(340px, 50vh, 470px);  /* shared gallery slide height */
             --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* ease-out-quint */
         }
 
@@ -120,9 +122,9 @@
         /* ── Hero ── */
         .hero {
             margin-top: 64px;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
-            background: var(--thumb-bg);
+            background: var(--asset-bg);
             box-shadow: 0 1px 2px rgba(0,0,0,0.06);
         }
         .hero img, .hero video { display: block; width: 100%; height: auto; }
@@ -189,12 +191,18 @@
         /* Single figure */
         figure { margin: 0; }
         .figure-media {
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
-            background: var(--thumb-bg);
+            background: var(--asset-bg);
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
         .figure-media img, .figure-media video { display: block; width: 100%; height: auto; }
+        /* Crop variant: fix the container aspect and cover it, trimming side bleed. */
+        .figure-media.crop img, .figure-media.crop video {
+            width: 100%; height: 100%; object-fit: cover; object-position: center;
+        }
+        /* Slightly smaller figure (kept centered). */
+        .figure--sm .figure-media { max-width: 84%; margin-inline: auto; }
         figcaption {
             margin-top: 14px;
             text-align: center;
@@ -237,29 +245,36 @@
             /* bleed to viewport edges out of the reading column */
             width: 100vw;
             margin-inline: calc(50% - 50vw);
-            /* center first/last slide */
-            padding-inline: max(24px, calc(50vw - var(--slide-w) / 2));
+            /* center first/last slide (nominal narrow-slide half-width) */
+            padding-inline: max(24px, calc(50vw - var(--slide-h) * 0.33));
         }
         .gallery-track::-webkit-scrollbar { display: none; }
+        /* Slides share one height; width scales to each asset's aspect ratio. */
         .slide {
-            flex: 0 0 var(--slide-w);
+            flex: 0 0 auto;
+            height: var(--slide-h);
             scroll-snap-align: center;
             border-radius: 12px;
             overflow: hidden;
-            background: var(--thumb-bg);
+            background: var(--asset-bg);
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
             opacity: 0.5;
             transform: scale(0.95);
             transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
         }
         .slide.is-active { opacity: 1; transform: scale(1); }
-        .slide img, .slide video { display: block; width: 100%; height: auto; }
-        .slide .ph { aspect-ratio: 9 / 19; }
+        .slide img, .slide video {
+            display: block;
+            height: 100%;
+            width: auto;
+            object-fit: cover;   /* crop any background so the 12px radius sits on content */
+        }
+        .slide .ph { height: 100%; aspect-ratio: 9 / 19; }
 
         .gallery-caption {
             margin-top: 22px;
             text-align: center;
-            min-height: 3em;
+            height: 92px;              /* fixed so the content below never shifts */
             display: grid;
             place-content: start center;
             gap: 4px;
@@ -310,7 +325,7 @@
             padding: 0;
             background: none;
             cursor: pointer;
-            border-radius: 14px;
+            border-radius: 12px;
             transition: transform 0.45s var(--ease), opacity 0.45s var(--ease), filter 0.45s var(--ease);
             opacity: 0.42;
             transform: scale(0.86);
@@ -318,7 +333,7 @@
         }
         .screen:focus-visible { outline: 2px solid var(--blue); outline-offset: 6px; }
         .screen .screen-media {
-            border-radius: 14px;
+            border-radius: 12px;
             overflow: hidden;
             background: var(--thumb-bg);
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
@@ -330,7 +345,7 @@
             transform: scale(1);
             filter: none;
         }
-        .screen.is-focused .screen-media { box-shadow: 0 22px 50px rgba(0,0,0,0.16); }
+        .screen.is-focused .screen-media { box-shadow: 0 26px 90px rgba(0,0,0,0.12); }
 
         .proto-detail {
             max-width: 620px;
@@ -574,7 +589,7 @@
         // Client-side soft gate. Shared password across all case studies.
         // NOTE: not real security — the value ships in the page source.
         password: 'greatday',
-        hero: { src: '../images/meta-ai-vibes.png', alt: 'Two phones on a neutral backdrop showing the Vibes playables screen and a vibe check video', aspect: '16 / 9' },
+        hero: { src: '../videos/vibes-cover.mov', alt: 'Vibes playable and vibe check shown on two phones', aspect: '1738 / 974' },
         title: 'Kickstarting the growth flywheel on Vibes',
         subtitle: 'Building the sharing & growth infrastructure for a suite of new features',
         // Prev/next case studies (match the order on the homepage). Omit either to hide that side.
@@ -599,8 +614,8 @@
             },
             {
                 type: 'figure',
-                src: null,
-                aspect: '4 / 3',
+                src: '../videos/vibes-playables.mov',
+                aspect: '1738 / 1476',
                 caption: 'Playables and vibe check',
             },
             {
@@ -619,9 +634,9 @@
             {
                 type: 'gallery',
                 slides: [
-                    { src: null, aspect: '9 / 19', title: 'End card',        desc: 'It was a privacy violation to extract that metadata.' },
-                    { src: null, aspect: '9 / 19', title: 'High-score cards', desc: 'Skewed too closely to games as a value prop, even though playables came in different formats.' },
-                    { src: null, aspect: '9 / 19', title: 'Midcard',         desc: 'Did not have enough inventory for our surfaces.' },
+                    { src: '../images/vibes-end-card.png',   aspect: '3472 / 2956', title: 'End card',        desc: 'It was a privacy violation to extract that metadata.' },
+                    { src: '../images/vibes-high-score.png', aspect: '3472 / 2956', title: 'High-score cards', desc: 'Skewed too closely to games as a value prop, even though playables came in different formats.' },
+                    { src: '../images/vibes-midcard.png',    aspect: '3472 / 2956', title: 'Midcard',         desc: 'Did not have enough inventory for our surfaces.' },
                 ],
             },
             {
@@ -632,8 +647,9 @@
             },
             {
                 type: 'figure',
-                src: null,
-                aspect: '4 / 3',
+                src: '../videos/vibes-screenshot.mov',
+                aspect: '1740 / 1446',
+                scaleDown: true,   /* original framing, shown a touch smaller */
                 caption: 'Screenshot detection and screenshot entry point in the comment section',
             },
             {
@@ -646,22 +662,16 @@
             },
             {
                 type: 'interactive',
-                intro: 'Tap through each treatment to compare.',
                 screens: [
                     {
-                        src: null, aspect: '9 / 19', label: 'Full-canvas quip',
+                        src: '../videos/vibes-option1-full-canvas.mov', aspect: '540 / 1164', label: 'Full-canvas quip',
                         pros: ['Utilizes the full canvas of the story'],
                         cons: ['Not scalable — text could possibly cover other vibes'],
                     },
                     {
-                        src: null, aspect: '9 / 19', label: 'Caption bar',
-                        pros: ['Quip stays legible against any video', 'Predictable, scalable layout'],
-                        cons: ['Competes with the video for attention'],
-                    },
-                    {
-                        src: null, aspect: '9 / 19', label: 'Reveal on tap',
-                        pros: ['Video leads; quip is a reward', 'Keeps the canvas clean'],
-                        cons: ['Quip is missed if the user does not tap'],
+                        src: '../videos/vibes-option2-card.mov', aspect: '540 / 1164', label: 'Contained card',
+                        pros: ['Showcases both the video and the quip clearly', 'Legible and scalable on any background'],
+                        cons: ['Less immersive than the full canvas', 'Smaller video preview'],
                     },
                 ],
             },
@@ -673,8 +683,8 @@
             },
             {
                 type: 'figure',
-                src: null,
-                aspect: '4 / 3',
+                src: '../images/vibes-widgets.png',
+                aspect: '3472 / 2896',
                 caption: 'Widgets',
             },
             {
@@ -699,13 +709,15 @@
         </div>`;
     }
 
-    function media(item, label) {
+    function media(item, label, eager) {
         const aspect = item.aspect || '4 / 3';
         if (!item.src) return placeholder(label, aspect);
-        if (item.type === 'video' || /\.(mp4|webm)$/i.test(item.src)) {
-            return `<video src="${esc(item.src)}" muted loop autoplay playsinline preload="metadata" style="aspect-ratio:${aspect}"></video>`;
+        // cropScale trims an even border (e.g. a baked-in outline) via overflow clip.
+        const scale = item.cropScale ? `transform:scale(${item.cropScale});` : '';
+        if (item.type === 'video' || /\.(mp4|webm|mov)$/i.test(item.src)) {
+            return `<video src="${esc(item.src)}" muted loop autoplay playsinline preload="metadata" style="aspect-ratio:${aspect};${scale}"></video>`;
         }
-        return `<img src="${esc(item.src)}" alt="${esc(item.alt || label || '')}" loading="lazy" style="aspect-ratio:${aspect}">`;
+        return `<img src="${esc(item.src)}" alt="${esc(item.alt || label || '')}" loading="${eager ? 'eager' : 'lazy'}" style="aspect-ratio:${aspect};${scale}">`;
     }
 
     function kickerHTML(k) { return k ? `<p class="kicker">${esc(k)}</p>` : ''; }
@@ -718,8 +730,13 @@
     }
 
     function renderFigure(b) {
-        return `<figure class="reveal">
-            <div class="figure-media">${media(b, b.caption)}</div>
+        // b.crop = target aspect-ratio string → container fixed to it, media covers it.
+        // b.scaleDown = render the figure a touch narrower than the reading column.
+        const cropClass = b.crop ? ' crop' : '';
+        const cropStyle = b.crop ? ` style="aspect-ratio:${b.crop}"` : '';
+        const figClass = b.scaleDown ? ' figure--sm' : '';
+        return `<figure class="reveal${figClass}">
+            <div class="figure-media${cropClass}"${cropStyle}>${media(b, b.caption)}</div>
             ${b.caption ? `<figcaption>${esc(b.caption)}</figcaption>` : ''}
         </figure>`;
     }
@@ -731,7 +748,7 @@
         const mid = Math.floor(b.slides.length / 2);   // anchor the middle card
         const slides = b.slides.map((s, i) => `
             <div class="slide${i === mid ? ' is-active' : ''}" data-i="${i}" data-title="${esc(s.title || '')}" data-desc="${esc(s.desc || '')}">
-                ${media(s, s.title)}
+                ${media(s, s.title, true)}
             </div>`).join('');
         const dots = b.slides.map((s, i) => `<span class="dot${i === mid ? ' on' : ''}"></span>`).join('');
         const start = b.slides[mid] || {};
@@ -750,7 +767,6 @@
         const li = (arr) => (arr || []).map((x) => `<li>${esc(x)}</li>`).join('');
         return `<div class="proto-head">
                 <span class="proto-name">${esc(screen.label || '')}</span>
-                <span class="proto-count">${String(i + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}</span>
             </div>
             <div class="proscons">
                 <div class="pros"><p class="col-label">Pros</p><ul>${li(screen.pros)}</ul></div>
@@ -885,14 +901,25 @@
                 }
             }
             track.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
-            slides.forEach((s, i) => s.addEventListener('click', () => centerOn(i, true)));
+            slides.forEach((s, i) => s.addEventListener('click', () => { userMoved = true; centerOn(i, true); }));
             window.addEventListener('resize', () => { centerOn(current, false); update(); });
-            // anchor the middle card, then sync active state — re-assert after
-            // layout/image reflow so it stays centered on first paint.
-            function settle() { centerOn(start, false); update(); }
+
+            // Anchor the middle card until the visitor interacts. Slide widths change
+            // as lazy images decode, so keep re-centering (rect-based) until then.
+            let userMoved = false;
+            ['pointerdown', 'wheel', 'touchstart', 'keydown'].forEach((ev) =>
+                track.addEventListener(ev, () => { userMoved = true; }, { passive: true }));
+            function settle() { if (!userMoved) { centerOn(start, false); update(); } }
             settle();
             requestAnimationFrame(settle);
             window.addEventListener('load', settle);
+            gal.querySelectorAll('img').forEach((img) => {
+                if (!img.complete) img.addEventListener('load', settle, { once: true });
+            });
+            if ('ResizeObserver' in window) {
+                const ro = new ResizeObserver(() => settle());
+                slides.forEach((s) => ro.observe(s));
+            }
         });
     }
 

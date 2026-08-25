@@ -1,11 +1,6 @@
 {
   "version": "0.0.1",
   "configurations": [
-    {
-      "name": "website",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-l", "3456", "."],
-      "port": 3456
-    }
+    { "name": "site", "runtimeExecutable": "python3", "runtimeArgs": ["-m", "http.server", "5599"], "port": 5599 }
   ]
 }
