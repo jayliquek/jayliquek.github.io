@@ -107,7 +107,7 @@
         .intro .blurb {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             font-weight: 400;
-            font-size: 32px;
+            font-size: 28px;
             line-height: 1.2;
             letter-spacing: -0.01em;
             text-wrap: pretty;
@@ -141,13 +141,29 @@
             height: 100%;
             object-fit: cover;   /* fill the uniform frame, no letterboxing */
         }
-        /* metacode terminal: scaled down slightly against a backing that matches
-           the terminal window's own background, instead of a full-bleed crop */
-        .card-thumb.inset { background: #12181E; }
+        /* metacode terminal: scaled down slightly against a backdrop that
+           recreates the video's own background — same near-black base, same
+           blurred purple orb, same position — so the video reads as sitting
+           on one continuous canvas rather than a pasted-in clip */
+        .card-thumb.inset { background: #060409; }
+        .card-thumb.inset::before {
+            content: '';
+            position: absolute;
+            top: -18%;
+            left: 30%;
+            width: 52%;
+            height: 68%;
+            background: #1F0847;
+            border-radius: 50%;
+            filter: blur(70px);
+            z-index: 0;
+        }
         .card-thumb.inset video {
-            width: 78%;
-            height: 78%;
-            margin: 11%;
+            position: relative;
+            z-index: 1;
+            width: 86%;
+            height: 86%;
+            margin: 7%;
             object-fit: contain;
         }
 
@@ -225,7 +241,7 @@
 
         <section class="intro">
             <p class="eyebrow">Based in New York, NY</p>
-            <p class="blurb">Currently designing AI tools for work at Meta. I work across product strategy and craft. I'm drawn to the systems layer—building scalable frameworks, setting direction across teams, and doing my best work in spaces that are still taking shape.</p>
+            <p class="blurb">Currently designing AI tools for work. I work across product strategy and craft. I'm drawn to the systems layer—building scalable frameworks, setting direction across teams, and doing my best work in spaces that are still taking shape.</p>
         </section>
 
         <main class="grid" id="grid"></main>
@@ -239,8 +255,8 @@
     // separate branch, so this layout only points at ./projects/<slug>.html.
     const PROJECTS = [
         { slug: 'vibe-coding-terminal', title: 'Vibe coding the terminal UI',                     year: 'Current', sub: 'Building an internal terminal for 70K engineers at Meta',        thumb: { type: 'video', src: './videos/vibe-coding-terminal.mp4' }, clickable: true, playable: true, inset: true },
-        { slug: 'vibes-growth-flywheel', title: 'Kickstarting the growth flywheel on Vibes',       year: '2026',    sub: 'Building the sharing & growth infrastructure for a suite of new features', thumb: { type: 'image', src: './images/meta-ai-vibes.png' }, clickable: true },
-        { slug: 'meta-ai-sharing',       title: 'Evolution of sharing on Meta AI',                  year: '2025',    sub: 'AI for utility: Shaping artifact sharing and the considerations that follow', thumb: { type: 'image', src: './images/meta-ai-growth.png' }, clickable: true },
+        { slug: 'vibes-growth-flywheel', title: 'Kickstarting the growth flywheel on Vibes',       year: '2026',    sub: 'Building the sharing & growth infrastructure for a suite of new features', thumb: { type: 'video', src: './videos/vibes-growth-flywheel.mp4' }, clickable: true, playable: true },
+        { slug: 'meta-ai-sharing',       title: 'Evolution of sharing on Meta AI',                  year: '2025',    sub: 'AI for utility: Shaping artifact sharing and the considerations that follow', thumb: null, clickable: true },
         { slug: 'facebook-share-sheet',  title: 'Sparking conversation through sharing experiences', year: '2025',   sub: 'Share sheet on Facebook',                                        thumb: { type: 'image', src: './images/share-sheet-facebook.png' }, clickable: false },
         { slug: 'messenger-growth',      title: 'Driving 2.5M friend accepts on Messenger',         year: '2024',    sub: 'Messenger growth',                                               thumb: { type: 'image', src: './images/messenger-growth.png' }, clickable: false },
         { slug: 'messenger-notes',       title: 'Expressing mood with music notes',                 year: '2023',    sub: 'Messenger notes',                                                thumb: { type: 'video', src: './videos/music-notes.mp4' }, playable: true },
