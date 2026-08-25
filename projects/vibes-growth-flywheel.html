@@ -332,7 +332,7 @@
             padding: 0;
             background: none;
             cursor: pointer;
-            border-radius: 20px;
+            border-radius: 24px;
             transition: transform 0.45s var(--ease), opacity 0.45s var(--ease), filter 0.45s var(--ease);
             opacity: 0.42;
             transform: scale(0.86);
@@ -340,7 +340,7 @@
         }
         .screen:focus-visible { outline: 2px solid var(--blue); outline-offset: 6px; }
         .screen .screen-media {
-            border-radius: 20px;
+            border-radius: 24px;
             overflow: hidden;
             background: var(--thumb-bg);
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
@@ -368,7 +368,13 @@
         }
         .proto-name { font-family: 'Instrument Serif', serif; font-size: 24px; line-height: 1; }
         .proto-count { font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--faint); }
-        .proscons { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 32px; }
+        /* Pros & cons read as one centered cluster on the page. */
+        .proscons {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 232px));
+            justify-content: center;
+            gap: 20px 48px;
+        }
         .proscons .col-label {
             font-family: 'Geist Mono', monospace;
             font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;

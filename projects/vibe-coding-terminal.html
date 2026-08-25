@@ -57,7 +57,7 @@
             --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* ease-out-quint */
         }
 
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; scrollbar-gutter: stable both-edges; }
 
         body {
             background-color: var(--bg);
@@ -226,6 +226,16 @@
             line-height: 1.5;
             color: var(--muted);
         }
+
+        /* Static side-by-side figures (spans the reading column, centered);
+           each column's media fills it and captions stay centered. */
+        .figure-row {
+            display: grid;
+            grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr));
+            gap: 24px;
+            align-items: start;
+        }
+        .figure-row .figure-media { max-width: 100%; margin-inline: 0; }
 
         /* Placeholder box (until real assets land) */
         .ph {
@@ -550,6 +560,9 @@
             .hero { margin-top: 44px; }
             .body { gap: 52px; }
             .proscons { grid-template-columns: 1fr; gap: 18px; }
+            /* side-by-side figures stack on narrow screens */
+            .figure-row { grid-template-columns: 1fr; gap: 40px; }
+            .figure-row .figure-media { max-width: var(--asset-w); margin-inline: auto; }
             .foot { grid-template-columns: 1fr; gap: 22px; text-align: center; }
             .foot-prev, .foot-next, .foot-all {
                 grid-column: 1; justify-self: center; text-align: center;
@@ -688,16 +701,11 @@
                 ],
             },
             {
-                type: 'figure',
-                src: '../images/terminal-plan-mode.png',
-                aspect: '2880 / 1848',
-                caption: 'Plan mode — replacing the composer',
-            },
-            {
-                type: 'figure',
-                src: '../images/terminal-skills.png',
-                aspect: '2880 / 1848',
-                caption: 'Skills panel — under the composer',
+                type: 'figures',   // static side-by-side; stacks on narrow screens
+                figures: [
+                    { src: '../images/terminal-plan-mode.png', aspect: '2880 / 1848', caption: 'Plan mode — replacing the composer' },
+                    { src: '../images/terminal-skills.png',    aspect: '2880 / 1848', caption: 'Skills panel — under the composer' },
+                ],
             },
             {
                 type: 'text',
@@ -781,6 +789,13 @@
         </figure>`;
     }
 
+    // Static side-by-side figures that stack on narrow screens.
+    function renderFigures(b) {
+        return `<div class="figure-row" style="--cols:${(b.figures || []).length}">
+            ${(b.figures || []).map(renderFigure).join('')}
+        </div>`;
+    }
+
     let galleryId = 0, protoId = 0;
 
     function renderGallery(b) {
@@ -835,6 +850,7 @@
         switch (b.type) {
             case 'text': return renderText(b);
             case 'figure': return renderFigure(b);
+            case 'figures': return renderFigures(b);
             case 'gallery': return renderGallery(b);
             case 'interactive': return renderInteractive(b);
             default: return '';
