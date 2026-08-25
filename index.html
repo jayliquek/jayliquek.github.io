@@ -7,25 +7,39 @@
     <title>Jay Li Quek</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500&family=Geist+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        /* ── ZT Bros Oskon 90s (bundled) — display face for the name & project titles ── */
+        @font-face {
+            font-family: 'ZT Bros Oskon 90s';
+            src: url('./fonts/ZTBrosOskon90s-ExtraLight.otf') format('opentype');
+            font-weight: 200; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'ZT Bros Oskon 90s';
+            src: url('./fonts/ZTBrosOskon90s-Light.otf') format('opentype');
+            font-weight: 300; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'ZT Bros Oskon 90s';
+            src: url('./fonts/ZTBrosOskon90s-Italic.otf') format('opentype');
+            font-weight: 400; font-style: italic; font-display: swap;
+        }
+        @font-face {
+            font-family: 'ZT Bros Oskon 90s';
+            src: url('./fonts/ZTBrosOskon90s-LightItalic.otf') format('opentype');
+            font-weight: 300; font-style: italic; font-display: swap;
+        }
 
         :root {
             --bg: #EDEBE3;
             --text: #1a1a1a;
+            --muted: rgba(26, 26, 26, 0.60);
             --blue: #3B4EFF;
-            --border: rgba(0, 0, 0, 0.18);
-            --measure: 520px;     /* shared text column: caption summary, about, education */
-            /* wheel geometry (set by JS) */
-            --R: 1300px;          /* rim radius */
-            --cardR: 1330px;      /* radius cards are mounted at */
-            --cx: 50%;            /* centre X */
-            --cy: 120%;           /* centre Y */
-            --angle: 0deg;        /* current rotation of the rotor */
+            --thumb-bg: #E4E2D9;   /* light backing behind mockup thumbnails */
         }
-
-        html { scroll-behavior: smooth; }
 
         body {
             background-color: var(--bg);
@@ -34,262 +48,127 @@
             font-weight: 400;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            position: relative;
         }
 
-        /* hero holds the wheel; its own overflow clips the giant wheel arc */
-        .hero {
-            position: relative;
-            height: 100vh;
-            overflow: hidden;
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 56px 40px 120px;
         }
 
-        /* ── Header ── */
+        /* ── Header: name left, nav right ── */
         .site-header {
-            position: fixed;
-            top: max(22px, env(safe-area-inset-top));
-            right: max(30px, env(safe-area-inset-right));
-            z-index: 40;
             display: flex;
-            align-items: center;
+            justify-content: space-between;
+            align-items: flex-start;
             gap: 24px;
         }
-        .hlink {
-            font-family: 'Geist Mono', monospace;
+        .brand {
+            font-family: 'ZT Bros Oskon 90s', serif;
+            font-weight: 300;
+            font-size: 34px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            line-height: 1;
+            color: var(--text);
+            text-decoration: none;
+        }
+        .nav {
+            display: flex;
+            gap: 28px;
+            padding-top: 8px;
+        }
+        .nav a {
+            font-family: 'DM Mono', monospace;
             font-weight: 500;
             font-size: 12px;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
             color: var(--text);
             text-decoration: none;
             opacity: 0.68;
             transition: opacity 0.2s ease, color 0.2s ease;
         }
-        .hlink:hover { opacity: 1; color: var(--blue); }
+        .nav a:hover { opacity: 1; color: var(--blue); }
 
-        /* ── About + Education ── */
-        .info {
-            max-width: 720px;
-            margin: 0 auto;
-            padding: 48px 40px 140px;   /* tighter top: the hero already gives breathing room below the wheel */
-            scroll-margin-top: 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 44px;                  /* separation between the About and Education blocks */
-            text-align: center;
-        }
-        /* centred stack — title above description, mirroring the preview caption */
-        .info-row {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;                  /* title -> description (matches the preview area) */
-        }
-        .info-label {
-            font-family: 'Geist Mono', monospace;
-            font-weight: 500;
-            font-size: 12px;
-            letter-spacing: 0.14em;     /* match the preview eyebrow */
-            text-transform: uppercase;
-            color: var(--blue);
-        }
-        .info-content {
-            font-size: 18px;
-            line-height: 1.6;
-            color: var(--text);
-            max-width: 600px;           /* ~66ch centred measure */
-            text-wrap: pretty;
-        }
-        @media (max-width: 720px) {
-            .info { padding: 32px 24px 100px; gap: 36px; }
-            .info-row { gap: 10px; }
-            .info-content { font-size: 16px; }
-            .site-header { top: 18px; right: 20px; gap: 18px; }
-        }
-
-        /* ── Top copy ── */
-        .intro {
-            position: absolute;
-            top: 56px;
-            left: 80px;
-            right: 80px;
-            z-index: 5;
-            pointer-events: none;
-            text-align: center;
-        }
-        .eyebrow {
-            font-family: 'Geist Mono', monospace;
+        /* ── Intro blurb ── */
+        /* the blurb column matches one thumbnail: same left edge as the grid,
+           and exactly one grid column wide (two columns minus the 40px gutter) */
+        .intro { margin-top: 84px; max-width: calc((100% - 40px) / 2); }
+        .intro .eyebrow {
+            font-family: 'DM Mono', monospace;
             font-weight: 500;
             font-size: 12px;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: var(--blue);
-            margin-bottom: 18px;
+            color: var(--muted);
+            margin-bottom: 20px;
         }
-        .headline {
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(40px, 5.4vw, 74px);
+        .intro .blurb {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             font-weight: 400;
-            line-height: 1.06;
+            font-size: 32px;
+            line-height: 1.2;
             letter-spacing: -0.01em;
-            max-width: 900px;
-            margin: 0 auto;
+            text-wrap: pretty;
         }
 
-        /* ── Showcase caption (the project at the tip) ── */
-        .showcase {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: auto;              /* vertical position set by layout() */
-            z-index: 6;
-            text-align: center;
-            pointer-events: none;
-            transition: opacity 0.28s ease;
-        }
-        .showcase-year {
-            font-family: 'Geist Mono', monospace;
-            font-weight: 500;
-            font-size: 12px;
-            letter-spacing: 0.14em;
-            color: var(--blue);
-            margin-bottom: 10px;
-        }
-        .showcase-focus {
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(28px, 3.4vw, 46px);
-            line-height: 1.05;
-            margin-bottom: 12px;
-        }
-        .showcase-summary {
-            font-size: 15px;
-            line-height: 1.5;
-            color: rgba(26,26,26,0.66);
-            max-width: 480px;    /* fits every summary on one line (longest ≈ 456px) */
-            margin: 0 auto;
-            text-wrap: pretty;   /* fallback: if a longer summary ever wraps, no lone widow word */
-            /* reserve a stable height so the layout doesn't shift between projects */
-            min-height: 45px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .showcase.swap { opacity: 0; }
-
-        /* ── Wheel ── */
-        .stage {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-            cursor: grab;
-            touch-action: pan-y;   /* horizontal drag rotates the wheel; vertical swipe still scrolls to About */
-        }
-        .stage.dragging { cursor: grabbing; }
-
-        .wheel {
-            position: absolute;
-            left: var(--cx);
-            top: var(--cy);
-            width: 2px;
-            height: 2px;
+        /* ── Project grid: responsive, max two per row ── */
+        .grid {
+            margin-top: 88px;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: 40px;   /* 40px between thumbnails in the same row */
+            row-gap: 32px;      /* next row sits 32px below the subtitle above it */
         }
 
-        .rotor {
-            position: absolute;
-            left: 0;
-            top: 0;
-            transform: rotate(var(--angle));
-            transform-origin: 0 0;
-            will-change: transform;
-        }
-        .rotor.animate { transition: transform 0.62s cubic-bezier(0.22, 0.61, 0.36, 1); }
-
-        /* wheel rim lines removed */
-        .rim { display: none; }
-
-        /* hub spokes hint at bottom-centre of wheel is off-screen, so skip */
-
-        /* zero-size anchor at the wheel centre — only rotates, so the pivot
-           is exactly the hub and left/right spokes stay perfectly symmetric */
-        .card {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 0;
-            height: 0;
-            transform: rotate(var(--t));
-            transform-origin: 0 0;
-            transition: opacity 0.4s ease;
-        }
-        /* move out along the spoke to the rim point */
-        .card-pos {
-            position: absolute;
-            left: 0;
-            top: 0;
-            transform: translateY(calc(var(--cardR) * -1));
-        }
-        /* wheel previews are just the media — no white matte or stroke */
-        .card-inner {
-            position: absolute;
-            left: 0;
-            bottom: 0;                 /* bottom edge sits on the rim point */
-            transform: translateX(-50%);   /* centre on the spoke */
-            transform-origin: 50% 100%;     /* grow upward from the rim when active */
-            border-radius: 6px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.16), 0 2px 6px rgba(0,0,0,0.10);
-            transition: transform 0.45s cubic-bezier(0.22,0.61,0.36,1), box-shadow 0.4s ease;
-        }
-        .card.active .card-inner {
-            transform: translateX(-50%) scale(1.12);
-            box-shadow: 0 24px 54px rgba(0,0,0,0.24), 0 5px 14px rgba(0,0,0,0.12);
-        }
-        .card:not(.active) { opacity: 0.6; }
-        .card.dim { opacity: 0.3; }
-
-        .frame {
+        .card { display: block; }
+        .card-thumb {
+            display: block;
             position: relative;
-            width: var(--frame-w, 300px);
-            aspect-ratio: 16 / 9;
-            border-radius: 6px;
+            aspect-ratio: 16 / 10;   /* every thumbnail is the exact same size */
+            border-radius: 20px;
             overflow: hidden;
-            background: #000;
+            background: var(--thumb-bg);
+            text-decoration: none;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+            transition: transform 0.28s ease, box-shadow 0.28s ease;
         }
-        .frame img, .frame video {
+        .card-thumb:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
+        }
+        .card-thumb img,
+        .card-thumb video {
+            display: block;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        /* gallery previews are wider than 16:9 — show the whole mockup (no crop),
-           scaled to fit the same card, on a light backing instead of black bars */
-        .frame.gallery { background: #FAFAF7; }
-        .frame.gallery img { object-fit: contain; }
-        .card-label {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 8px;
-            margin-top: 9px;
-            padding: 0 2px;
-        }
-        .card-label .yr {
-            font-family: 'Geist Mono', monospace;
-            font-weight: 500;
-            font-size: 12px;
-            letter-spacing: 0.06em;
-            color: var(--blue);
-        }
-        .card-label .nm {
-            font-size: 13px;
-            line-height: 1.25;
-            color: #1a1a1a;
-            text-align: right;
+            object-fit: cover;   /* fill the uniform frame, no letterboxing */
         }
 
-        /* ── TV static placeholder ── */
-        .tv { position: absolute; inset: 0; }
+        .card-title {
+            font-family: 'ZT Bros Oskon 90s', serif;
+            font-weight: 300;
+            font-size: 32px;
+            line-height: 1.1;
+            padding-left: 4px;
+            margin-top: 16px;   /* title sits 16px below the thumbnail */
+        }
+        .card-sub {
+            font-size: 16px;
+            line-height: 1.4;
+            color: var(--muted);
+            padding-left: 4px;
+            margin-top: 4px;    /* 4px between title and subtitle */
+        }
+        .card-sub .yr { color: var(--blue); }
+
+        /* ── TV static placeholder (for projects without a thumbnail yet) ── */
+        .tv {
+            position: absolute;
+            inset: 0;
+            background: #000;
+        }
         .tv .bars {
             position: absolute;
             inset: 0 0 25% 0;
@@ -313,667 +192,70 @@
             mix-blend-mode: multiply;
         }
 
-        /* ── Ephemeral keyboard hint (surfaces only when the viewer is stuck) ── */
-        .hint {
-            position: absolute;
-            left: 50%;
-            bottom: 34px;
-            transform: translateX(-50%) translateY(6px);
-            z-index: 7;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            white-space: nowrap;
-            font-family: 'Geist Mono', monospace;
-            font-weight: 500;
-            font-size: 11px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: rgba(26,26,26,0.5);
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22,0.61,0.36,1);
-        }
-        .hint.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        .hint .keys { display: inline-flex; gap: 4px; }
-        .hint kbd {
-            font-family: 'Geist Mono', monospace;
-            font-size: 11px;
-            line-height: 1;
-            padding: 3px 6px;
-            border-radius: 5px;
-            background: rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.12);
-            box-shadow: 0 1px 0 rgba(0,0,0,0.06);
-            color: var(--text);
-        }
-
-        /* active preview reads as tappable */
-        .card.active .card-inner { cursor: zoom-in; }
-
-        /* ── Scroll cue (phones only): nudges the viewer that About is below ── */
-        .scroll-cue {
-            position: absolute;
-            left: 50%;
-            bottom: 16px;
-            transform: translateX(-50%);
-            z-index: 7;
-            color: rgba(26, 26, 26, 0.38);
-            pointer-events: none;
-            display: none;
-            opacity: 1;
-            transition: opacity 0.3s ease;
-            animation: cueBob 1.9s ease-in-out infinite;
-        }
-        @keyframes cueBob {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50%      { transform: translateX(-50%) translateY(5px); }
-        }
-        @media (prefers-reduced-motion: reduce) { .scroll-cue { animation: none; } }
-
-        /* ── Expanded preview ── */
-        .detail {
-            position: fixed;
-            inset: 0;
-            z-index: 60;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-        }
-        .detail-backdrop {
-            position: absolute;
-            inset: 0;
-            background: rgba(22,22,20,0.5);
-            opacity: 0;
-            transition: opacity 0.36s ease;
-        }
-        .detail.open .detail-backdrop { opacity: 1; }
-
-        .detail-card {
-            position: relative;
-            z-index: 1;
-            width: min(720px, 92vw);
-            background: #fff;
-            border: 0.5px solid transparent;   /* animates in only when expanded */
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 34px 90px rgba(0,0,0,0.30), 0 8px 22px rgba(0,0,0,0.16);
-            transition: transform 0.44s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.4s ease 0.1s;
-            will-change: transform;
-        }
-        .detail.open .detail-card { border-color: #FAFAF7; }
-        .detail-media {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            border-radius: 10px;
-            overflow: hidden;
-            background: #FAFAF7;   /* matches the card — no black can bleed at the corners */
-        }
-        .detail-media .frame {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 10px;
-            background: #FAFAF7;
-        }
-        /* fill the rounded frame: the media is ~16:9, so cover crops nothing
-           visible and leaves no black letterbox in the rounded corners */
-        .detail-media img, .detail-media video { object-fit: cover; }
-        /* a gallery shows a full multi-screen mockup — contain it so no screen
-           is cropped; the FAFAF7 backing fills the sides (never black) */
-        .detail-media.gallery img { object-fit: contain; }
-        .detail-media img { transition: opacity 0.15s ease; }
-        .detail-media img.swap { opacity: 0; }
-        .gallery-dots {
-            position: absolute;
-            left: 50%;
-            bottom: 12px;
-            transform: translateX(-50%);
-            z-index: 3;
-            display: flex;
-            gap: 6px;
-            pointer-events: none;   /* taps fall through to the media to cycle */
-        }
-        .gallery-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.55);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.45);
-            transition: background 0.25s ease, transform 0.25s ease;
-        }
-        .gallery-dot.on { background: #fff; transform: scale(1.2); }
-        .detail-info {
-            padding: 20px 6px 6px;
-            opacity: 0;
-            transform: translateY(8px);
-            transition: opacity 0.32s ease 0.12s, transform 0.32s ease 0.12s;
-        }
-        .detail.open .detail-info { opacity: 1; transform: none; }
-        .detail-year {
-            font-family: 'Geist Mono', monospace;
-            font-weight: 500;
-            font-size: 12px;
-            letter-spacing: 0.14em;
-            color: var(--blue);
-            margin-bottom: 10px;
-            /* optically align the "2" of the year with the serif/sans below it */
-            text-indent: -2px;
-        }
-        .detail-focus {
-            font-family: 'Instrument Serif', serif;
-            font-weight: 400;
-            font-size: clamp(26px, 3vw, 40px);
-            line-height: 1.04;
-            margin-bottom: 12px;
-        }
-        .detail-summary {
-            font-size: 15px;
-            line-height: 1.55;
-            color: rgba(26,26,26,0.66);
-            max-width: 560px;
-            text-wrap: pretty;
-        }
-        .detail-close {
-            position: absolute;
-            top: 26px;
-            right: 26px;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255,255,255,0.92);
-            color: #1a1a1a;
-            font-size: 14px;
-            line-height: 1;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.22);
-            z-index: 2;
-            transition: background 0.2s ease;
-        }
-        .detail-close:hover { background: #fff; }
-
-        .card.lifting { opacity: 0; transition: none; }
-
         @media (max-width: 720px) {
-            .intro { left: 24px; right: 24px; top: 36px; }
-            .showcase-summary { max-width: 300px; padding: 0 20px; }
-            .detail { padding: 16px; }
-            .hint { bottom: 24px; font-size: 10px; }
+            .page { padding: 36px 24px 80px; }
+            .brand { font-size: 28px; }
+            .nav { gap: 18px; }
+            .intro { margin-top: 56px; max-width: none; }   /* full width once the grid is single-column */
+            .intro .blurb { font-size: 26px; }
+            .grid {
+                margin-top: 56px;
+                grid-template-columns: 1fr;   /* single column on small screens */
+                row-gap: 32px;
+            }
+            .card-title { font-size: 28px; }
         }
     </style>
 </head>
 <body>
-    <header class="site-header">
-        <a class="hlink" href="#info">About</a>
-        <a class="hlink" href="https://www.linkedin.com/in/jayliquek/" target="_blank" rel="noopener">LinkedIn</a>
-    </header>
+    <div class="page">
+        <header class="site-header">
+            <a class="brand" href="./">Jay Li Quek</a>
+            <nav class="nav">
+                <a href="./">Home</a>
+                <a href="./resume.html">Resume</a>
+                <a href="https://www.linkedin.com/in/jayliquek/" target="_blank" rel="noopener">LinkedIn</a>
+            </nav>
+        </header>
 
-    <section class="hero">
-        <div class="intro">
-            <h1 class="headline">Jay Li Quek is designing AI tools for work at&nbsp;Meta</h1>
-        </div>
+        <section class="intro">
+            <p class="eyebrow">Based in New York, NY</p>
+            <p class="blurb">Currently designing AI tools for work at Meta. I work across product strategy and craft. I'm drawn to the systems layer—building scalable frameworks, setting direction across teams, and doing my best work in spaces that are still taking shape.</p>
+        </section>
 
-        <div class="showcase" id="showcase">
-            <div class="showcase-year" id="scYear">2026</div>
-            <div class="showcase-focus" id="scFocus">Growth and sharing on Meta AI</div>
-            <p class="showcase-summary" id="scSummary">Built sharing and growth infrastructure across mobile and web</p>
-        </div>
-
-        <div class="stage" id="stage">
-            <div class="wheel">
-                <div class="rotor" id="rotor">
-                    <div class="rim"></div>
-                    <!-- cards injected by JS -->
-                </div>
-            </div>
-        </div>
-
-        <div class="hint" id="hint" aria-hidden="true"></div>
-
-        <div class="scroll-cue" id="scrollCue" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-        </div>
-    </section>
-
-    <section class="info" id="info">
-        <div class="info-row">
-            <span class="info-label">About</span>
-            <p class="info-content">Based in New York, NY, I work across product strategy and craft. I'm drawn to the systems layer—building scalable frameworks, setting direction across teams, and doing my best work in spaces that are still taking shape.</p>
-        </div>
-        <div class="info-row">
-            <span class="info-label">Education</span>
-            <p class="info-content">Computer Science and Media, Culture and Communications, New York University</p>
-        </div>
-    </section>
-
-    <!-- expanded preview -->
-    <div class="detail" id="detail">
-        <div class="detail-backdrop" data-close></div>
-        <div class="detail-card" id="detailCard">
-            <button class="detail-close" id="detailClose" aria-label="Close preview">✕</button>
-            <div class="detail-media" id="detailMedia"></div>
-            <div class="detail-info">
-                <div class="detail-year" id="detailYear"></div>
-                <h2 class="detail-focus" id="detailFocus"></h2>
-                <p class="detail-summary" id="detailSummary"></p>
-            </div>
-        </div>
+        <main class="grid" id="grid"></main>
     </div>
 
     <script>
+    // Project order matches the layout top-to-bottom, left-to-right.
+    // `thumb` is null when no artwork exists yet — the TV static placeholder
+    // stands in until a real thumbnail is dropped in.
+    // `slug` drives the case-study link; the detail pages are built on a
+    // separate branch, so this layout only points at ./projects/<slug>.html.
     const PROJECTS = [
-        { year: '2026', focus: 'AI tools for work',            summary: "Defining Meta's internal AI coding assistant",              media: { type: 'tv' } },
-        { year: '2026', focus: 'Growth and sharing on Meta AI', summary: 'Built sharing and growth infrastructure across mobile and web', media: { type: 'gallery', srcs: ['./images/meta-ai-growth.png', './images/meta-ai-vibes.png'], previewIndex: 1 } },
-        { year: '2025', focus: 'Share sheet on Facebook',       summary: 'Led sharing strategy and a cross-org quality work stream',    media: { type: 'image', src: './images/share-sheet-facebook.png' } },
-        { year: '2024', focus: 'Messenger growth',              summary: 'Scaled friending and drove +2.5M friend accepts on Facebook', media: { type: 'image', src: './images/messenger-growth.png' } },
-        { year: '2023', focus: 'Messenger notes & notifications', summary: "Owned Messenger's notification strategy and shipped Music Notes", media: { type: 'video', src: './videos/music-notes.mp4' } },
+        { slug: 'vibe-coding-terminal', title: 'Vibe coding the terminal UI',                     year: 'Current', sub: 'Building an internal terminal for 70K engineers at Meta',        thumb: null },
+        { slug: 'vibes-growth-flywheel', title: 'Kickstarting the growth flywheel on Vibes',       year: '2026',    sub: 'Building the sharing & growth infrastructure for a suite of new features', thumb: { type: 'image', src: './images/meta-ai-vibes.png' } },
+        { slug: 'meta-ai-sharing',       title: 'Evolution of sharing on Meta AI',                  year: '2025',    sub: 'AI for utility: Shaping artifact sharing and the considerations that follow', thumb: { type: 'image', src: './images/meta-ai-growth.png' } },
+        { slug: 'facebook-share-sheet',  title: 'Sparking conversation through sharing experiences', year: '2025',   sub: 'Share sheet on Facebook',                                        thumb: { type: 'image', src: './images/share-sheet-facebook.png' } },
+        { slug: 'messenger-growth',      title: 'Driving 2.5M friend accepts on Messenger',         year: '2024',    sub: 'Messenger growth',                                               thumb: { type: 'image', src: './images/messenger-growth.png' } },
+        { slug: 'messenger-notes',       title: 'Expressing mood with music notes',                 year: '2023',    sub: 'Messenger notes',                                                thumb: { type: 'video', src: './videos/music-notes.mp4' } },
     ];
 
-    const STEP = 22;             // degrees between projects
-    const N = PROJECTS.length;
-    const root = document.documentElement;
-    const rotor = document.getElementById('rotor');
-    const stage = document.getElementById('stage');
-    const showcase = document.getElementById('showcase');
-    const intro = document.querySelector('.intro');
-    const heroEl = document.querySelector('.hero');
-    const scrollCue = document.getElementById('scrollCue');
-
-    let index = 0;               // active project at the tip
-    let angle = 0;               // current rotor angle (deg); active = index*STEP -> rotor at -index*STEP
-    const cards = [];
-
-    // ── media builder (shared by wheel cards + expanded detail) ──
-    // `idx` selects which image a gallery renders; defaults to its previewIndex.
-    function makeMedia(p, idx) {
-        const frame = document.createElement('div');
-        frame.className = 'frame';
-        if (p.media.type === 'tv') {
-            frame.innerHTML = '<div class="tv"><div class="bars"></div><div class="bottom"></div><div class="scan"></div></div>';
-        } else if (p.media.type === 'image') {
-            const img = document.createElement('img');
-            img.src = p.media.src; img.alt = p.focus; img.loading = 'lazy';
-            frame.appendChild(img);
-        } else if (p.media.type === 'gallery') {
-            frame.classList.add('gallery');
-            const g = (idx == null) ? (p.media.previewIndex || 0) : idx;
-            const img = document.createElement('img');
-            img.src = p.media.srcs[g]; img.alt = p.focus; img.loading = 'lazy';
-            frame.appendChild(img);
-        } else if (p.media.type === 'video') {
-            const v = document.createElement('video');
-            v.src = p.media.src; v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'metadata';
-            frame.appendChild(v);
+    function buildThumb(p) {
+        if (!p.thumb) return '<div class="tv"><div class="bars"></div><div class="bottom"></div><div class="scan"></div></div>';
+        if (p.thumb.type === 'video') {
+            return `<video src="${p.thumb.src}" muted loop autoplay playsinline preload="metadata"></video>`;
         }
-        return frame;
+        return `<img src="${p.thumb.src}" alt="${p.title}" loading="lazy">`;
     }
 
-    // ── build cards ──
-    PROJECTS.forEach((p, i) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.style.setProperty('--t', (i * STEP) + 'deg');
-
-        const pos = document.createElement('div');
-        pos.className = 'card-pos';
-
-        const inner = document.createElement('div');
-        inner.className = 'card-inner';
-
-        const frame = makeMedia(p);
-        if (p.media.type === 'video') card._video = frame.querySelector('video');
-
-        inner.appendChild(frame);
-        pos.appendChild(inner);
-        card.appendChild(pos);
-        card.addEventListener('click', () => {
-            if (dragged) return;
-            if (i === index) openDetail(i);   // tap the active preview to expand it
-            else snapTo(i);                   // tap a side preview to bring it to the tip
-        });
-        rotor.appendChild(card);
-        cards.push(card);
-    });
-
-    // ── ephemeral keyboard hint: surfaces only when the viewer seems stuck ──
-    const hint = document.getElementById('hint');
-    const coarsePointer = window.matchMedia('(hover: none)').matches;
-    hint.innerHTML = coarsePointer
-        ? '<span>Swipe</span><span>to move between projects</span>'
-        : '<span>Use</span><span class="keys"><kbd>←</kbd><kbd>→</kbd></span><span>to move between projects</span>';
-
-    const STUCK_DELAY = 4200;   // ms of inactivity before we assume the viewer is stuck
-    let stuckTimer = null, hintHideTimer = null;
-    function showHint() {
-        if (detailOpen) { armHint(); return; }   // never over the expanded overlay
-        hint.classList.add('show');
-        clearTimeout(hintHideTimer);
-        hintHideTimer = setTimeout(() => hint.classList.remove('show'), 1500);   // ephemeral: fade after 1.5s
-    }
-    function armHint() {
-        clearTimeout(stuckTimer);
-        stuckTimer = setTimeout(showHint, STUCK_DELAY);
-    }
-    function noteActivity() {
-        hint.classList.remove('show');
-        clearTimeout(hintHideTimer);
-        armHint();   // re-arm — it returns if they get stuck again
-    }
-
-    // ── geometry ──
-    // Dynamic vertical layout: guarantees a minimum gap between the headline and
-    // the caption by shrinking the preview when vertical space is tight.
-    function layout() {
-        const vw = window.innerWidth, vh = window.innerHeight;
-
-        // keep the headline clear of the fixed header at every width (esp. narrow)
-        const headerBottom = document.querySelector('.site-header').getBoundingClientRect().bottom;
-        intro.style.top = Math.round(headerBottom + 22) + 'px';
-
-        // rim radius scales with viewport width so the arc feels huge but proportional
-        const R = Math.min(Math.max(vw * 0.95, 1050), 1650);
-        const cardR = R + 24;
-        const ACTIVE_SCALE = 1.12;
-        // Cap the preview width to the arc so neighbouring cards never overlap.
-        // Adjacent cards sit STEP° apart on the rim (chord below); the safe width
-        // was calibrated against the card tilt — ~300px at the 1050px-radius floor,
-        // rising to the full 392px once the arc is wide enough.
-        const chord = 2 * cardR * Math.sin((STEP * Math.PI / 180) / 2);
-        const maxFrameByArc = chord * 0.84 - 42;
-        const introBottom = intro.offsetTop + intro.offsetHeight;   // hero-relative
-        const captionH = showcase.offsetHeight;
-
-        // preview centred vertically; description sits BELOW it
-        // (hard cap kept a touch under the arc limit for more breathing room around the card)
-        const baseFrameW = Math.min(324, vw * 0.78, maxFrameByArc);
-        const baseCardH = baseFrameW * 9 / 16 * ACTIVE_SCALE;
-        const MIN_GAP = 28, CARD_GAP = 40, BOT_PAD = Math.max(30, vh * 0.05);
-        const regionTop = introBottom + MIN_GAP;
-        const regionH = (vh - BOT_PAD) - regionTop;
-        let scale = 1, cardH = baseCardH;
-        if (cardH + CARD_GAP + captionH > regionH) {
-            scale = Math.max(0.4, (regionH - CARD_GAP - captionH) / baseCardH);
-            cardH = baseCardH * scale;
-        }
-        const frameW = baseFrameW * scale;
-        const stackH = cardH + CARD_GAP + captionH;
-        // desktop centres the stack in the hero; small screens (narrow phones OR
-        // short landscape) anchor it near the headline and trim the hero to fit the
-        // content — compact, no dead space, and never clips the caption
-        const isCompact = vw <= 640 || vh <= 600;
-        const cardTop = regionTop + Math.max(0, (regionH - stackH) * (isCompact ? 0.12 : 0.4));
-        const showcaseY = cardTop + cardH;           // rim tip / card bottom
-        const captionTop = showcaseY + CARD_GAP;     // description below the preview
-
-        if (isCompact) heroEl.style.height = Math.round(captionTop + captionH + 64) + 'px';
-        else heroEl.style.removeProperty('height');
-        scrollCue.style.display = isCompact ? 'block' : 'none';
-
-        const cy = showcaseY + cardR;
-        root.style.setProperty('--frame-w', frameW + 'px');
-        root.style.setProperty('--R', R + 'px');
-        root.style.setProperty('--cardR', cardR + 'px');
-        root.style.setProperty('--cx', (vw / 2) + 'px');
-        root.style.setProperty('--cy', cy + 'px');
-        showcase.style.top = captionTop + 'px';
-    }
-
-    // ── render current rotor angle + emphasis ──
-    function render() {
-        root.style.setProperty('--angle', (-angle) + 'deg');
-        cards.forEach((card, i) => {
-            const delta = Math.abs(i * STEP - angle);
-            card.classList.toggle('active', delta < STEP / 2);
-            card.classList.toggle('dim', delta > STEP * 1.6);
-        });
-    }
-
-    function updateShowcase() {
-        const p = PROJECTS[index];
-        showcase.classList.add('swap');
-        setTimeout(() => {
-            document.getElementById('scYear').textContent = p.year;
-            document.getElementById('scFocus').textContent = p.focus;
-            document.getElementById('scSummary').textContent = p.summary;
-            showcase.classList.remove('swap');
-        }, 190);
-        // play only the active video
-        cards.forEach((c) => { if (c._video) { c._video.pause(); } });
-        if (cards[index]._video) { cards[index]._video.play().catch(() => {}); }
-    }
-
-    function scrollToInfo() {
-        document.getElementById('info').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    function snapTo(i, animate = true) {
-        i = Math.max(0, Math.min(N - 1, i));
-        const changed = i !== index;
-        index = i;
-        angle = index * STEP;
-        rotor.classList.toggle('animate', animate);
-        render();
-        if (changed || !animate) updateShowcase();
-        noteActivity();   // any settle counts as activity; re-arm the stuck timer
-    }
-
-    // ── drag to rotate ──
-    let dragging = false, startX = 0, startY = 0, startAngle = 0, dragged = false, pastEnd = false, startedAtLast = false;
-    let isTouch = false, axisLock = null;   // on touch: lock to 'x' (rotate) or 'y' (let the page scroll)
-    const DRAG_SENS = 0.16;   // deg per px
-    const MAX_ANGLE = (N - 1) * STEP;
-
-    function onDown(e) {
-        noteActivity();
-        dragging = true; dragged = false; pastEnd = false;
-        isTouch = !!e.touches; axisLock = null;
-        startedAtLast = (index === N - 1);   // scroll-past only if we began on the last card
-        startX = (e.touches ? e.touches[0].clientX : e.clientX);
-        startY = (e.touches ? e.touches[0].clientY : e.clientY);
-        startAngle = angle;
-        rotor.classList.remove('animate');
-        stage.classList.add('dragging');
-    }
-    function onMove(e) {
-        if (!dragging) return;
-        const x = (e.touches ? e.touches[0].clientX : e.clientX);
-        const y = (e.touches ? e.touches[0].clientY : e.clientY);
-        const dx = x - startX, dy = y - startY;
-        // on touch, decide once whether this gesture is a horizontal rotate or a vertical page-scroll
-        if (isTouch && axisLock === null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
-            axisLock = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
-        }
-        if (axisLock === 'y') return;   // vertical swipe — let the browser scroll to About
-        if (Math.abs(dx) > 4) dragged = true;
-        // dragging right rotates the wheel so earlier projects come to the tip
-        const raw = startAngle - dx * DRAG_SENS;
-        pastEnd = startedAtLast && raw > MAX_ANGLE + STEP * 0.4;   // pushed past while already on last
-        angle = Math.max(0, Math.min(MAX_ANGLE, raw)); // hard clamp — the card never overshoots
-        render();
-    }
-    function onUp() {
-        if (!dragging) return;
-        dragging = false;
-        stage.classList.remove('dragging');
-        if (pastEnd) { pastEnd = false; snapTo(N - 1, false); scrollToInfo(); return; }
-        snapTo(Math.round(angle / STEP));
-    }
-
-    stage.addEventListener('mousedown', onDown);
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', onUp);
-    stage.addEventListener('touchstart', onDown, { passive: true });
-    window.addEventListener('touchmove', onMove, { passive: true });
-    window.addEventListener('touchend', onUp);
-
-    // ── scroll to rotate ──
-    let wheelTimer = null, overscroll = 0;
-    stage.addEventListener('wheel', (e) => {
-        e.preventDefault();
-        noteActivity();
-        const dir = (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY);
-        rotor.classList.remove('animate');
-        const raw = angle + dir * 0.06;
-        if (raw > MAX_ANGLE) {
-            angle = MAX_ANGLE;
-            render();
-            clearTimeout(wheelTimer);
-            // only a deliberate push while ALREADY settled on the last card scrolls to About
-            // (so simply arriving at the last card never auto-scrolls)
-            if (index === N - 1) {
-                overscroll += (raw - MAX_ANGLE);
-                if (overscroll > 12) { overscroll = 0; scrollToInfo(); return; }
-            }
-            wheelTimer = setTimeout(() => { overscroll = 0; snapTo(MAX_ANGLE / STEP); }, 120);
-            return;
-        }
-        overscroll = 0;
-        angle = Math.max(0, raw);   // hard clamp — no overshoot before the first card
-        render();
-        clearTimeout(wheelTimer);
-        wheelTimer = setTimeout(() => snapTo(Math.round(angle / STEP)), 120);
-    }, { passive: false });
-
-    // ── keys ──
-    window.addEventListener('keydown', (e) => {
-        if (detailOpen) return;
-        if (e.key === 'ArrowLeft')  { snapTo(index - 1); }
-        if (e.key === 'ArrowRight') { if (index === N - 1) scrollToInfo(); else snapTo(index + 1); }
-    });
-
-    // ── expand a preview into the detail overlay ──
-    const detail = document.getElementById('detail');
-    const detailCard = document.getElementById('detailCard');
-    const detailMedia = document.getElementById('detailMedia');
-    let detailOpen = false, detailVideo = null, galleryTimer = null;
-
-    // transform that maps the detail card onto the tapped preview (for a grow-from-source feel)
-    function flipFrom(i) {
-        const src = cards[i].querySelector('.frame').getBoundingClientRect();
-        const m = detailMedia.getBoundingClientRect();
-        const cardRect = detailCard.getBoundingClientRect();
-        const originX = (m.left + m.width / 2) - cardRect.left;
-        const originY = (m.top + m.height / 2) - cardRect.top;
-        const s = src.width / m.width;
-        const dx = (src.left + src.width / 2) - (m.left + m.width / 2);
-        const dy = (src.top + src.height / 2) - (m.top + m.height / 2);
-        return { origin: `${originX}px ${originY}px`, transform: `translate(${dx}px, ${dy}px) scale(${s})` };
-    }
-
-    // gallery: tap the expanded media to cycle through its images
-    function setupGallery(p, frame, startIdx) {
-        const srcs = p.media.srcs;
-        const img = frame.querySelector('img');
-        let cur = startIdx || 0;
-        srcs.forEach((s) => { const im = new Image(); im.src = s; });   // preload for an instant swap
-
-        const dots = document.createElement('div');
-        dots.className = 'gallery-dots';
-        srcs.forEach((_, k) => {
-            const d = document.createElement('span');
-            d.className = 'gallery-dot' + (k === cur ? ' on' : '');
-            dots.appendChild(d);
-        });
-        detailMedia.appendChild(dots);
-
-        function show(k) {
-            cur = (k + srcs.length) % srcs.length;
-            img.classList.add('swap');                                  // fade out
-            setTimeout(() => { img.src = srcs[cur]; img.classList.remove('swap'); }, 150);
-            [...dots.children].forEach((d, di) => d.classList.toggle('on', di === cur));
-        }
-        // auto-advance every 2s until the viewer takes over
-        clearInterval(galleryTimer);
-        galleryTimer = setInterval(() => show(cur + 1), 2000);
-        frame.style.cursor = 'pointer';
-        frame.addEventListener('click', (e) => {
-            e.stopPropagation();
-            clearInterval(galleryTimer); galleryTimer = null;   // stop auto-cycling once they interact
-            show(cur + 1);
-        });
-    }
-
-    function openDetail(i) {
-        if (detailOpen) return;
-        const p = PROJECTS[i];
-        detailMedia.innerHTML = '';
-        const gallery = p.media.type === 'gallery';
-        detailMedia.classList.toggle('gallery', gallery);
-        const startIdx = gallery ? (p.media.previewIndex || 0) : undefined;
-        const media = makeMedia(p, startIdx);
-        detailMedia.appendChild(media);
-        if (gallery) setupGallery(p, media, startIdx);
-        document.getElementById('detailYear').textContent = p.year;
-        document.getElementById('detailFocus').textContent = p.focus;
-        document.getElementById('detailSummary').textContent = p.summary;
-
-        detail.style.display = 'flex';
-        // measure natural position, then start collapsed onto the source preview
-        detailCard.style.transition = 'none';
-        const f = flipFrom(i);
-        detailCard.style.transformOrigin = f.origin;
-        detailCard.style.transform = f.transform;
-        cards[i].classList.add('lifting');
-        detailCard.getBoundingClientRect();               // force reflow
-        requestAnimationFrame(() => {
-            detailCard.style.transition = '';
-            detailCard.style.transform = 'none';
-            detail.classList.add('open');
-        });
-
-        detailOpen = true;
-        detailVideo = media.querySelector('video');
-        if (detailVideo) detailVideo.play().catch(() => {});
-    }
-
-    function closeDetail() {
-        if (!detailOpen) return;
-        detailOpen = false;
-        const collapsing = index;
-        const f = flipFrom(collapsing);
-        detailCard.style.transformOrigin = f.origin;
-        detailCard.style.transform = f.transform;
-        detail.classList.remove('open');
-        if (detailVideo) detailVideo.pause();
-        clearInterval(galleryTimer); galleryTimer = null;
-
-        // cleanup after the collapse animation (timeout is reliable across browsers)
-        setTimeout(() => {
-            if (detailOpen) return;            // reopened in the meantime
-            detail.style.display = 'none';
-            detailCard.style.transform = 'none';
-            cards[collapsing].classList.remove('lifting');
-            detailMedia.innerHTML = '';
-            detailVideo = null;
-        }, 460);
-    }
-
-    detail.addEventListener('click', (e) => {
-        if (e.target === detail || e.target.hasAttribute('data-close')) closeDetail();
-    });
-    document.getElementById('detailClose').addEventListener('click', closeDetail);
-    window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDetail(); });
-
-    // fade the scroll cue away as soon as the viewer starts scrolling
-    window.addEventListener('scroll', () => {
-        scrollCue.style.opacity = window.scrollY > 24 ? '0' : '';
-    }, { passive: true });
-
-    window.addEventListener('resize', () => { layout(); render(); });
-    // headline height depends on the loaded serif font — re-measure once ready
-    window.addEventListener('load', () => { layout(); render(); });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { layout(); render(); });
-
-    // init — default to "Growth and sharing on Meta AI"
-    layout();
-    snapTo(1, false);
+    document.getElementById('grid').innerHTML = PROJECTS.map((p) => `
+        <article class="card">
+            <a class="card-thumb" href="./projects/${p.slug}.html">${buildThumb(p)}</a>
+            <h2 class="card-title">${p.title}</h2>
+            <p class="card-sub"><span class="yr">${p.year}</span> · ${p.sub}</p>
+        </article>
+    `).join('');
     </script>
 </body>
 </html>
