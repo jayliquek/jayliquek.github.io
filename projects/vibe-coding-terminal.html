@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text x='8' y='8' font-size='17' text-anchor='middle' dominant-baseline='central' fill='%233B4EFF'>✦</text></svg>" />
+    <title>Vibe coding the terminal UI — Jay Li Quek</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        /* ── Display face for titles: ZT Bros Oskon 90s ── */
+        @font-face {
+            font-family: 'ZT Bros Oskon 90s';
+            src: url('../CSS/font/ZTBrosOskon90s-Regular.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'ZT Bros Oskon 90s';
+            src: url('../CSS/font/ZTBrosOskon90s-Italic.otf') format('opentype');
+            font-weight: 400;
+            font-style: italic;
+            font-display: swap;
+        }
+        /* header brand (matches index.html) — Light weight */
+        @font-face {
+            font-family: 'ZT Bros Oskon 90s';
+            src: url('../fonts/ZTBrosOskon90s-Light.otf') format('opentype');
+            font-weight: 300; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'ZT Bros Oskon 90s';
+            src: url('../fonts/ZTBrosOskon90s-LightItalic.otf') format('opentype');
+            font-weight: 300; font-style: italic; font-display: swap;
+        }
+
+        :root {
+            --bg: #EDEBE3;
+            --text: #1a1a1a;
+            --muted: rgba(26, 26, 26, 0.60);
+            --faint: rgba(26, 26, 26, 0.42);
+            --blue: #3B4EFF;
+            --green: #2C7A4B;            /* pros — earthy green tuned to the warm palette */
+            --red: #B23A2E;              /* cons — brick red tuned to the warm palette */
+            --thumb-bg: #E4E2D9;         /* light backing behind placeholders */
+            --asset-bg: #F1F1F1;         /* white backing to match on-white mockups */
+            --surface: #F5F3EC;          /* lifted warm surface (modal card) */
+            --hairline: rgba(26, 26, 26, 0.14);
+            --measure: 68ch;             /* reading column cap */
+            --slide-w: clamp(208px, 26vw, 264px);  /* phone width in the prototype */
+            --slide-h: clamp(340px, 50vh, 470px);  /* shared gallery slide height */
+            --asset-w: 618px;            /* shared width for playables/screenshot/widgets */
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* ease-out-quint */
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;   /* only the full-bleed rows scroll, never the page */
+        }
+
+        .page {
+            max-width: 1936px;   /* matches the homepage masthead width */
+            margin: 0 auto;
+            padding: 44px 80px 140px;
+        }
+
+        /* ── Header: name left, nav right (matches index.html) ── */
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 24px;
+        }
+        .brand {
+            font-family: 'ZT Bros Oskon 90s', serif;
+            font-weight: 300;
+            font-size: 34px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            line-height: 1;
+            color: var(--text);
+            text-decoration: none;
+        }
+        .nav { display: flex; gap: 32px; padding-top: 8px; }
+        .nav a {
+            font-family: 'DM Mono', monospace;
+            font-weight: 500;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text);
+            text-decoration: none;
+            opacity: 0.68;
+            transition: opacity 0.2s ease, color 0.2s ease;
+        }
+        .nav a:hover { opacity: 1; color: var(--blue); }
+        .nav a[aria-current="page"] { opacity: 1; color: var(--blue); }
+
+        /* ── Reading column ── */
+        .content { max-width: 860px; margin: 0 auto; }
+
+        /* Shared mono eyebrow/label — one size everywhere */
+        .kicker {
+            font-family: 'Geist Mono', monospace;
+            font-weight: 500;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--blue);
+        }
+
+        /* ── Hero ── */
+        .hero {
+            margin-top: 64px;
+            max-width: var(--asset-w);   /* shared asset width, centered */
+            margin-inline: auto;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--asset-bg);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+        }
+        .hero img, .hero video { display: block; width: 100%; height: auto; }
+
+        .lede { margin-top: 40px; }
+        .title {
+            font-family: 'ZT Bros Oskon 90s', 'Instrument Serif', serif;
+            font-weight: 400;
+            font-size: clamp(36px, 5vw, 54px);
+            line-height: 1.06;
+            letter-spacing: -0.01em;
+            text-wrap: balance;
+        }
+        .subtitle {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-weight: 400;
+            font-size: 21px;             /* <= half the 54px title */
+            line-height: 1.34;
+            color: var(--muted);
+            margin-top: 4px;              /* 4px below the title */
+            max-width: var(--measure);
+            text-wrap: pretty;
+        }
+
+        /* 24px below the subtitle */
+        .divider { border: 0; border-top: 1px solid var(--hairline); margin: 24px 0 0; }
+
+        /* ── Meta section ── 24px below the divider; 24px between items */
+        .meta { margin-top: 24px; display: grid; gap: 24px; padding-bottom: 24px; }
+        .meta-block .kicker { margin-bottom: 10px; }
+        .meta-block p:not(.kicker) {
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: none;      /* span the full content width (= divider) */
+            text-wrap: pretty;
+        }
+        .facts {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 28px 24px;
+            padding-top: 0;
+        }
+        .fact .kicker { margin-bottom: 10px; }
+        .fact ul { list-style: none; }
+        .fact li, .fact .val {
+            font-size: 16px;          /* same size as description/context values */
+            line-height: 1.5;
+            color: var(--text);
+        }
+        .fact li + li { margin-top: 2px; }
+
+        /* ── Body blocks ── (case study starts here, below the facts' bottom padding) */
+        .body { margin-top: 40px; display: flex; flex-direction: column; gap: 56px; }
+
+        .block-text { display: flex; flex-direction: column; gap: 14px; }
+        .block-text .kicker { margin-bottom: 2px; }
+        .block-text p:not(.kicker) {
+            font-size: 16px;
+            line-height: 1.65;
+            max-width: none;      /* span the full content width (= divider) */
+            text-wrap: pretty;
+        }
+        .block-list {
+            margin: 0;
+            padding-left: 1.5em;
+            display: grid;
+            gap: 8px;
+            max-width: var(--measure);
+        }
+        .block-list li {
+            font-size: 16px;
+            line-height: 1.6;
+            padding-left: 4px;
+        }
+        .block-list li::marker { color: var(--muted); }
+
+        /* Single figure */
+        figure { margin: 0; }
+        .figure-media {
+            max-width: var(--asset-w);   /* shared asset width, centered */
+            margin-inline: auto;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--asset-bg);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .figure-media img, .figure-media video { display: block; width: 100%; height: auto; }
+        /* Crop variant: fix the container aspect and cover it, trimming side bleed. */
+        .figure-media.crop img, .figure-media.crop video {
+            width: 100%; height: 100%; object-fit: cover; object-position: center;
+        }
+        figcaption {
+            margin-top: 14px;
+            text-align: center;
+            font-size: 13.5px;
+            line-height: 1.5;
+            color: var(--muted);
+        }
+
+        /* Placeholder box (until real assets land) */
+        .ph {
+            display: grid;
+            place-content: center;
+            gap: 8px;
+            background:
+                repeating-linear-gradient(-45deg,
+                    transparent 0 11px, rgba(26,26,26,0.028) 11px 22px),
+                var(--thumb-bg);
+            color: var(--faint);
+            text-align: center;
+            padding: 20px;
+        }
+        .ph .ph-label {
+            font-family: 'Geist Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .ph .ph-dim { font-family: 'Geist Mono', monospace; font-size: 10px; opacity: 0.7; }
+
+        /* ── Full-bleed gallery with a single swapping caption ── */
+        .gallery { position: relative; }
+        .gallery-track {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-block: 4px;
+            /* bleed to viewport edges out of the reading column */
+            width: 100vw;
+            margin-inline: calc(50% - 50vw);
+            /* center first/last slide (nominal narrow-slide half-width) */
+            padding-inline: max(24px, calc(50vw - var(--slide-h) * 0.33));
+        }
+        .gallery-track::-webkit-scrollbar { display: none; }
+        /* Slides share one height; width scales to each asset's aspect ratio. */
+        .slide {
+            flex: 0 0 auto;
+            height: var(--slide-h);
+            scroll-snap-align: center;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--asset-bg);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            opacity: 0.5;
+            transform: scale(0.95);
+            transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+        }
+        .slide.is-active { opacity: 1; transform: scale(1); }
+        .slide img, .slide video {
+            display: block;
+            height: 100%;
+            width: auto;
+            object-fit: cover;   /* crop any background so the 12px radius sits on content */
+        }
+        .slide .ph { height: 100%; aspect-ratio: 9 / 19; }
+
+        /* Fixed-height wrapper so the block below never shifts as the caption
+           changes line count; caption + dots sit inside it. */
+        .gallery-foot {
+            padding-top: 22px;
+            height: 124px;
+        }
+        .gallery-caption {
+            text-align: center;
+            display: grid;
+            place-content: start center;
+            gap: 4px;
+        }
+        .gallery-caption .gc-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 22px;
+            line-height: 1.2;
+        }
+        .gallery-caption .gc-desc {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--muted);
+            max-width: 46ch;
+        }
+        .gallery-caption.swapping { opacity: 0; }
+        .gallery-caption { transition: opacity 0.28s ease; }
+        .gallery-progress {
+            display: flex; justify-content: center; gap: 7px; margin-top: 8px;
+        }
+        .gallery-progress .dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--hairline);
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        .gallery-progress .dot.on { background: var(--blue); transform: scale(1.25); }
+
+        /* ── Interactive: click a phone to focus, pros/cons swap ── */
+        .proto { display: grid; gap: 28px; }
+        .proto-stage {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-block: 6px;
+            width: 100vw;
+            margin-inline: calc(50% - 50vw);
+            padding-inline: max(24px, calc(50vw - var(--slide-w) / 2));
+            align-items: center;
+        }
+        .proto-stage::-webkit-scrollbar { display: none; }
+        .screen {
+            flex: 0 0 var(--slide-w);
+            scroll-snap-align: center;
+            border: 0;
+            padding: 0;
+            background: none;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: transform 0.45s var(--ease), opacity 0.45s var(--ease), filter 0.45s var(--ease);
+            opacity: 0.42;
+            transform: scale(0.86);
+            filter: saturate(0.85);
+        }
+        .screen:focus-visible { outline: 2px solid var(--blue); outline-offset: 6px; }
+        .screen .screen-media {
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--thumb-bg);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .screen .screen-media img, .screen .screen-media video { display: block; width: 100%; height: auto; }
+        .screen .screen-media .ph { aspect-ratio: 9 / 19; }
+        .screen.is-focused {
+            opacity: 1;
+            transform: scale(1);
+            filter: none;
+        }
+        .screen.is-focused .screen-media { box-shadow: 0 26px 90px rgba(0,0,0,0.12); }
+
+        .proto-detail {
+            max-width: 620px;
+            margin: 0 auto;
+            width: 100%;
+            transition: opacity 0.25s ease;
+        }
+        .proto-detail.swapping { opacity: 0; }
+        .proto-head {
+            display: flex; align-items: baseline; gap: 12px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .proto-name { font-family: 'Instrument Serif', serif; font-size: 24px; line-height: 1; }
+        .proto-count { font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--faint); }
+        .proscons { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 32px; }
+        .proscons .col-label {
+            font-family: 'Geist Mono', monospace;
+            font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .proscons .pros .col-label { color: var(--green); }
+        .proscons .cons .col-label { color: var(--red); }
+        .proscons ul { list-style: none; display: grid; gap: 10px; }
+        .proscons li {
+            position: relative;
+            padding-left: 20px;
+            font-size: 15px; line-height: 1.5;
+            color: var(--text);
+        }
+        .proscons li::before {
+            position: absolute; left: 0; top: 0;
+            font-family: 'Geist Mono', monospace; font-size: 13px;
+        }
+        .proscons .pros li::before { content: '+'; color: var(--green); }
+        .proscons .cons li::before { content: '–'; color: var(--red); }
+        .proto-hint {
+            text-align: center;
+            font-family: 'Geist Mono', monospace;
+            font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+            color: var(--faint);
+        }
+
+        /* ── Entrance motion ── */
+        .reveal { opacity: 0; transform: translateY(14px); }
+        .reveal.in { opacity: 1; transform: none; transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+
+        /* ── Footer: prev · all work · next ── */
+        .foot {
+            margin-top: 96px;
+            padding-top: 28px;
+            border-top: 1px solid var(--hairline);
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: start;
+            gap: 20px 24px;
+        }
+        .foot-link {
+            display: inline-flex;
+            flex-direction: column;
+            gap: 4px;
+            text-decoration: none;
+            max-width: 26ch;
+        }
+        .foot-prev { grid-column: 1; justify-self: start; text-align: left; }
+        .foot-next { grid-column: 3; justify-self: end;   text-align: right; }
+        .foot-all  { grid-column: 2; justify-self: center; align-self: center; }
+        .foot-dir {
+            font-family: 'Geist Mono', monospace;
+            font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--faint);
+            transition: color 0.2s ease;
+        }
+        .foot-title {
+            font-size: 16px; line-height: 1.3; color: var(--text);
+            transition: color 0.2s ease;
+        }
+        .foot-link:hover .foot-dir,
+        .foot-link:hover .foot-title { color: var(--blue); }
+        .foot-all {
+            font-family: 'Geist Mono', monospace;
+            font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
+            color: var(--text); text-decoration: none; opacity: 0.7;
+            transition: opacity 0.2s ease, color 0.2s ease;
+        }
+        .foot-all:hover { opacity: 1; color: var(--blue); }
+
+        /* ── Password gate ── */
+        body.gate-locked { overflow: hidden; }
+        body.gate-locked .page {
+            filter: blur(7px);
+            pointer-events: none;
+            user-select: none;
+        }
+        .gate {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            background: rgba(237, 235, 227, 0.66);
+            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+        }
+        .gate[hidden] { display: none; }
+        .gate-card {
+            width: 100%;
+            max-width: 360px;
+            background: var(--surface);
+            border: 1px solid var(--hairline);
+            border-radius: 14px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16);
+            padding: 30px 30px 28px;
+        }
+        .gate-title {
+            font-family: 'ZT Bros Oskon 90s', 'Instrument Serif', serif;
+            font-weight: 400;
+            font-size: 28px;
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+        }
+        .gate-sub {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--muted);
+            margin-top: 8px;
+        }
+        .gate-form { display: flex; flex-direction: column; gap: 12px; margin-top: 22px; }
+        .gate-input {
+            width: 100%;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            padding: 12px 14px;
+            color: var(--text);
+            background: var(--bg);
+            border: 1px solid var(--hairline);
+            border-radius: 9px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .gate-input::placeholder { color: rgba(26, 26, 26, 0.5); }
+        .gate-input:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(59, 78, 255, 0.12);
+        }
+        .gate-btn {
+            font-family: 'Geist Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--blue);
+            border: 0;
+            border-radius: 9px;
+            padding: 13px 16px;
+            cursor: pointer;
+            transition: transform 0.15s ease, background 0.2s ease;
+        }
+        .gate-btn:hover { background: #2E3FE0; }
+        .gate-btn:active { transform: translateY(1px); }
+        .gate-error {
+            font-size: 13px;
+            color: var(--red);
+            margin-top: 12px;
+        }
+        .gate-error[hidden] { display: none; }
+        .gate-card.shake { animation: gate-shake 0.4s var(--ease); }
+        @keyframes gate-shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        @media (max-width: 860px) {
+            .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+        }
+        @media (max-width: 720px) {
+            .page { padding: 36px 24px 100px; }
+            .brand { font-size: 28px; }
+            .nav { gap: 18px; }
+            .hero { margin-top: 44px; }
+            .body { gap: 52px; }
+            .proscons { grid-template-columns: 1fr; gap: 18px; }
+            .foot { grid-template-columns: 1fr; gap: 22px; text-align: center; }
+            .foot-prev, .foot-next, .foot-all {
+                grid-column: 1; justify-self: center; text-align: center;
+            }
+            .foot-link { max-width: none; align-items: center; }
+        }
+        @media (max-width: 440px) {
+            .facts { grid-template-columns: 1fr; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .reveal, .reveal.in { opacity: 1; transform: none; transition: none; }
+            .slide, .screen, .gallery-caption { transition: none; }
+            .gate-card.shake { animation: none; }
+        }
+    </style>
+</head>
+<body class="gate-locked">
+    <!-- Password gate (client-side soft gate; see CASE.password) -->
+    <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+        <div class="gate-card">
+            <h2 class="gate-title" id="gate-title">Enter password</h2>
+            <p class="gate-sub">This case study is password protected.</p>
+            <form class="gate-form" id="gate-form">
+                <input class="gate-input" id="gate-input" type="password" name="password"
+                       autocomplete="off" placeholder="Password" aria-label="Password" required>
+                <button class="gate-btn" type="submit">Enter</button>
+            </form>
+            <p class="gate-error" id="gate-error" role="alert" hidden>Incorrect password. Try again.</p>
+        </div>
+    </div>
+
+    <div class="page">
+        <header class="site-header">
+            <a class="brand" href="../index.html">Jay Li Quek</a>
+            <nav class="nav">
+                <a href="../index.html">Home</a>
+                <a href="../resume.html">Resume</a>
+                <a href="https://www.linkedin.com/in/jayliquek/" target="_blank" rel="noopener">LinkedIn</a>
+            </nav>
+        </header>
+
+        <div class="content" id="content"></div>
+
+        <footer class="foot content" id="foot"></footer>
+    </div>
+
+    <script>
+    /* ============================================================
+       CASE STUDY DATA  —  edit this object to spin up a new page.
+       Copy this file, swap the CASE object, drop assets in /images.
+       Any block/image with a missing `src` renders a labeled
+       placeholder so the layout is testable before assets arrive.
+       ============================================================ */
+    const CASE = {
+        // Client-side soft gate. Shared password across all case studies.
+        // NOTE: not real security — the value ships in the page source.
+        password: 'greatday',
+        hero: { src: '../videos/vibe-coding-terminal.mp4', alt: 'The Metacode terminal running an agent', aspect: '960 / 640', width: 860 },
+        title: 'Vibe coding the terminal UI',
+        subtitle: 'Building an internal terminal for 70K engineers at Meta',
+        // Prev/next case studies (match the order on the homepage). Omit either to hide that side.
+        nav: {
+            next: { slug: 'vibes-growth-flywheel', title: 'Kickstarting the growth flywheel on Vibes' },
+        },
+        meta: {
+            description: 'Vibe coding agent orchestration modes for the internal terminal at Meta.',
+            context: 'With the launch of Muse Spark, Meta has been moving toward owning its full AI stack. Built for internal employees, Metacode is a terminal-native AI coding assistant. I was one of the 3 product designers who helped build out the MVP features to get Metacode V1 out to 70,000 engineers at the company.',
+            role: 'Product designer',
+            team: ['Me', '2 Product designers', '2 Engineers'],
+            tools: ['Claude', 'Codex'],
+            timeline: '2 weeks',
+        },
+        blocks: [
+            {
+                type: 'text',
+                paragraphs: [
+                    'Employees might prompt main agents to carry out a specific task. As a task is kicked off and the main agent reveals its chain of thought, it’s natural to have side questions. /btw is a feature that lets users ask a parallel question without derailing the main task at hand.'
+                ],
+            },
+            {
+                type: 'text',
+                paragraphs: ['For /btw to be useful, I anchored on these principles:'],
+            },
+            {
+                type: 'text',
+                kicker: 'Principles',
+                list: [
+                    'Light: had to be easily accessible.',
+                    'Scalable: should scale across different modes within the terminal and support asking multiple questions.',
+                    'Unobtrusive: should not distract from the main agent task at hand.',
+                ],
+            },
+            {
+                type: 'figure',
+                src: '../videos/terminal-btw-inline.mp4',
+                aspect: '1708 / 588',
+                caption: '/btw inline with the running agent',
+            },
+            {
+                type: 'text',
+                paragraphs: ['Prior to this I explored two other designs and stress-tested all three against the principles:'],
+            },
+            {
+                type: 'text',
+                kicker: 'Option #1: Modal',
+                paragraphs: [
+                    'The loading screen provided a separation between the main agent and /btw mode, however it looked too much like a splash screen and created too much of a delay for a small side question. As a result it felt too heavy as an interaction.'
+                ],
+            },
+            {
+                type: 'figure',
+                src: '../videos/terminal-btw-modal.mp4',
+                aspect: '1708 / 512',
+                caption: 'Modal',
+            },
+            {
+                type: 'text',
+                kicker: 'Option #2: Within the main chat',
+                paragraphs: [
+                    'Appearing above the composer, users were still able to see the main agent running. However, the history of questions would take up height within the main agent for particularly long answers. While this was scalable across multiple questions, it obstructed the main chat.'
+                ],
+            },
+            {
+                type: 'figure',
+                src: '../videos/terminal-btw-inchat.mp4',
+                aspect: '1708 / 814',
+                caption: 'Within the main chat',
+            },
+            {
+                type: 'text',
+                kicker: 'Considerations',
+                paragraphs: [
+                    'In parallel, we had designed other features such as plan mode and a skills panel. For instances where a decision had to be made (e.g. plan mode) the composer would be overridden. Whereas when user input was needed, we would still keep the composer focused. In both instances, the space under the composer provided details about the mode while maintaining a separation from the main agent.'
+                ],
+            },
+            {
+                type: 'figure',
+                src: '../images/terminal-plan-mode.png',
+                aspect: '2880 / 1848',
+                caption: 'Plan mode — replacing the composer',
+            },
+            {
+                type: 'figure',
+                src: '../images/terminal-skills.png',
+                aspect: '2880 / 1848',
+                caption: 'Skills panel — under the composer',
+            },
+            {
+                type: 'text',
+                paragraphs: [
+                    'For this project, we contributed to an interactive style guide. This acted as a form of history for all design changes and a productionized handoff from design to implementation. Engineers fed this style guide to multiple agents to build the UI, which changed our work processes with AI.'
+                ],
+            },
+            {
+                type: 'figure',
+                src: '../images/terminal-styleguide.png',
+                aspect: '2880 / 1664',
+                caption: 'Interactive style guide',
+            },
+            {
+                type: 'text',
+                paragraphs: [
+                    'I defined agent orchestration systems so engineers at Meta could easily use the terminal for their everyday work. A revamped UI on these foundational features simplified orchestration, increased adoption, and reduced our reliance on third-party models when building products at Meta.',
+                    'Shipped in August 2026 and available to all internal engineers at Meta.'
+                ],
+            },
+        ],
+    };
+
+
+    /* ============================================================
+       RENDERER — builds the page from CASE. Generic across studies.
+       ============================================================ */
+    const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+    // Labeled placeholder for a not-yet-supplied asset.
+    function placeholder(label, aspect) {
+        return `<div class="ph" style="aspect-ratio:${aspect || '4 / 3'}">
+            <span class="ph-label">${esc(label || 'Image')}</span>
+            <span class="ph-dim">drop asset here</span>
+        </div>`;
+    }
+
+    function media(item, label, eager) {
+        const aspect = item.aspect || '4 / 3';
+        if (!item.src) return placeholder(label, aspect);
+        // cropScale trims an even border via overflow clip; cropLeft/cropRight
+        // trim exact pixels off each side (overflow-hidden container required).
+        let extra = item.cropScale ? `transform:scale(${item.cropScale});` : '';
+        const cl = item.cropLeft || 0, cr = item.cropRight || 0;
+        const ct = item.cropTop || 0, cb = item.cropBottom || 0;
+        if (cl || cr) extra += `width:calc(100% + ${cl + cr}px);margin-left:-${cl}px;`;
+        if (ct) extra += `margin-top:-${ct}px;`;
+        if (cb) extra += `margin-bottom:-${cb}px;`;
+        if (item.type === 'video' || /\.(mp4|webm|mov)$/i.test(item.src)) {
+            return `<video src="${esc(item.src)}" muted loop autoplay playsinline preload="metadata" style="aspect-ratio:${aspect};${extra}"></video>`;
+        }
+        return `<img src="${esc(item.src)}" alt="${esc(item.alt || label || '')}" loading="${eager ? 'eager' : 'lazy'}" style="aspect-ratio:${aspect};${extra}">`;
+    }
+
+    function kickerHTML(k) { return k ? `<p class="kicker">${esc(k)}</p>` : ''; }
+
+    function renderText(b) {
+        const paras = (b.paragraphs || []).map((p) => `<p>${esc(p)}</p>`).join('');
+        const list = b.list ? `<ol class="block-list">${b.list.map((x) => {
+            const m = String(x).match(/^([^:]+):\s*(.*)$/);
+            return m ? `<li><strong>${esc(m[1])}</strong>: ${esc(m[2])}</li>` : `<li>${esc(x)}</li>`;
+        }).join('')}</ol>` : '';
+        return `<section class="block-text reveal">
+            ${kickerHTML(b.kicker)}
+            ${paras}
+            ${list}
+        </section>`;
+    }
+
+    function renderFigure(b) {
+        // b.crop = target aspect-ratio string → container fixed to it, media covers it.
+        // b.width = per-figure width (px), overriding the shared --asset-w.
+        const cropClass = b.crop ? ' crop' : '';
+        const styles = [];
+        if (b.crop) styles.push(`aspect-ratio:${b.crop}`);
+        if (b.width) styles.push(`max-width:${b.width}px`);
+        const styleAttr = styles.length ? ` style="${styles.join(';')}"` : '';
+        return `<figure class="reveal">
+            <div class="figure-media${cropClass}"${styleAttr}>${media(b, b.caption)}</div>
+            ${b.caption ? `<figcaption>${esc(b.caption)}</figcaption>` : ''}
+        </figure>`;
+    }
+
+    let galleryId = 0, protoId = 0;
+
+    function renderGallery(b) {
+        const id = `gal-${galleryId++}`;
+        const mid = Math.floor(b.slides.length / 2);   // anchor the middle card
+        const slides = b.slides.map((s, i) => `
+            <div class="slide${i === mid ? ' is-active' : ''}" data-i="${i}" data-title="${esc(s.title || '')}" data-desc="${esc(s.desc || '')}">
+                ${media(s, s.title, true)}
+            </div>`).join('');
+        const dots = b.slides.map((s, i) => `<span class="dot${i === mid ? ' on' : ''}"></span>`).join('');
+        const start = b.slides[mid] || {};
+        return `<section class="gallery reveal" id="${id}" data-start="${mid}">
+            <div class="gallery-track" role="group" aria-label="Scrollable gallery">${slides}</div>
+            <div class="gallery-foot">
+                <div class="gallery-caption" aria-live="polite">
+                    <span class="gc-title">${esc(start.title || '')}</span>
+                    <span class="gc-desc">${esc(start.desc || '')}</span>
+                </div>
+                <div class="gallery-progress">${dots}</div>
+            </div>
+        </section>`;
+    }
+
+    // Swappable detail (heading + pros/cons) for one screen.
+    function detailInner(screen, i, total) {
+        const li = (arr) => (arr || []).map((x) => `<li>${esc(x)}</li>`).join('');
+        return `<div class="proto-head">
+                <span class="proto-name">${esc(screen.label || '')}</span>
+            </div>
+            <div class="proscons">
+                <div class="pros"><p class="col-label">Pros</p><ul>${li(screen.pros)}</ul></div>
+                <div class="cons"><p class="col-label">Cons</p><ul>${li(screen.cons)}</ul></div>
+            </div>`;
+    }
+
+    function renderInteractive(b) {
+        const id = `proto-${protoId++}`;
+        const n = b.screens.length;
+        const screens = b.screens.map((s, i) => `
+            <button class="screen${i === 0 ? ' is-focused' : ''}" data-i="${i}" aria-pressed="${i === 0}" aria-label="${esc(s.label || ('Screen ' + (i + 1)))}">
+                <div class="screen-media">${media(s, s.label)}</div>
+            </button>`).join('');
+        const first = b.screens[0] || {};
+        return `<section class="proto reveal" id="${id}" role="group" aria-label="Interactive prototype: compare treatments">
+            <div class="proto-stage">${screens}</div>
+            ${b.intro ? `<p class="proto-hint">${esc(b.intro)}</p>` : ''}
+            <div class="proto-detail" aria-live="polite">${detailInner(first, 0, n)}</div>
+        </section>`;
+    }
+
+    function renderBlock(b) {
+        switch (b.type) {
+            case 'text': return renderText(b);
+            case 'figure': return renderFigure(b);
+            case 'gallery': return renderGallery(b);
+            case 'interactive': return renderInteractive(b);
+            default: return '';
+        }
+    }
+
+    function render(data) {
+        const root = document.getElementById('content');
+        const heroAspect = data.hero.aspect || '16 / 9';
+        const team = (data.meta.team || []).map((t) => `<li>${esc(t)}</li>`).join('');
+        const tools = (data.meta.tools || []).map((t) => `<li>${esc(t)}</li>`).join('');
+        root.innerHTML = `
+            <div class="hero reveal"${data.hero.width ? ` style="max-width:${data.hero.width}px"` : ''}>${media(Object.assign({ type: 'image' }, data.hero), 'Hero')}</div>
+
+            <div class="lede">
+                <h1 class="title">${esc(data.title)}</h1>
+                <p class="subtitle">${esc(data.subtitle)}</p>
+            </div>
+
+            <hr class="divider">
+
+            <div class="meta">
+                <div class="meta-block">
+                    <p class="kicker">Description</p>
+                    <p>${esc(data.meta.description)}</p>
+                </div>
+                <div class="meta-block">
+                    <p class="kicker">Context</p>
+                    <p>${esc(data.meta.context)}</p>
+                </div>
+                <div class="facts">
+                    <div class="fact"><p class="kicker">Role</p><p class="val">${esc(data.meta.role)}</p></div>
+                    <div class="fact"><p class="kicker">Team</p><ul>${team}</ul></div>
+                    <div class="fact"><p class="kicker">Tools</p><ul>${tools}</ul></div>
+                    <div class="fact"><p class="kicker">Timeline</p><p class="val">${esc(data.meta.timeline)}</p></div>
+                </div>
+            </div>
+
+            <div class="body">
+                ${data.blocks.map(renderBlock).join('')}
+            </div>
+        `;
+
+        renderFooter(data.nav);
+        wireGalleries();
+        wireInteractives();
+        wireReveal();
+    }
+
+    /* ── Footer: previous · all work · next ── */
+    function renderFooter(nav) {
+        nav = nav || {};
+        const side = (item, dir, cls) => item
+            ? `<a class="foot-link ${cls}" href="../projects/${esc(item.slug)}.html">
+                    <span class="foot-dir">${dir}</span>
+                    <span class="foot-title">${esc(item.title)}</span>
+               </a>`
+            : `<span class="${cls}" aria-hidden="true"></span>`;
+        document.getElementById('foot').innerHTML =
+            side(nav.prev, '← Previous', 'foot-prev') +
+            `<a class="foot-all" href="../index.html">All work</a>` +
+            side(nav.next, 'Next →', 'foot-next');
+    }
+
+    /* ── Gallery: single caption swaps to the centered slide ── */
+    function wireGalleries() {
+        document.querySelectorAll('.gallery').forEach((gal) => {
+            const track = gal.querySelector('.gallery-track');
+            const slides = [...gal.querySelectorAll('.slide')];
+            const cap = gal.querySelector('.gallery-caption');
+            const dots = [...gal.querySelectorAll('.gallery-progress .dot')];
+            const start = parseInt(gal.dataset.start, 10) || 0;
+            let current = start, raf = null;
+
+            // Rect-based so it's correct regardless of the slide's offsetParent.
+            function centerOn(i, smooth) {
+                const s = slides[i];
+                if (!s) return;
+                const tRect = track.getBoundingClientRect();
+                const sRect = s.getBoundingClientRect();
+                const delta = (sRect.left + sRect.width / 2) - (tRect.left + tRect.width / 2);
+                track.scrollBy({ left: delta, behavior: smooth ? 'smooth' : 'auto' });
+            }
+
+            function update() {
+                raf = null;
+                const tRect = track.getBoundingClientRect();
+                const mid = tRect.left + tRect.width / 2;
+                let best = 0, bestDist = Infinity;
+                slides.forEach((s, i) => {
+                    const r = s.getBoundingClientRect();
+                    const c = r.left + r.width / 2;
+                    const d = Math.abs(c - mid);
+                    if (d < bestDist) { bestDist = d; best = i; }
+                });
+                slides.forEach((s, i) => s.classList.toggle('is-active', i === best));
+                dots.forEach((d, i) => d.classList.toggle('on', i === best));
+                if (best !== current) {
+                    current = best;
+                    cap.classList.add('swapping');
+                    setTimeout(() => {
+                        cap.querySelector('.gc-title').textContent = slides[best].dataset.title;
+                        cap.querySelector('.gc-desc').textContent = slides[best].dataset.desc;
+                        cap.classList.remove('swapping');
+                    }, 200);
+                }
+            }
+            track.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
+            slides.forEach((s, i) => s.addEventListener('click', () => { userMoved = true; centerOn(i, true); }));
+            window.addEventListener('resize', () => { centerOn(current, false); update(); });
+
+            // Anchor the middle card until the visitor interacts. Slide widths change
+            // as lazy images decode, so keep re-centering (rect-based) until then.
+            let userMoved = false;
+            ['pointerdown', 'wheel', 'touchstart', 'keydown'].forEach((ev) =>
+                track.addEventListener(ev, () => { userMoved = true; }, { passive: true }));
+            function settle() { if (!userMoved) { centerOn(start, false); update(); } }
+            settle();
+            requestAnimationFrame(settle);
+            window.addEventListener('load', settle);
+            gal.querySelectorAll('img').forEach((img) => {
+                if (!img.complete) img.addEventListener('load', settle, { once: true });
+            });
+            if ('ResizeObserver' in window) {
+                const ro = new ResizeObserver(() => settle());
+                slides.forEach((s) => ro.observe(s));
+            }
+        });
+    }
+
+    /* ── Interactive: focus a screen, swap pros/cons ── */
+    function wireInteractives() {
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        document.querySelectorAll('.proto').forEach((proto, pIdx) => {
+            const data = CASE.blocks.filter((b) => b.type === 'interactive')[pIdx];
+            const stage = proto.querySelector('.proto-stage');
+            const screens = [...proto.querySelectorAll('.screen')];
+            const detail = proto.querySelector('.proto-detail');
+            const n = data.screens.length;
+            let focused = 0;
+
+            function paint(i) {
+                detail.innerHTML = detailInner(data.screens[i], i, n);
+            }
+            function focus(i, scroll = true) {
+                if (i === focused) return;
+                focused = i;
+                screens.forEach((s, k) => {
+                    const on = k === i;
+                    s.classList.toggle('is-focused', on);
+                    s.setAttribute('aria-pressed', on);
+                });
+                if (reduce) {
+                    paint(i);
+                } else {
+                    detail.classList.add('swapping');
+                    setTimeout(() => { paint(i); detail.classList.remove('swapping'); }, 150);
+                }
+                if (scroll) {
+                    const t = screens[i];
+                    const stRect = stage.getBoundingClientRect();
+                    const tRect = t.getBoundingClientRect();
+                    stage.scrollBy({ left: (tRect.left + tRect.width / 2) - (stRect.left + stRect.width / 2), behavior: 'smooth' });
+                }
+            }
+
+            screens.forEach((s, i) => {
+                s.addEventListener('click', () => focus(i));
+                s.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight') { e.preventDefault(); const k = Math.min(i + 1, screens.length - 1); screens[k].focus(); focus(k); }
+                    if (e.key === 'ArrowLeft')  { e.preventDefault(); const k = Math.max(i - 1, 0);              screens[k].focus(); focus(k); }
+                });
+            });
+        });
+    }
+
+    /* ── Entrance reveal (enhances an already-visible default) ── */
+    function wireReveal() {
+        const els = [...document.querySelectorAll('.reveal')];
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce || !('IntersectionObserver' in window)) {
+            els.forEach((el) => el.classList.add('in'));
+            return;
+        }
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
+        els.forEach((el) => io.observe(el));
+        // safety: if anything is still hidden after load, reveal it
+        window.addEventListener('load', () => setTimeout(() => els.forEach((el) => el.classList.add('in')), 1200));
+    }
+
+    /* ── Password gate (client-side soft gate) ── */
+    function initGate(password) {
+        const gate = document.getElementById('gate');
+        const form = document.getElementById('gate-form');
+        const input = document.getElementById('gate-input');
+        const err = document.getElementById('gate-error');
+        const card = gate.querySelector('.gate-card');
+        const key = 'cs-unlock:' + location.pathname;
+
+        function unlock() {
+            document.body.classList.remove('gate-locked');
+            gate.setAttribute('hidden', '');
+            try { sessionStorage.setItem(key, '1'); } catch (e) {}
+        }
+
+        // No password set, or already unlocked this session → open straight away.
+        let remembered = false;
+        try { remembered = sessionStorage.getItem(key) === '1'; } catch (e) {}
+        if (!password || remembered) { unlock(); return; }
+
+        requestAnimationFrame(() => input.focus());
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (input.value === password) {
+                unlock();
+            } else {
+                err.hidden = false;
+                card.classList.remove('shake');
+                void card.offsetWidth;   // restart the animation
+                card.classList.add('shake');
+                input.select();
+            }
+        });
+    }
+
+    render(CASE);
+    initGate(CASE.password);
+    </script>
+</body>
+</html>
