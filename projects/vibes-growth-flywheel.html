@@ -53,6 +53,7 @@
             --measure: 68ch;             /* reading column cap */
             --slide-w: clamp(208px, 26vw, 264px);  /* phone width in the prototype */
             --slide-h: clamp(340px, 50vh, 470px);  /* shared gallery slide height */
+            --asset-w: 812px;            /* shared width for hero + figure assets */
             --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* ease-out-quint */
         }
 
@@ -69,9 +70,9 @@
         }
 
         .page {
-            max-width: 1120px;
+            max-width: 1936px;   /* matches the homepage masthead width */
             margin: 0 auto;
-            padding: 44px 40px 140px;
+            padding: 44px 80px 140px;
         }
 
         /* ── Header: name left, nav right (matches index.html) ── */
@@ -85,7 +86,7 @@
             font-family: 'ZT Bros Oskon 90s', serif;
             font-weight: 300;
             font-size: 34px;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.04em;
             text-transform: uppercase;
             line-height: 1;
             color: var(--text);
@@ -122,6 +123,8 @@
         /* ── Hero ── */
         .hero {
             margin-top: 64px;
+            max-width: var(--asset-w);   /* shared asset width, centered */
+            margin-inline: auto;
             border-radius: 12px;
             overflow: hidden;
             background: var(--asset-bg);
@@ -191,6 +194,8 @@
         /* Single figure */
         figure { margin: 0; }
         .figure-media {
+            max-width: var(--asset-w);   /* shared asset width, centered */
+            margin-inline: auto;
             border-radius: 12px;
             overflow: hidden;
             background: var(--asset-bg);
@@ -201,8 +206,6 @@
         .figure-media.crop img, .figure-media.crop video {
             width: 100%; height: 100%; object-fit: cover; object-position: center;
         }
-        /* Slightly smaller figure (kept centered). */
-        .figure--sm .figure-media { max-width: 84%; margin-inline: auto; }
         figcaption {
             margin-top: 14px;
             text-align: center;
@@ -271,10 +274,14 @@
         }
         .slide .ph { height: 100%; aspect-ratio: 9 / 19; }
 
+        /* Fixed-height wrapper so the block below never shifts as the caption
+           changes line count; caption + dots sit inside it. */
+        .gallery-foot {
+            padding-top: 22px;
+            height: 124px;
+        }
         .gallery-caption {
-            margin-top: 22px;
             text-align: center;
-            height: 92px;              /* fixed so the content below never shifts */
             display: grid;
             place-content: start center;
             gap: 4px;
@@ -293,7 +300,7 @@
         .gallery-caption.swapping { opacity: 0; }
         .gallery-caption { transition: opacity 0.28s ease; }
         .gallery-progress {
-            display: flex; justify-content: center; gap: 7px; margin-top: 18px;
+            display: flex; justify-content: center; gap: 7px; margin-top: 8px;
         }
         .gallery-progress .dot {
             width: 6px; height: 6px; border-radius: 50%;
@@ -524,9 +531,9 @@
             .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
         }
         @media (max-width: 720px) {
-            .page { padding: 36px 22px 100px; }
-            .brand { font-size: 26px; }
-            .nav { gap: 16px; }
+            .page { padding: 36px 24px 100px; }
+            .brand { font-size: 28px; }
+            .nav { gap: 18px; }
             .hero { margin-top: 44px; }
             .body { gap: 52px; }
             .proscons { grid-template-columns: 1fr; gap: 18px; }
@@ -588,7 +595,7 @@
     const CASE = {
         // Client-side soft gate. Shared password across all case studies.
         // NOTE: not real security — the value ships in the page source.
-        password: 'greatday',
+        password: 'greatday1',
         hero: { src: '../videos/vibes-growth-flywheel.mp4', alt: 'Vibes playable and vibe check shown on two phones', aspect: '1280 / 716' },
         title: 'Kickstarting the growth flywheel on Vibes',
         subtitle: 'Building the sharing & growth infrastructure for a suite of new features',
@@ -649,7 +656,7 @@
                 type: 'figure',
                 src: '../videos/vibes-screenshot.mov',
                 aspect: '1740 / 1446',
-                scaleDown: true,   /* original framing, shown a touch smaller */
+                cropLeft: 4, cropRight: 2,   /* trim thin side bleed */
                 caption: 'Screenshot detection and screenshot entry point in the comment section',
             },
             {
@@ -712,12 +719,15 @@
     function media(item, label, eager) {
         const aspect = item.aspect || '4 / 3';
         if (!item.src) return placeholder(label, aspect);
-        // cropScale trims an even border (e.g. a baked-in outline) via overflow clip.
-        const scale = item.cropScale ? `transform:scale(${item.cropScale});` : '';
+        // cropScale trims an even border via overflow clip; cropLeft/cropRight
+        // trim exact pixels off each side (overflow-hidden container required).
+        let extra = item.cropScale ? `transform:scale(${item.cropScale});` : '';
+        const cl = item.cropLeft || 0, cr = item.cropRight || 0;
+        if (cl || cr) extra += `width:calc(100% + ${cl + cr}px);margin-left:-${cl}px;`;
         if (item.type === 'video' || /\.(mp4|webm|mov)$/i.test(item.src)) {
-            return `<video src="${esc(item.src)}" muted loop autoplay playsinline preload="metadata" style="aspect-ratio:${aspect};${scale}"></video>`;
+            return `<video src="${esc(item.src)}" muted loop autoplay playsinline preload="metadata" style="aspect-ratio:${aspect};${extra}"></video>`;
         }
-        return `<img src="${esc(item.src)}" alt="${esc(item.alt || label || '')}" loading="${eager ? 'eager' : 'lazy'}" style="aspect-ratio:${aspect};${scale}">`;
+        return `<img src="${esc(item.src)}" alt="${esc(item.alt || label || '')}" loading="${eager ? 'eager' : 'lazy'}" style="aspect-ratio:${aspect};${extra}">`;
     }
 
     function kickerHTML(k) { return k ? `<p class="kicker">${esc(k)}</p>` : ''; }
@@ -731,11 +741,9 @@
 
     function renderFigure(b) {
         // b.crop = target aspect-ratio string → container fixed to it, media covers it.
-        // b.scaleDown = render the figure a touch narrower than the reading column.
         const cropClass = b.crop ? ' crop' : '';
         const cropStyle = b.crop ? ` style="aspect-ratio:${b.crop}"` : '';
-        const figClass = b.scaleDown ? ' figure--sm' : '';
-        return `<figure class="reveal${figClass}">
+        return `<figure class="reveal">
             <div class="figure-media${cropClass}"${cropStyle}>${media(b, b.caption)}</div>
             ${b.caption ? `<figcaption>${esc(b.caption)}</figcaption>` : ''}
         </figure>`;
@@ -754,11 +762,13 @@
         const start = b.slides[mid] || {};
         return `<section class="gallery reveal" id="${id}" data-start="${mid}">
             <div class="gallery-track" role="group" aria-label="Scrollable gallery">${slides}</div>
-            <div class="gallery-caption" aria-live="polite">
-                <span class="gc-title">${esc(start.title || '')}</span>
-                <span class="gc-desc">${esc(start.desc || '')}</span>
+            <div class="gallery-foot">
+                <div class="gallery-caption" aria-live="polite">
+                    <span class="gc-title">${esc(start.title || '')}</span>
+                    <span class="gc-desc">${esc(start.desc || '')}</span>
+                </div>
+                <div class="gallery-progress">${dots}</div>
             </div>
-            <div class="gallery-progress">${dots}</div>
         </section>`;
     }
 
