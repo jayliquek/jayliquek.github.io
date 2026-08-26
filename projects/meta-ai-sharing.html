@@ -636,6 +636,10 @@
             .hero { margin-top: 44px; }
             .body { gap: 44px; }
             .proscons { grid-template-columns: 1fr; gap: 18px; }
+            /* carousel: cap slide width to the viewport so it is not cut off */
+            .gallery-track { padding-inline: 8vw; align-items: center; }
+            .slide { flex: 0 0 84vw; height: auto; }
+            .slide img, .slide video, .slide .ph { height: auto; width: 100%; }
             /* side-by-side figures stack on narrow screens */
             .figure-row { grid-template-columns: 1fr; gap: 40px; }
             .figure-row .figure-media { max-width: var(--asset-w); margin-inline: auto; }
@@ -699,7 +703,7 @@
         // Client-side soft gate. Shared password across all case studies.
         // NOTE: not real security — the value ships in the page source.
         password: 'greatday',
-        hero: { src: '../images/es-artifact-library.png', alt: 'Meta AI artifact library', aspect: '3296 / 2608', width: 860 },
+        hero: { src: '../images/evolution-of-sharing-cover.png', alt: 'Evolution of sharing on Meta AI', aspect: '3472 / 1952', width: 860 },
         title: 'Evolution of sharing on Meta AI',
         subtitle: 'AI for utility: Shaping artifact sharing and the considerations that follow',
         // Prev/next case studies (match the order on the homepage). Omit either to hide that side.
@@ -734,7 +738,7 @@
                 slides: [
                     { src: '../videos/es-expand-new-window.mov', aspect: '1738 / 1376', title: 'Expand in new window', desc: '' },
                     { src: '../videos/es-interact-inline.mov',   aspect: '1740 / 1372', title: 'Interact inline',     desc: '' },
-                    { src: '../videos/es-open-new-window.mov',   aspect: '1738 / 1376', title: 'Open in new window',  desc: '' },
+                    { src: '../videos/es-open-new-window.mov',   aspect: '1738 / 1376', cropTop: 2, title: 'Open in new window',  desc: '' },
                 ],
             },
             {
@@ -744,8 +748,8 @@
             {
                 type: 'figures',
                 figures: [
-                    { src: '../videos/es-open-to-interact.mov', aspect: '2234 / 1558', caption: 'Open in a new window' },
-                    { src: '../videos/es-expand-sidebar.mov',   aspect: '2234 / 1558', caption: 'Open on a sidebar' },
+                    { src: '../videos/es-open-to-interact.mov', aspect: '2234 / 1558', cropTop: 2, caption: 'Open in a new window' },
+                    { src: '../videos/es-expand-sidebar.mov',   aspect: '2234 / 1558', cropTop: 2, caption: 'Open on a sidebar' },
                 ],
             },
             {
@@ -1073,6 +1077,7 @@
         wireGalleries();
         wireInteractives();
         wireReveal();
+        wireVideos();
     }
 
     /* ── Footer: previous · all work · next ── */
@@ -1235,6 +1240,19 @@
                 });
             });
         });
+    }
+
+    /* ── Play carousel/figure videos when they scroll into view ── */
+    function wireVideos() {
+        if (!('IntersectionObserver' in window)) return;
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach((e) => {
+                const v = e.target;
+                if (e.isIntersecting) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+                else { v.pause(); }
+            });
+        }, { threshold: 0.2 });
+        document.querySelectorAll('#content video').forEach((v) => io.observe(v));
     }
 
     /* ── Entrance reveal (enhances an already-visible default) ── */

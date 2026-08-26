@@ -560,6 +560,10 @@
             .hero { margin-top: 44px; }
             .body { gap: 44px; }
             .proscons { grid-template-columns: 1fr; gap: 18px; }
+            /* carousel: cap slide width to the viewport so it is not cut off */
+            .gallery-track { padding-inline: 8vw; align-items: center; }
+            .slide { flex: 0 0 84vw; height: auto; }
+            .slide img, .slide video, .slide .ph { height: auto; width: 100%; }
             /* side-by-side figures stack on narrow screens */
             .figure-row { grid-template-columns: 1fr; gap: 40px; }
             .figure-row .figure-media { max-width: var(--asset-w); margin-inline: auto; }
@@ -899,6 +903,7 @@
         wireGalleries();
         wireInteractives();
         wireReveal();
+        wireVideos();
     }
 
     /* ── Footer: previous · all work · next ── */
@@ -1026,6 +1031,19 @@
                 });
             });
         });
+    }
+
+    /* ── Play carousel/figure videos when they scroll into view ── */
+    function wireVideos() {
+        if (!('IntersectionObserver' in window)) return;
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach((e) => {
+                const v = e.target;
+                if (e.isIntersecting) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+                else { v.pause(); }
+            });
+        }, { threshold: 0.2 });
+        document.querySelectorAll('#content video').forEach((v) => io.observe(v));
     }
 
     /* ── Entrance reveal (enhances an already-visible default) ── */
