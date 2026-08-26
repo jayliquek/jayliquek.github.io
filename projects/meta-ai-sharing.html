@@ -125,7 +125,7 @@
             margin-top: 64px;
             max-width: var(--asset-w);   /* shared asset width, centered */
             margin-inline: auto;
-            border-radius: 12px;
+            border-radius: 8px;
             overflow: hidden;
             background: var(--asset-bg);
             box-shadow: 0 1px 2px rgba(0,0,0,0.06);
@@ -209,7 +209,7 @@
         .figure-media {
             max-width: var(--asset-w);   /* shared asset width, centered */
             margin-inline: auto;
-            border-radius: 12px;
+            border-radius: 8px;
             overflow: hidden;
             background: var(--asset-bg);
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
@@ -237,7 +237,13 @@
         }
         .figure-row .figure-media { max-width: 100%; margin-inline: 0; }
         /* Bare: no fill or shadow — assets that already read as tiles (before/after). */
-        .figure-media.bare { background: none; box-shadow: none; border-radius: 0; }
+        .figure-media.bare { background: none; box-shadow: none; }
+        /* Standalone tiled/bare assets share one height so they line up. */
+        .body > figure > .figure-media.bare { height: 516px; }
+        .body > figure > .figure-media.bare img,
+        .body > figure > .figure-media.bare video {
+            height: 100%; width: auto; margin-inline: auto;
+        }
 
         /* ── Spectrum: swap options; a dot animates along a subtle→blocking bar ── */
         .spectrum { display: grid; justify-items: center; gap: 20px; }
@@ -356,7 +362,7 @@
             flex: 0 0 auto;
             height: var(--slide-h);
             scroll-snap-align: center;
-            border-radius: 12px;
+            border-radius: 8px;
             overflow: hidden;
             background: var(--asset-bg);
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
@@ -431,7 +437,7 @@
             padding: 0;
             background: none;
             cursor: pointer;
-            border-radius: 12px;
+            border-radius: 8px;
             transition: transform 0.45s var(--ease), opacity 0.45s var(--ease), filter 0.45s var(--ease);
             opacity: 0.42;
             transform: scale(0.86);
@@ -439,7 +445,7 @@
         }
         .screen:focus-visible { outline: 2px solid var(--blue); outline-offset: 6px; }
         .screen .screen-media {
-            border-radius: 12px;
+            border-radius: 8px;
             overflow: hidden;
             background: var(--thumb-bg);
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
@@ -738,7 +744,7 @@
                 slides: [
                     { src: '../videos/es-expand-new-window.mov', aspect: '1738 / 1376', title: 'Expand in new window', desc: '' },
                     { src: '../videos/es-interact-inline.mov',   aspect: '1740 / 1372', title: 'Interact inline',     desc: '' },
-                    { src: '../videos/es-open-new-window.mov',   aspect: '1738 / 1376', cropTop: 2, title: 'Open in new window',  desc: '' },
+                    { src: '../videos/es-open-new-window.mov',   aspect: '1738 / 1376', cropTop: 2, cropBottom: 3, title: 'Open in new window',  desc: '' },
                 ],
             },
             {
@@ -823,7 +829,7 @@
             {
                 type: 'figures',
                 figures: [
-                    { src: '../images/es-on-first-share.png',        aspect: '3308 / 2768', caption: 'On first share' },
+                    { src: '../images/es-on-first-share.png',        aspect: '3308 / 2768', bare: true, caption: 'On first share' },
                     { src: '../videos/es-sharing-after-changes.mov', aspect: '1652 / 1382', cropTop: 1, caption: 'Sharing after making changes to a chat. Original receiver will see updates when revisiting the link' },
                 ],
             },
@@ -876,7 +882,7 @@
             {
                 type: 'text',
                 paragraphs: [
-                    'As design lead for sharing on Meta AI, I scaled the sharing infrastructure on Meta AI and fixed unintended bugs to make the unsexy parts of sharing seamless. The new receiver experience is now consistent across shared chats and artifacts, creating a cohesive system, which has built the blueprint for other features to come.',
+                    'As design lead for sharing on Meta AI, I scaled the sharing infrastructure on Meta AI and fixed unintended bugs to make the unglamorous parts of sharing seamless. The new receiver experience is now consistent across shared chats and artifacts, creating a cohesive system, which has built the blueprint for other features to come.',
                     'Shipped in May 2026 on meta.ai',
                 ],
             },
