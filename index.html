@@ -167,6 +167,33 @@
             object-fit: contain;
         }
 
+        /* Expand affordance — open the case study on its own page. Hover only. */
+        .card-expand {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 2;
+            display: grid;
+            place-items: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: rgba(18, 18, 18, 0.55);
+            color: #fff;
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            transform: translateY(-2px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            pointer-events: none;
+        }
+        .card-thumb:hover .card-expand,
+        .card-thumb:focus-visible .card-expand { opacity: 1; transform: none; }
+        .card-expand svg { width: 15px; height: 15px; display: block; }
+        @media (prefers-reduced-motion: reduce) {
+            .card-expand { transition: opacity 0.2s ease; transform: none; }
+        }
+
         .card-title {
             font-family: 'ZT Bros Oskon 90s', serif;
             font-weight: 300;
@@ -277,8 +304,10 @@
         if (p.inset) thumbClasses.push('inset');
 
         const thumbHTML = buildThumb(p);
+        // Expand affordance on clickable (password-protected) case studies: shows on hover.
+        const expandIcon = `<span class="card-expand" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="9 7 17 7 17 15"/></svg></span>`;
         const thumbElement = p.clickable
-            ? `<a class="${thumbClasses.join(' ')}" href="./projects/${p.slug}.html">${thumbHTML}</a>`
+            ? `<a class="${thumbClasses.join(' ')}" href="./projects/${p.slug}.html" aria-label="Open ${p.title}">${thumbHTML}${expandIcon}</a>`
             : `<div class="${thumbClasses.join(' ')}">${thumbHTML}</div>`;
 
         return `
