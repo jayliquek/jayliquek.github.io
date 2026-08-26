@@ -180,7 +180,7 @@
         .fact li + li { margin-top: 2px; }
 
         /* ── Body blocks ── (case study starts here, below the facts' bottom padding) */
-        .body { margin-top: 40px; display: flex; flex-direction: column; gap: 56px; }
+        .body { margin-top: 40px; display: flex; flex-direction: column; gap: 48px; }
 
         .block-text { display: flex; flex-direction: column; gap: 14px; }
         .block-text .kicker { margin-bottom: 2px; }
@@ -236,6 +236,8 @@
             align-items: start;
         }
         .figure-row .figure-media { max-width: 100%; margin-inline: 0; }
+        /* Bare: no fill or shadow — assets that already read as tiles (before/after). */
+        .figure-media.bare { background: none; box-shadow: none; border-radius: 0; }
 
         /* ── Spectrum: swap options; a dot animates along a subtle→blocking bar ── */
         .spectrum { display: grid; justify-items: center; gap: 20px; }
@@ -263,7 +265,7 @@
             max-width: 560px;
         }
         .spec-end {
-            font-family: 'Geist Mono', monospace;
+            font-family: 'DM Mono', monospace;
             font-size: 11px;
             letter-spacing: 0.06em;
             text-transform: uppercase;
@@ -290,13 +292,13 @@
             width: 12px; height: 12px;
             border-radius: 50%;
             background: var(--blue);
-            box-shadow: 0 0 0 4px rgba(59, 78, 255, 0.14);
+            box-shadow: 0 0 22px 6px rgba(59, 78, 255, 0.10);
             transform: translate(-50%, -50%);
             transition: left 0.5s var(--ease);
         }
         .spec-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
         .spec-tab {
-            font-family: 'Geist Mono', monospace;
+            font-family: 'DM Mono', monospace;
             font-size: 12px;
             letter-spacing: 0.04em;
             color: var(--muted);
@@ -518,7 +520,7 @@
         .foot-next { grid-column: 3; justify-self: end;   text-align: right; }
         .foot-all  { grid-column: 2; justify-self: center; align-self: center; }
         .foot-dir {
-            font-family: 'Geist Mono', monospace;
+            font-family: 'DM Mono', monospace;
             font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
             color: var(--faint);
             transition: color 0.2s ease;
@@ -530,7 +532,7 @@
         .foot-link:hover .foot-dir,
         .foot-link:hover .foot-title { color: var(--blue); }
         .foot-all {
-            font-family: 'Geist Mono', monospace;
+            font-family: 'DM Mono', monospace;
             font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
             color: var(--text); text-decoration: none; opacity: 0.7;
             transition: opacity 0.2s ease, color 0.2s ease;
@@ -632,7 +634,7 @@
             .brand { font-size: 28px; }
             .nav { gap: 18px; }
             .hero { margin-top: 44px; }
-            .body { gap: 52px; }
+            .body { gap: 44px; }
             .proscons { grid-template-columns: 1fr; gap: 18px; }
             /* side-by-side figures stack on narrow screens */
             .figure-row { grid-template-columns: 1fr; gap: 40px; }
@@ -703,7 +705,7 @@
         // Prev/next case studies (match the order on the homepage). Omit either to hide that side.
         nav: {
             prev: { slug: 'vibes-growth-flywheel', title: 'Kickstarting the growth flywheel on Vibes' },
-            next: { slug: 'facebook-share-sheet', title: 'Sparking conversation through sharing experiences' },
+            next: { slug: 'vibe-coding-terminal', title: 'Vibe coding the terminal UI' },
         },
         meta: {
             description: 'Sparking fresh engagement with new formats of AI-generated content.',
@@ -716,7 +718,7 @@
         blocks: [
             {
                 type: 'text',
-                paragraphs: ['As part of the Muse Spark launch we had the bare bones of artifact sharing, but there were improvements to be done on both the receiver and sender side.'],
+                paragraphs: ['As part of the muse spark launch we had the bare bones of artifact sharing but there were improvements to be done on both receiver and sender side.'],
             },
             {
                 type: 'text',
@@ -725,13 +727,15 @@
             },
             {
                 type: 'text',
-                paragraphs: ['Originally there were three different ways to view an artifact.'],
+                paragraphs: ['Originally there were 3 different ways to view an artifact,'],
             },
             {
-                type: 'figure',
-                src: '../videos/es-expand-new-window.mov',
-                aspect: '1738 / 1376',
-                caption: 'Expand in new window',
+                type: 'gallery',
+                slides: [
+                    { src: '../videos/es-expand-new-window.mov', aspect: '1738 / 1376', title: 'Expand in new window', desc: '' },
+                    { src: '../videos/es-interact-inline.mov',   aspect: '1740 / 1372', title: 'Interact inline',     desc: '' },
+                    { src: '../videos/es-open-new-window.mov',   aspect: '1738 / 1376', title: 'Open in new window',  desc: '' },
+                ],
             },
             {
                 type: 'text',
@@ -740,20 +744,20 @@
             {
                 type: 'figures',
                 figures: [
-                    { src: '../videos/es-open-to-interact.mov', aspect: '2234 / 1558', caption: 'Open to interact' },
-                    { src: '../videos/es-expand-sidebar.mov',   aspect: '2234 / 1558', caption: 'Expand in sidebar' },
+                    { src: '../videos/es-open-to-interact.mov', aspect: '2234 / 1558', caption: 'Open in a new window' },
+                    { src: '../videos/es-expand-sidebar.mov',   aspect: '2234 / 1558', caption: 'Open on a sidebar' },
                 ],
             },
             {
                 type: 'text',
-                paragraphs: ['Some bottom-rail actions were redundant and there was no clear hierarchy applied to them. To clean up the chat, I placed the actions within the title bar.'],
+                paragraphs: ['Some bottom rail actions were redundant and there was no clear hierarchy applied to them, to clean up the chat, I place the actions within the title bar.'],
             },
             {
-                type: 'figures',
-                figures: [
-                    { src: '../images/es-original-bottom-rail.png', aspect: '2928 / 2316', caption: 'Original bottom rail of actions' },
-                    { src: '../images/es-actions-on-hover.png',     aspect: '2928 / 2316', caption: 'Actions on hover were not as obvious' },
-                    { src: '../images/es-within-title.png',         aspect: '2928 / 2316', caption: 'Actions within the title bar' },
+                type: 'gallery',
+                slides: [
+                    { src: '../images/es-original-bottom-rail.png', aspect: '2928 / 2316', title: 'Original bottom rail of actions',    desc: '' },
+                    { src: '../images/es-actions-on-hover.png',     aspect: '2928 / 2316', title: 'Actions on hover were not as obvious', desc: '' },
+                    { src: '../images/es-within-title.png',         aspect: '2928 / 2316', title: 'Within title',                        desc: '' },
                 ],
             },
             {
@@ -763,41 +767,44 @@
             },
             {
                 type: 'text',
-                paragraphs: ['In parallel, we planned to build a library for artifacts. For any artifact shared, we wanted receivers to have the ability to create their own and creators to get validation from their creations. We approached this in two ways: letting receivers create their own similar artifact, and applying creator attribution when an artifact is opened.'],
+                paragraphs: ['In parallel, we planned to build a library for artifacts. For any artifact shared we wanted receivers to have the ability to create their own and creators to get validation from their creations. We approached this problem in 2 ways: the ability for receivers to create their own similar artifact and applying creator attribution when artifact is opened'],
             },
             {
                 type: 'text',
-                paragraphs: ['The original artifact-on-open already had multiple elements in the navigation bar — driven by legal requirements to show attribution and the requirement to let the user navigate back to the home page. To make space for even more elements, such as creator attribution and “Create your own,” we cleaned up the header to account for all of them.'],
+                paragraphs: ['The original artifact on open already had multiple elements in the navigation bar. This was due to having legal requirements to show and requirements to allow user to navigate back to the home page. To make space for even more elements such as creator attribution and "Create your own".  We cleaned up the header to account for all elements.'],
             },
             {
                 type: 'figure',
                 src: '../images/es-cleaning-header.png',
                 aspect: '3300 / 2760',
+                bare: true,
                 caption: 'Cleaning up header for artifact open',
             },
             {
                 type: 'text',
-                paragraphs: ['Instead of share attribution, we changed it to creator attribution to create a sense of ownership over the artifact. This would eventually help build clout for artifact creators and inspire others to create. The rotating carousel animation was too subtle, so we needed a more obvious way to incorporate attribution while making clear it was being opened on the receiver end.'],
+                paragraphs: ['Instead of share attribution, we decided to change it to creator attribution to create a sense of ownership on the artifact. This would eventually help create clout from artifact creators and inspire others to create. The rotating carousel animation was too subtle and we needed a more obvious way to incorporate attribution while defining that it was being opened on the receiver end.'],
             },
             {
                 type: 'figure',
                 src: '../images/es-unifying-header.png',
                 aspect: '3304 / 2760',
+                bare: true,
                 caption: 'Unifying header for chat open',
             },
             {
                 type: 'text',
-                paragraphs: ['Defining this header let us scale the share infrastructure of Meta AI — regardless of whether a chat or an artifact is being shared, the header stays consistent on the receiver’s end. That made it easier to scale across every platform.'],
+                paragraphs: ['Defining this header allowed us to scale the share infrastructure of Meta AI - regardless of chat or artifact being shared, the header would be consistent on the receiver\'s end. This made it easier to scale across all platforms. Additionally, it allowed us to feed the inventory for artifact library.'],
             },
             {
                 type: 'figure',
                 src: '../images/es-all-platforms.png',
                 aspect: '3304 / 2756',
+                bare: true,
                 caption: 'Artifact open on all platforms',
             },
             {
                 type: 'text',
-                paragraphs: ['Additionally, it allowed us to feed the inventory for the artifact library.'],
+                paragraphs: ['Additionally, it allowed us to feed the inventory for artifact library.'],
             },
             {
                 type: 'figure',
@@ -807,36 +814,36 @@
             },
             {
                 type: 'text',
-                paragraphs: ['Upon building the artifact-sharing workflows, I noticed a miscommunication within the sharing experience: when changes are made in the chat and the user decides to share a second time, the link is updated in the back end. As a result, whoever had the original link would be able to see the updated changes.'],
+                paragraphs: ['Upon creating artifact sharing workflows, I noticed a miscommunication within the sharing experience: When there have been changes made in the chat, and the user decides to share the 2nd time. The link is updated in the back end. As a result, whoever had the original link would be able to see updated changes.'],
             },
             {
                 type: 'figures',
                 figures: [
                     { src: '../images/es-on-first-share.png',        aspect: '3308 / 2768', caption: 'On first share' },
-                    { src: '../videos/es-sharing-after-changes.mov', aspect: '1652 / 1382', caption: 'Sharing after making changes to a chat. The original receiver will see updates when revisiting the link.' },
+                    { src: '../videos/es-sharing-after-changes.mov', aspect: '1652 / 1382', cropTop: 1, caption: 'Sharing after making changes to a chat. Original receiver will see updates when revisiting the link' },
                 ],
             },
             {
                 type: 'text',
-                paragraphs: ['We looked into two paradigms.'],
+                paragraphs: ['We looked into 2 paradigms:'],
             },
             {
                 type: 'text',
-                paragraphs: ['First, the Google Drive paradigm. Once a share link is created and a receiver has access to it, they can access it forever unless it is revoked. However, given Meta AI is a nascent product, not everyone had a Meta AI account — and users without one would not be able to access the link, preventing reach.'],
+                paragraphs: ['First, we looked into the google drive paradigm. Once a share link is created and a receiver has access to that link they will be forever able to have access to that link unless revoked. However, given Meta AI is a nascent product, not everyone had a Meta AI account. Users without Meta AI accounts would not be able to access the link, preventing reach.'],
             },
             {
                 type: 'figure',
                 src: '../images/es-google-drive.png',
                 aspect: '3296 / 2566',
-                caption: 'Google Drive paradigm',
+                caption: 'Google drive paradigm',
             },
             {
                 type: 'text',
-                paragraphs: ['We’d also seen some users use a single Meta AI chat to feed all their information. This posed a risk to sharing paradigms and got us thinking about how explicitly we should default to allowing all changes to be shown without warning.'],
+                paragraphs: ['We\'ve also seen some users use an individual MetaAI chat to feed all information. This posed a risk to sharing paradigms and resulted in us thinking about how explicitly we should default allow all changes to be shown without warning.'],
             },
             {
                 type: 'text',
-                paragraphs: ['We looked into four gradual approaches — from subtle to blocking — to inform users that any updates in the chat will surface to the original receivers.'],
+                paragraphs: ['We looked into 4 gradual ways from subtle to blocking to inform users any updates in the chat will be surface to original receivers.'],
             },
             {
                 type: 'spectrum',
@@ -850,23 +857,23 @@
             },
             {
                 type: 'text',
-                paragraphs: ['Despite having these patterns, there were concerns from the product team that — even with education — users may not be aware of these changes, and that we should err on the side of safety. This led to our second paradigm.'],
+                paragraphs: ['Despite having these patterns, there were concerns from the product team that despite education users may not be aware of these changes and we should err on the side of safety. This led to our 2nd paradigm'],
             },
             {
                 type: 'text',
-                paragraphs: ['Disclaimer on share: senders would have to proactively update the link.'],
+                paragraphs: ['2. Disclaimer on share: Senders would have to proactively update the link'],
             },
             {
                 type: 'figure',
                 src: '../images/es-disclaimer-cta.png',
                 aspect: '3309 / 2618',
-                caption: 'Disclaimer with update CTA when there are new updates in the chat',
+                caption: 'Disclaimer with update CTA with new updates in chat',
             },
             {
                 type: 'text',
                 paragraphs: [
-                    'As design lead for sharing on Meta AI, I scaled the sharing infrastructure and fixed unintended bugs to make the unglamorous parts of sharing seamless. The new receiver experience is now consistent across shared chats and artifacts, creating a cohesive system that has built the blueprint for features to come.',
-                    'Shipped in May 2026 on meta.ai.',
+                    'As design lead for sharing on Meta AI, I scaled the sharing infrastructure on Meta AI and fixed unintended bugs to make the unsexy parts of sharing seamless. The new receiver experience is now consistent across shared chats and artifacts, creating a cohesive system, which has built the blueprint for other features to come.',
+                    'Shipped in May 2026 on meta.ai',
                 ],
             },
         ],
@@ -922,12 +929,13 @@
         // b.crop = target aspect-ratio string → container fixed to it, media covers it.
         // b.width = per-figure width (px), overriding the shared --asset-w.
         const cropClass = b.crop ? ' crop' : '';
+        const bareClass = b.bare ? ' bare' : '';   // no fill/shadow — for tiled before/after assets
         const styles = [];
         if (b.crop) styles.push(`aspect-ratio:${b.crop}`);
         if (b.width) styles.push(`max-width:${b.width}px`);
         const styleAttr = styles.length ? ` style="${styles.join(';')}"` : '';
         return `<figure class="reveal">
-            <div class="figure-media${cropClass}"${styleAttr}>${media(b, b.caption)}</div>
+            <div class="figure-media${cropClass}${bareClass}"${styleAttr}>${media(b, b.caption)}</div>
             ${b.caption ? `<figcaption>${esc(b.caption)}</figcaption>` : ''}
         </figure>`;
     }

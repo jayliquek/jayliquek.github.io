@@ -283,7 +283,7 @@
     const PROJECTS = [
         { slug: 'vibe-coding-terminal', title: 'Vibe coding the terminal UI',                     year: 'Current', sub: 'Building an internal terminal for 70K engineers at Meta',        thumb: { type: 'video', src: './videos/vibe-coding-terminal.mp4' }, clickable: true, playable: true, inset: true },
         { slug: 'vibes-growth-flywheel', title: 'Kickstarting the growth flywheel on Vibes',       year: '2026',    sub: 'Building the sharing & growth infrastructure for a suite of new features', thumb: { type: 'video', src: './videos/vibes-growth-flywheel.mp4' }, clickable: true, playable: true },
-        { slug: 'meta-ai-sharing',       title: 'Evolution of sharing on Meta AI',                  year: '2025',    sub: 'AI for utility: Shaping artifact sharing and the considerations that follow', thumb: { type: 'image', src: './images/evolution-of-sharing-cover.png' }, clickable: true },
+        { slug: 'meta-ai-sharing',       title: 'Evolution of sharing on Meta AI',                  year: '2025',    sub: 'AI for utility: Shaping artifact sharing and the considerations that follow', thumb: { type: 'image', src: './images/evolution-of-sharing-cover.png', objectPosition: '20% center' }, clickable: true },
         { slug: 'facebook-share-sheet',  title: 'Sparking conversation through sharing experiences', year: '2025',   sub: 'Share sheet on Facebook',                                        thumb: { type: 'image', src: './images/share-sheet-facebook.png' }, clickable: false },
         { slug: 'messenger-growth',      title: 'Driving 2.5M friend accepts on Messenger',         year: '2024',    sub: 'Messenger growth',                                               thumb: { type: 'image', src: './images/messenger-growth.png' }, clickable: false },
         { slug: 'messenger-notes',       title: 'Expressing mood with music notes',                 year: '2023',    sub: 'Messenger notes',                                                thumb: { type: 'video', src: './videos/music-notes.mp4' }, playable: true },
@@ -294,7 +294,8 @@
         if (p.thumb.type === 'video') {
             return `<video src="${p.thumb.src}" muted loop playsinline preload="metadata"></video>`;
         }
-        return `<img src="${p.thumb.src}" alt="${p.title}" loading="lazy">`;
+        const pos = p.thumb.objectPosition ? ` style="object-position:${p.thumb.objectPosition}"` : '';
+        return `<img src="${p.thumb.src}" alt="${p.title}" loading="lazy"${pos}>`;
     }
 
     document.getElementById('grid').innerHTML = PROJECTS.map((p, i) => {
