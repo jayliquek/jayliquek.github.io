@@ -688,7 +688,7 @@
             <a class="brand" href="../index.html">Jay Li Quek</a>
             <nav class="nav">
                 <a href="../index.html">Home</a>
-                <a href="../resume.html">Resume</a>
+                <a href="../resume/Jay%20Li%20Quek%202026.pdf" target="_blank" rel="noopener">Resume</a>
                 <a href="https://www.linkedin.com/in/jayliquek/" target="_blank" rel="noopener">LinkedIn</a>
             </nav>
         </header>
@@ -744,7 +744,7 @@
                 slides: [
                     { src: '../videos/es-expand-new-window.mov', aspect: '1738 / 1376', title: 'Expand in new window', desc: '' },
                     { src: '../videos/es-interact-inline.mov',   aspect: '1740 / 1372', title: 'Interact inline',     desc: '' },
-                    { src: '../videos/es-open-new-window.mov',   aspect: '1738 / 1376', cropTop: 2, cropBottom: 3, title: 'Open in new window',  desc: '' },
+                    { src: '../videos/es-open-new-window.mov',   aspect: '1738 / 1376', cropTop: 2, cropBottom: 4, title: 'Open in new window',  desc: '' },
                 ],
             },
             {
@@ -883,7 +883,7 @@
                 type: 'text',
                 paragraphs: [
                     'As design lead for sharing on Meta AI, I scaled the sharing infrastructure on Meta AI and fixed unintended bugs to make the unglamorous parts of sharing seamless. The new receiver experience is now consistent across shared chats and artifacts, creating a cohesive system, which has built the blueprint for other features to come.',
-                    'Shipped in May 2026 on meta.ai',
+                    'Shipped in May 2026 on [meta.ai](https://meta.ai/)',
                 ],
             },
         ],
@@ -894,6 +894,10 @@
        RENDERER — builds the page from CASE. Generic across studies.
        ============================================================ */
     const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    // Escapes text but turns markdown-style [label](url) into a real link — the
+    // only inline formatting paragraphs support, kept intentionally minimal.
+    const linkify = (s) => esc(s).replace(/\[([^\]]+)\]\(([^)]+)\)/g,
+        (_, label, url) => `<a href="${esc(url)}" target="_blank" rel="noopener">${label}</a>`);
 
     // Labeled placeholder for a not-yet-supplied asset.
     function placeholder(label, aspect) {
@@ -923,7 +927,7 @@
     function kickerHTML(k) { return k ? `<p class="kicker">${esc(k)}</p>` : ''; }
 
     function renderText(b) {
-        const paras = (b.paragraphs || []).map((p) => `<p>${esc(p)}</p>`).join('');
+        const paras = (b.paragraphs || []).map((p) => `<p>${linkify(p)}</p>`).join('');
         const list = b.list ? `<ol class="block-list">${b.list.map((x) => {
             const m = String(x).match(/^([^:]+):\s*(.*)$/);
             return m ? `<li><strong>${esc(m[1])}</strong>: ${esc(m[2])}</li>` : `<li>${esc(x)}</li>`;
@@ -1111,6 +1115,33 @@
             const start = parseInt(gal.dataset.start, 10) || 0;
             let current = start, raf = null;
 
+            // Only the centered slide's video plays, and it restarts from the top.
+            // Off-centre and off-screen slides stay paused, so a background clip
+            // never keeps running while another is in focus.
+            const vids = slides.map((s) => s.querySelector('video'));
+            let galVisible = false;
+            function syncVideos(restartActive) {
+                vids.forEach((v, i) => {
+                    if (!v) return;
+                    if (i === current && galVisible) {
+                        if (restartActive) { try { v.currentTime = 0; } catch (_) {} }
+                        const p = v.play(); if (p && p.catch) p.catch(() => {});
+                    } else {
+                        v.pause();
+                    }
+                });
+            }
+            vids.forEach((v) => { if (v) v.autoplay = false; });
+            syncVideos(false);   // stop the autoplay flash until the gallery is in view
+            if ('IntersectionObserver' in window) {
+                const vio = new IntersectionObserver((entries) => {
+                    entries.forEach((e) => { galVisible = e.isIntersecting; syncVideos(true); });
+                }, { threshold: 0.25 });
+                vio.observe(gal);
+            } else {
+                galVisible = true; syncVideos(true);
+            }
+
             // Rect-based so it's correct regardless of the slide's offsetParent.
             function centerOn(i, smooth) {
                 const s = slides[i];
@@ -1136,6 +1167,7 @@
                 dots.forEach((d, i) => d.classList.toggle('on', i === best));
                 if (best !== current) {
                     current = best;
+                    syncVideos(true);   // new focus plays from the beginning; others pause
                     cap.classList.add('swapping');
                     setTimeout(() => {
                         cap.querySelector('.gc-title').textContent = slides[best].dataset.title;
@@ -1258,7 +1290,12 @@
                 else { v.pause(); }
             });
         }, { threshold: 0.2 });
-        document.querySelectorAll('#content video').forEach((v) => io.observe(v));
+        // Gallery videos are driven by the carousel (only the centered slide plays),
+        // so leave those out of the generic scroll-into-view observer.
+        document.querySelectorAll('#content video').forEach((v) => {
+            if (v.closest('.gallery')) return;
+            io.observe(v);
+        });
     }
 
     /* ── Entrance reveal (enhances an already-visible default) ── */
