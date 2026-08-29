@@ -1321,7 +1321,9 @@
         const input = document.getElementById('gate-input');
         const err = document.getElementById('gate-error');
         const card = gate.querySelector('.gate-card');
-        const key = 'cs-unlock:' + location.pathname;
+        // Shared across all case studies (they use one password) — unlocking
+        // any one case study unlocks the rest for the session too.
+        const key = 'cs-unlock';
 
         function unlock() {
             document.body.classList.remove('gate-locked');
