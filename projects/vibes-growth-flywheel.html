@@ -617,9 +617,9 @@
 
     <div class="page">
         <header class="site-header">
-            <a class="brand" href="../index.html">Jay Li Quek</a>
+            <a class="brand" href="../">Jay Li Quek</a>
             <nav class="nav">
-                <a href="../index.html">Home</a>
+                <a href="../">Home</a>
                 <input type="checkbox" id="nav-toggle" class="nav-toggle-input">
                 <label for="nav-toggle" class="nav-toggle" aria-label="Toggle menu">
                     <span></span><span></span><span></span>
@@ -653,7 +653,7 @@
         // Prev/next case studies (match the order on the homepage). Omit either to hide that side.
         nav: {
             prev: { slug: 'vibe-coding-terminal', title: 'Vibe coding the terminal UI' },
-            next: { slug: 'meta-ai-sharing', title: 'Evolution of sharing on Meta AI' },
+            next: { slug: 'meta-ai-sharing', title: 'Artifacts on Meta AI' },
         },
         meta: {
             description: 'Sparking fresh engagement with new formats of AI-generated content.',
@@ -928,7 +928,7 @@
             : `<span class="${cls}" aria-hidden="true"></span>`;
         document.getElementById('foot').innerHTML =
             side(nav.prev, '← Previous', 'foot-prev') +
-            `<a class="foot-all" href="../index.html">All work</a>` +
+            `<a class="foot-all" href="../">All work</a>` +
             side(nav.next, 'Next →', 'foot-next');
     }
 
