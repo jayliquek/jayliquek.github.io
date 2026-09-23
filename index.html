@@ -8,6 +8,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PL158V1BF7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-PL158V1BF7');
+    </script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -126,7 +134,7 @@
         .intro .blurb {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             font-weight: 400;
-            font-size: 26px;
+            font-size: 25px;
             line-height: 1.2;
             letter-spacing: -0.01em;
             text-wrap: pretty;
@@ -310,25 +318,73 @@
 
         <section class="intro">
             <p class="eyebrow">Based in New York, NY</p>
-            <p class="blurb">Currently designing AI tools for work. I work across product strategy and craft. I'm drawn to the systems layer—building scalable frameworks, setting direction across teams, and doing my best work in spaces that are still taking shape.</p>
+            <p class="blurb" id="bio"></p>
         </section>
 
         <main class="grid" id="grid"></main>
     </div>
 
     <script>
+    // ── Bio A/B test ──
+    // Visitor is bucketed once into 'a' or 'b' and the choice is persisted in
+    // localStorage so repeat visits always see the same variant. GA4 records
+    // which variant was shown (bio_variant) and how long the visitor engaged
+    // with the page (bio_engagement) so we can compare average time-on-page
+    // per variant in GA4's Explore reports.
+    (function () {
+        var BIO_VARIANTS = {
+            a: "Currently designing AI tools for work. I work across product strategy and craft. I'm drawn to the systems layer—building scalable frameworks, setting direction across teams, and doing my best work in spaces that are still taking shape.",
+            b: "Currently designing AI tools for teams company-wide at Meta. I'm a systems thinker who does my best work in fast, ambiguous environments, shaped by designing for Meta AI and our social apps. I'm drawn to generative outcomes and building with AI from idea to product."
+        };
+        var STORAGE_KEY = 'bioVariant';
+        var B_WEIGHT = 0.7; // traffic split skewed toward variant B
+
+        var variant;
+        try {
+            variant = localStorage.getItem(STORAGE_KEY);
+            if (variant !== 'a' && variant !== 'b') {
+                variant = Math.random() < B_WEIGHT ? 'b' : 'a';
+                localStorage.setItem(STORAGE_KEY, variant);
+            }
+        } catch (e) {
+            variant = Math.random() < B_WEIGHT ? 'b' : 'a';
+        }
+
+        var bioEl = document.getElementById('bio');
+        if (bioEl) bioEl.textContent = BIO_VARIANTS[variant];
+
+        if (typeof gtag === 'function') {
+            gtag('event', 'bio_variant', { variant: variant });
+        }
+
+        var startTime = Date.now();
+        var sent = false;
+        function sendEngagement() {
+            if (sent) return;
+            sent = true;
+            var seconds = Math.round((Date.now() - startTime) / 1000);
+            if (typeof gtag === 'function') {
+                gtag('event', 'bio_engagement', { variant: variant, engagement_time_sec: seconds });
+            }
+        }
+        document.addEventListener('visibilitychange', function () {
+            if (document.visibilityState === 'hidden') sendEngagement();
+        });
+        window.addEventListener('pagehide', sendEngagement);
+    })();
+
     // Project order matches the layout top-to-bottom, left-to-right.
     // `thumb` is null when no artwork exists yet — the TV static placeholder
     // stands in until a real thumbnail is dropped in.
     // `slug` drives the case-study link; the detail pages are built on a
     // separate branch, so this layout only points at ./projects/<slug>.html.
     const PROJECTS = [
-        { slug: 'vibe-coding-terminal', title: 'Vibe coding the terminal UI',                     year: 'Current', sub: 'Building an internal terminal for 70K engineers at Meta',        thumb: { type: 'video', src: './videos/vibe-coding-terminal.mp4' }, clickable: true, playable: true, inset: true },
-        { slug: 'vibes-growth-flywheel', title: 'Kickstarting the growth flywheel on Vibes',       year: '2026',    sub: 'Building the sharing & growth infrastructure for a suite of new features', thumb: { type: 'video', src: './videos/vibes-growth-flywheel.mp4' }, clickable: true, playable: true },
-        { slug: 'meta-ai-sharing',       title: 'Artifacts on Meta AI',                  year: '2025',    sub: 'AI for utility: Defining artifact experience with new Muse Spark capabilities', thumb: { type: 'image', src: './images/evolution-of-sharing-cover.png' }, clickable: true },
+        { slug: 'vibe-coding-terminal', title: 'Vibe coding the terminal UI',                     year: 'Current', sub: 'Built agent orchestration modes directly in code, with no Figma, for Meta’s internal AI terminal for 70K engineers',        thumb: { type: 'video', src: './videos/vibe-coding-terminal.mp4' }, clickable: true, playable: true, inset: true },
+        { slug: 'vibes-growth-flywheel', title: 'Kickstarting the growth flywheel on Vibes',       year: '2026',    sub: 'Led growth design for two new AI formats, doubling sharing in 2.5 weeks, three weeks into the role.', thumb: { type: 'video', src: './videos/vibes-growth-flywheel.mp4' }, clickable: true, playable: true },
+        { slug: 'meta-ai-sharing',       title: 'Artifacts on Meta AI',                  year: '2025',    sub: 'Led artifact sharing on Meta AI, turning a privacy gap into the foundation for trust and growth.', thumb: { type: 'image', src: './images/evolution-of-sharing-cover.png' }, clickable: true },
         { slug: 'facebook-share-sheet',  title: 'Sparking conversation through sharing experiences', year: '2025',   sub: 'Share sheet on Facebook',                                        thumb: { type: 'image', src: './images/share-sheet-facebook.png' }, clickable: false },
         { slug: 'messenger-growth',      title: 'Driving 2.5M friend accepts on Messenger',         year: '2024',    sub: 'Messenger growth',                                               thumb: { type: 'image', src: './images/messenger-growth.png' }, clickable: false },
-        { slug: 'messenger-notes',       title: 'Expressing mood with music notes',                 year: '2023',    sub: 'Messenger notes',                                                thumb: { type: 'video', src: './videos/music-notes.mp4' }, playable: true },
+        { slug: 'messenger-notes',       title: 'Expressing mood with Messenger music notes',                 year: '2023',    sub: 'Messenger notes',                                                thumb: { type: 'video', src: './videos/music-notes.mp4' }, playable: true },
     ];
 
     function buildThumb(p) {
