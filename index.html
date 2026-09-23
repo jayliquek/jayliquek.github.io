@@ -161,6 +161,7 @@
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
         }
         .card-thumb.static { pointer-events: none; cursor: default; }
+        .card-thumb.on-white { background: #fff; }
         .card-thumb img,
         .card-thumb video {
             display: block;
@@ -382,7 +383,7 @@
         { slug: 'vibe-coding-terminal', title: 'Vibe coding the terminal UI',                     year: 'Current', sub: 'Built agent orchestration modes directly in code, with no Figma, for Meta’s internal AI terminal for 70K engineers',        thumb: { type: 'video', src: './videos/vibe-coding-terminal.mp4' }, clickable: true, playable: true, inset: true },
         { slug: 'vibes-growth-flywheel', title: 'Kickstarting the growth flywheel on Vibes',       year: '2026',    sub: 'Led growth design for two new AI formats, doubling sharing in 2.5 weeks, three weeks into the role.', thumb: { type: 'video', src: './videos/vibes-growth-flywheel.mp4' }, clickable: true, playable: true },
         { slug: 'meta-ai-sharing',       title: 'Artifacts on Meta AI',                  year: '2025',    sub: 'Led artifact sharing on Meta AI, turning a privacy gap into the foundation for trust and growth.', thumb: { type: 'image', src: './images/evolution-of-sharing-cover.png' }, clickable: true },
-        { slug: 'facebook-share-sheet',  title: 'Sparking conversation through sharing experiences', year: '2025',   sub: 'Share sheet on Facebook',                                        thumb: { type: 'image', src: './images/share-sheet-facebook.png' }, clickable: false },
+        { slug: 'facebook-share-sheet',  title: 'Sparking conversation through sharing experiences', year: '2025',   sub: 'Share sheet on Facebook',                                        thumb: { type: 'image', src: './images/share-sheet-facebook.png' }, clickable: false, onWhite: true },
         { slug: 'messenger-growth',      title: 'Driving 2.5M friend accepts on Messenger',         year: '2024',    sub: 'Messenger growth',                                               thumb: { type: 'image', src: './images/messenger-growth.png' }, clickable: false },
         { slug: 'messenger-notes',       title: 'Expressing mood with Messenger music notes',                 year: '2023',    sub: 'Messenger notes',                                                thumb: { type: 'video', src: './videos/music-notes.mp4' }, playable: true },
     ];
@@ -401,6 +402,7 @@
         if (p.playable) thumbClasses.push('playable');
         if (!p.clickable && !p.playable) thumbClasses.push('static');
         if (p.inset) thumbClasses.push('inset');
+        if (p.onWhite) thumbClasses.push('on-white');
 
         const thumbHTML = buildThumb(p);
         // Expand affordance on clickable (password-protected) case studies: shows on hover.
