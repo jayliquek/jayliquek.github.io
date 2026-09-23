@@ -319,61 +319,13 @@
 
         <section class="intro">
             <p class="eyebrow">Based in New York, NY</p>
-            <p class="blurb" id="bio"></p>
+            <p class="blurb" id="bio">Currently designing AI tools for teams company-wide at Meta. I'm a systems thinker who does my best work in fast, ambiguous environments, shaped by designing for Meta AI and our social apps. I'm drawn to generative outcomes and building with AI from idea to product.</p>
         </section>
 
         <main class="grid" id="grid"></main>
     </div>
 
     <script>
-    // ── Bio A/B test ──
-    // Visitor is bucketed once into 'a' or 'b' and the choice is persisted in
-    // localStorage so repeat visits always see the same variant. GA4 records
-    // which variant was shown (bio_variant) and how long the visitor engaged
-    // with the page (bio_engagement) so we can compare average time-on-page
-    // per variant in GA4's Explore reports.
-    (function () {
-        var BIO_VARIANTS = {
-            a: "Currently designing AI tools for work. I work across product strategy and craft. I'm drawn to the systems layer—building scalable frameworks, setting direction across teams, and doing my best work in spaces that are still taking shape.",
-            b: "Currently designing AI tools for teams company-wide at Meta. I'm a systems thinker who does my best work in fast, ambiguous environments, shaped by designing for Meta AI and our social apps. I'm drawn to generative outcomes and building with AI from idea to product."
-        };
-        var STORAGE_KEY = 'bioVariant';
-        var B_WEIGHT = 0.7; // traffic split skewed toward variant B
-
-        var variant;
-        try {
-            variant = localStorage.getItem(STORAGE_KEY);
-            if (variant !== 'a' && variant !== 'b') {
-                variant = Math.random() < B_WEIGHT ? 'b' : 'a';
-                localStorage.setItem(STORAGE_KEY, variant);
-            }
-        } catch (e) {
-            variant = Math.random() < B_WEIGHT ? 'b' : 'a';
-        }
-
-        var bioEl = document.getElementById('bio');
-        if (bioEl) bioEl.textContent = BIO_VARIANTS[variant];
-
-        if (typeof gtag === 'function') {
-            gtag('event', 'bio_variant', { variant: variant });
-        }
-
-        var startTime = Date.now();
-        var sent = false;
-        function sendEngagement() {
-            if (sent) return;
-            sent = true;
-            var seconds = Math.round((Date.now() - startTime) / 1000);
-            if (typeof gtag === 'function') {
-                gtag('event', 'bio_engagement', { variant: variant, engagement_time_sec: seconds });
-            }
-        }
-        document.addEventListener('visibilitychange', function () {
-            if (document.visibilityState === 'hidden') sendEngagement();
-        });
-        window.addEventListener('pagehide', sendEngagement);
-    })();
-
     // Project order matches the layout top-to-bottom, left-to-right.
     // `thumb` is null when no artwork exists yet — the TV static placeholder
     // stands in until a real thumbnail is dropped in.
