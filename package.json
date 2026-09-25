@@ -1,0 +1,21 @@
+{
+  "name": "jayliquek.github.io",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal website of Jay Li Quek",
+  "scripts": {
+    "test": "jest",
+    "test:coverage": "jest --coverage"
+  },
+  "devDependencies": {
+    "jest": "29.7.0",
+    "jest-environment-jsdom": "29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "collectCoverageFrom": [
+      "JS/**/*.js"
+    ],
+    "coverageDirectory": "coverage"
+  }
+}

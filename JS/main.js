@@ -170,4 +170,17 @@ rows.forEach(row => {
     });
 });
 
+// Expose internals for unit testing under Node/CommonJS. In the browser
+// `module` is undefined, so this block is skipped and has no runtime effect.
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        drawNoise,
+        isMobile,
+        showPreview,
+        startPreviewVideo,
+        playPreviewVideo,
+        hidePreview,
+        positionPreview,
+    };
+}
 
