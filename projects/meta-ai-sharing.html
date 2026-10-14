@@ -442,7 +442,9 @@
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
-            padding-block: 6px;
+            /* room below so the focused shadow isn't clipped by the scroll container */
+            padding-block: 24px 150px;
+            margin-bottom: -90px;
             width: 100vw;
             margin-inline: calc(50% - 50vw);
             padding-inline: max(24px, calc(50vw - var(--slide-w) / 2));
@@ -476,7 +478,7 @@
             transform: scale(1);
             filter: none;
         }
-        .screen.is-focused .screen-media { box-shadow: 0 26px 90px rgba(0,0,0,0.12); }
+        .screen.is-focused .screen-media { box-shadow: 0 30px 120px rgba(0,0,0,0.14); }
 
         .proto-detail {
             max-width: 620px;
