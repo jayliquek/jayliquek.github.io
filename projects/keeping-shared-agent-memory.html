@@ -226,30 +226,6 @@
         .block-list.plain { list-style: none; padding-left: 0; }
         .block-list.plain li { padding-left: 0; }
 
-        /* Outcome stats: big display numeral over a muted label */
-        .stats {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-start;  /* the pair is grouped and left aligned with the text */
-            gap: 24px;
-            margin-top: 18px;
-        }
-        .stat { text-align: left; min-width: 0; }
-        .block-text .stats p.stat-num {
-            font-family: 'ZT Bros Oskon 90s', 'Instrument Serif', serif;
-            font-weight: 400;
-            font-size: clamp(40px, 6.5vw, 72px);
-            line-height: 1;
-            letter-spacing: -0.01em;
-            color: var(--text);
-        }
-        .block-text .stats p.stat-label {
-            margin-top: 2px;
-            font-size: 16px;
-            line-height: 1.4;
-            color: var(--muted);
-            white-space: pre-line;   /* honor the line break written in the label */
-        }
 
         /* Single figure */
         figure { margin: 0; }
@@ -833,12 +809,9 @@
             {
                 type: 'text',
                 kicker: 'Outcomes',
-                stats: [
-                    { value: '~2,500', label: 'Weekly active users' },
-                    { value: '~70%', label: 'Week over week\nretention during alpha' },
-                ],
-                after: [
+                paragraphs: [
                     'Our team released the alpha version of the product which included the guided onboarding feature, with adoption spanning Sales, Legal, Engineering, and Product.',
+                    '**~2,500** weekly active users with **~70%** week over week retention during alpha',
                 ],
             },
         ],
@@ -878,7 +851,8 @@
     function kickerHTML(k) { return k ? `<p class="kicker">${esc(k)}</p>` : ''; }
 
     function renderText(b) {
-        const paras = (b.paragraphs || []).map((p) => `<p>${esc(p)}</p>`).join('');
+        const rich = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');   // **bold** inline
+        const paras = (b.paragraphs || []).map((p) => `<p>${rich(p)}</p>`).join('');
         const list = b.list ? `<ol class="block-list${b.plain ? ' plain' : ''}">${b.list.map((x) => {
             const m = String(x).match(/^([^:]+):\s*(.*)$/);
             return m ? `<li><strong>${esc(m[1])}</strong>: ${esc(m[2])}</li>` : `<li>${esc(x)}</li>`;
@@ -887,8 +861,7 @@
             ${kickerHTML(b.kicker)}
             ${paras}
             ${list}
-            ${b.stats ? `<div class="stats" style="--cols:${b.stats.length}">${b.stats.map((s) => `<div class="stat"><p class="stat-num">${esc(s.value)}</p><p class="stat-label">${esc(s.label)}</p></div>`).join('')}</div>` : ''}
-            ${(b.after || []).map((p) => `<p>${esc(p)}</p>`).join('')}
+            ${(b.after || []).map((p) => `<p>${rich(p)}</p>`).join('')}
         </section>`;
     }
 
