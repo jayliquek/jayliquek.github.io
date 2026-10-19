@@ -651,7 +651,7 @@
         }
 
         /* ── Image zoom: tap an image to open it full screen; tap again to magnify ── */
-        .figure-media img { cursor: zoom-in; }
+        .figure-media img, .figure-media video, .hero img, .hero video { cursor: zoom-in; }
         .zoom {
             position: fixed;
             inset: 0;
@@ -666,7 +666,8 @@
             animation: zoom-in 0.2s var(--ease, ease);
         }
         .zoom[hidden] { display: none; }
-        .zoom img {
+        .zoom img,
+        .zoom video {
             display: block;
             width: auto;
             height: auto;
@@ -678,7 +679,9 @@
             cursor: zoom-in;
         }
         .zoom.is-zoomed { place-items: start; }
-        .zoom.is-zoomed img { max-width: none; max-height: none; cursor: zoom-out; }
+        .zoom img[hidden], .zoom video[hidden] { display: none; }
+        .zoom.is-zoomed img,
+        .zoom.is-zoomed video { max-width: none; max-height: none; cursor: zoom-out; }
         .zoom-close {
             position: fixed;
             top: 16px;
@@ -1180,17 +1183,27 @@
         box.hidden = true;
         box.setAttribute('role', 'dialog');
         box.setAttribute('aria-modal', 'true');
-        box.setAttribute('aria-label', 'Image viewer');
-        box.innerHTML = '<button class="zoom-close" type="button" aria-label="Close image">&times;</button><img alt="">';
+        box.setAttribute('aria-label', 'Media viewer');
+        box.innerHTML = '<button class="zoom-close" type="button" aria-label="Close">&times;</button><img alt="" hidden><video muted loop playsinline hidden></video>';
         document.body.appendChild(box);
-        const big = box.querySelector('img');
+        const bigImg = box.querySelector('img');
+        const bigVid = box.querySelector('video');
         const closeBtn = box.querySelector('.zoom-close');
-        let opener = null;
+        let big = bigImg, opener = null;
 
-        function open(src, alt, from) {
-            opener = from;
-            big.src = src;
-            big.alt = alt || '';
+        function open(el) {
+            opener = el;
+            const isVideo = el.tagName === 'VIDEO';
+            big = isVideo ? bigVid : bigImg;
+            bigImg.hidden = isVideo;
+            bigVid.hidden = !isVideo;
+            if (isVideo) {
+                bigVid.src = el.currentSrc || el.src;
+                bigVid.play().catch(() => {});
+            } else {
+                bigImg.src = el.currentSrc || el.src;
+                bigImg.alt = el.alt || '';
+            }
             box.classList.remove('is-zoomed');
             big.style.width = '';
             box.hidden = false;
@@ -1200,13 +1213,17 @@
         function close() {
             box.hidden = true;
             document.body.classList.remove('zoom-open');
+            bigVid.pause();
+            bigVid.removeAttribute('src');
+            bigVid.load();
             if (opener) opener.focus();
         }
         function toggleZoom(e) {
             if (!box.classList.contains('is-zoomed')) {
                 const r = big.getBoundingClientRect();
                 const fx = (e.clientX - r.left) / r.width, fy = (e.clientY - r.top) / r.height;
-                const w = Math.max(big.naturalWidth || 0, r.width * 2);
+                const natural = big.naturalWidth || big.videoWidth || 0;
+                const w = Math.max(natural, r.width * 2);
                 box.classList.add('is-zoomed');
                 big.style.width = w + 'px';
                 // keep the tapped point under the finger
@@ -1219,18 +1236,19 @@
             }
         }
 
-        big.addEventListener('click', (e) => { e.stopPropagation(); toggleZoom(e); });
+        [bigImg, bigVid].forEach((el) => el.addEventListener('click', (e) => { e.stopPropagation(); toggleZoom(e); }));
         box.addEventListener('click', close);
         closeBtn.addEventListener('click', (e) => { e.stopPropagation(); close(); });
         document.addEventListener('keydown', (e) => { if (!box.hidden && e.key === 'Escape') close(); });
 
-        document.querySelectorAll('.figure-media img').forEach((img) => {
-            img.tabIndex = 0;
-            img.setAttribute('role', 'button');
-            img.setAttribute('aria-label', 'Zoom image' + (img.alt ? ': ' + img.alt : ''));
-            const go = () => open(img.currentSrc || img.src, img.alt, img);
-            img.addEventListener('click', go);
-            img.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+        document.querySelectorAll('.figure-media img, .figure-media video, .hero img, .hero video').forEach((el) => {
+            const isVideo = el.tagName === 'VIDEO';
+            el.tabIndex = 0;
+            el.setAttribute('role', 'button');
+            el.setAttribute('aria-label', (isVideo ? 'Zoom video' : 'Zoom image') + (el.alt ? ': ' + el.alt : ''));
+            const go = () => open(el);
+            el.addEventListener('click', go);
+            el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
         });
     }
 
