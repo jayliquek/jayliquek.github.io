@@ -223,6 +223,8 @@
             padding-left: 4px;
         }
         .block-list li::marker { color: var(--muted); }
+        .block-list.plain { list-style: none; padding-left: 0; }
+        .block-list.plain li { padding-left: 0; }
 
         /* Single figure */
         figure { margin: 0; }
@@ -700,11 +702,9 @@
                     'Fresh: kept up to date with ongoing work, across every source a team uses',
                     'Accurate: reflecting the right information about existing projects',
                 ],
-            },
-            {
-                type: 'text',
-                paragraphs: [
-                    'Automation could pull from every source on a set cadence, but it couldn’t tell which sources were right. Shared memory still needed a human to validate it.'
+                plain: true,
+                after: [
+                    'Automation could pull from every source on a set cadence, but it couldn’t tell which sources were right. Shared memory still needed a human to validate it.',
                 ],
             },
             {
@@ -791,7 +791,7 @@
 
     function renderText(b) {
         const paras = (b.paragraphs || []).map((p) => `<p>${esc(p)}</p>`).join('');
-        const list = b.list ? `<ol class="block-list">${b.list.map((x) => {
+        const list = b.list ? `<ol class="block-list${b.plain ? ' plain' : ''}">${b.list.map((x) => {
             const m = String(x).match(/^([^:]+):\s*(.*)$/);
             return m ? `<li><strong>${esc(m[1])}</strong>: ${esc(m[2])}</li>` : `<li>${esc(x)}</li>`;
         }).join('')}</ol>` : '';
@@ -799,6 +799,7 @@
             ${kickerHTML(b.kicker)}
             ${paras}
             ${list}
+            ${(b.after || []).map((p) => `<p>${esc(p)}</p>`).join('')}
         </section>`;
     }
 
