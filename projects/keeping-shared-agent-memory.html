@@ -226,6 +226,29 @@
         .block-list.plain { list-style: none; padding-left: 0; }
         .block-list.plain li { padding-left: 0; }
 
+        /* Outcome stats: big display numeral over a muted label */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr));
+            gap: 32px 40px;
+            margin-top: 18px;
+        }
+        .stat-num {
+            font-family: 'ZT Bros Oskon 90s', 'Instrument Serif', serif;
+            font-weight: 400;
+            font-size: clamp(48px, 8vw, 96px);
+            line-height: 1;
+            letter-spacing: -0.01em;
+            color: var(--text);
+        }
+        .stat-label {
+            margin-top: 14px;
+            font-size: 16px;
+            line-height: 1.4;
+            color: var(--muted);
+            text-wrap: balance;
+        }
+
         /* Single figure */
         figure { margin: 0; }
         .figure-media {
@@ -807,7 +830,10 @@
                 kicker: 'Outcomes',
                 paragraphs: [
                     'Our team released the alpha version of the product which included the guided onboarding feature, with adoption spanning Sales, Legal, Engineering, and Product.',
-                    '~2,500 weekly active users with ~70% week over week retention during alpha',
+                ],
+                stats: [
+                    { value: '~2,500', label: 'Weekly active users' },
+                    { value: '~70%', label: 'Week over week retention during alpha' },
                 ],
             },
         ],
@@ -857,6 +883,7 @@
             ${paras}
             ${list}
             ${(b.after || []).map((p) => `<p>${esc(p)}</p>`).join('')}
+            ${b.stats ? `<div class="stats" style="--cols:${b.stats.length}">${b.stats.map((s) => `<div class="stat"><p class="stat-num">${esc(s.value)}</p><p class="stat-label">${esc(s.label)}</p></div>`).join('')}</div>` : ''}
         </section>`;
     }
 
