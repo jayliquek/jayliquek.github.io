@@ -239,7 +239,7 @@
         .block-text .stats p.stat-num {
             font-family: 'ZT Bros Oskon 90s', 'Instrument Serif', serif;
             font-weight: 400;
-            font-size: clamp(48px, 8vw, 96px);
+            font-size: clamp(40px, 6.5vw, 72px);
             line-height: 1;
             letter-spacing: -0.01em;
             color: var(--text);
@@ -249,7 +249,7 @@
             font-size: 16px;
             line-height: 1.4;
             color: var(--muted);
-            text-wrap: balance;
+            white-space: pre-line;   /* honor the line break written in the label */
         }
 
         /* Single figure */
@@ -831,12 +831,12 @@
             {
                 type: 'text',
                 kicker: 'Outcomes',
-                paragraphs: [
-                    'Our team released the alpha version of the product which included the guided onboarding feature, with adoption spanning Sales, Legal, Engineering, and Product.',
-                ],
                 stats: [
                     { value: '~2,500', label: 'Weekly active users' },
-                    { value: '~70%', label: 'Week over week retention during alpha' },
+                    { value: '~70%', label: 'Week over week\nretention during alpha' },
+                ],
+                after: [
+                    'Our team released the alpha version of the product which included the guided onboarding feature, with adoption spanning Sales, Legal, Engineering, and Product.',
                 ],
             },
         ],
@@ -885,8 +885,8 @@
             ${kickerHTML(b.kicker)}
             ${paras}
             ${list}
-            ${(b.after || []).map((p) => `<p>${esc(p)}</p>`).join('')}
             ${b.stats ? `<div class="stats" style="--cols:${b.stats.length}">${b.stats.map((s) => `<div class="stat"><p class="stat-num">${esc(s.value)}</p><p class="stat-label">${esc(s.label)}</p></div>`).join('')}</div>` : ''}
+            ${(b.after || []).map((p) => `<p>${esc(p)}</p>`).join('')}
         </section>`;
     }
 
