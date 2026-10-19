@@ -174,7 +174,8 @@
            blurred purple orb, same position — so the video reads as sitting
            on one continuous canvas rather than a pasted-in clip */
         .card-thumb.inset { background: #060409; }
-        .card-thumb.inset::before {
+        .card-thumb.inset::before,
+        .card-thumb.framed::before {
             content: '';
             position: absolute;
             top: -18%;
@@ -194,6 +195,32 @@
             margin: 5% 7% 13%;   /* extra breathing room below — the terminal
                                     window sits high in its own footage */
             object-fit: contain;
+        }
+
+        /* framed screenshot: same dark canvas + purple orb as the terminal card,
+           but the screenshot stays large, with an even margin around it like
+           the artifact card's border — never shrunk to a small inset */
+        .card-thumb.framed { background: #060409; }
+        .card-thumb.framed::before {   /* wider glow so the purple reads around the screenshot's edges */
+            top: -35%;
+            left: 15%;
+            width: 70%;
+            height: 90%;
+            background: #2B0E66;
+            filter: blur(60px);
+        }
+        .card-thumb.framed img {
+            position: absolute;
+            z-index: 1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: auto;
+            height: 90%;          /* ~5% margin above and below */
+            max-width: 94%;
+            border-radius: 10px;
+            object-fit: contain;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.06);
         }
 
         /* Expand affordance — open the case study on its own page. Hover only. */
@@ -335,7 +362,7 @@
         { slug: 'meta-ai-sharing',       title: 'Artifacts on Meta AI',                  year: '2026',    sub: 'Led artifact sharing on Meta AI, turning a privacy gap into the foundation for trust and growth.', thumb: { type: 'image', src: './images/evolution-of-sharing-cover.png' }, clickable: true, onWhite: true },
         { slug: 'vibes-growth-flywheel', title: 'Kickstarting the growth flywheel on Vibes',       year: '2026',    sub: 'I extended the Vibes growth and sharing playbook with a new share card component and a screenshot-sharing paradigm, doubling the share rate', thumb: { type: 'video', src: './videos/vibes-growth-flywheel.mp4' }, clickable: true, playable: true },
         { slug: 'vibe-coding-terminal', title: 'Vibe coding the terminal UI',                     year: '2026',    sub: 'Built agent orchestration modes directly in code, with no Figma, for Meta’s internal AI terminal for 70K engineers',        thumb: { type: 'video', src: './videos/vibe-coding-terminal.mp4' }, clickable: true, playable: true, inset: true },
-        { slug: 'keeping-shared-agent-memory', title: 'Keeping shared agent memory fresh and accurate', year: '2026', sub: 'Led the design of how shared agent memory stays fresh and accurate in Meta’s agent orchestration platform, shipping guided onboarding in production code.', thumb: null, clickable: true },
+        { slug: 'keeping-shared-agent-memory', title: 'Keeping shared agent memory fresh and accurate', year: '2026', sub: 'Led the design of how shared agent memory stays fresh and accurate in Meta’s agent orchestration platform, shipping guided onboarding in production code.', thumb: { type: 'image', src: './images/shared-memory-cover.png' }, clickable: true, framed: true },
         { slug: 'facebook-share-sheet',  title: 'Sparking conversation through sharing experiences', year: '2025',   sub: 'Share sheet on Facebook',                                        thumb: { type: 'image', src: './images/share-sheet-facebook.png' }, clickable: false, onWhite: true },
         { slug: 'messenger-growth',      title: 'Driving 2.5M friend accepts on Messenger',         year: '2024',    sub: 'Messenger growth',                                               thumb: { type: 'image', src: './images/messenger-growth.png' }, clickable: false, onWhite: true },
         { slug: 'messenger-notes',       title: 'Expressing mood with Messenger music notes',                 year: '2023',    sub: 'Messenger notes',                                                thumb: { type: 'video', src: './videos/music-notes.mp4' }, playable: true },
@@ -355,6 +382,7 @@
         if (p.playable) thumbClasses.push('playable');
         if (!p.clickable && !p.playable) thumbClasses.push('static');
         if (p.inset) thumbClasses.push('inset');
+        if (p.framed) thumbClasses.push('framed');
         if (p.onWhite) thumbClasses.push('on-white');
 
         const thumbHTML = buildThumb(p);
