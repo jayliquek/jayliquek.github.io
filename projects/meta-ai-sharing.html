@@ -392,7 +392,8 @@
         .slide.is-active { opacity: 1; transform: scale(1); }
         .slide img, .slide video {
             display: block;
-            height: 100%;
+            /* --ct/--cb: overscan so cropTop/cropBottom actually clip inside the fixed-height slide */
+            height: calc(100% + var(--ct, 0px) + var(--cb, 0px));
             width: auto;
             object-fit: cover;   /* crop any background so the 12px radius sits on content */
         }
@@ -961,6 +962,7 @@
         if (cl || cr) extra += `width:calc(100% + ${cl + cr}px);margin-left:-${cl}px;`;
         if (ct) extra += `margin-top:-${ct}px;`;
         if (cb) extra += `margin-bottom:-${cb}px;`;
+        if (ct || cb) extra += `--ct:${ct}px;--cb:${cb}px;`;
         if (item.type === 'video' || /\.(mp4|webm|mov)$/i.test(item.src)) {
             return `<video src="${esc(item.src)}" muted loop autoplay playsinline preload="metadata" style="aspect-ratio:${aspect};${extra}"></video>`;
         }
