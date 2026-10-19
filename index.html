@@ -196,22 +196,19 @@
             object-fit: contain;
         }
 
-        /* framed screenshot: the same off-white as the Vibes card's backplate (#F9F9F4)
-           so the dark window edge stays visible; the screenshot stays large, with an even
-           margin around it like the artifact card's border — never shrunk to a small inset */
-        .card-thumb.framed { background: #F9F9F4; }
+        /* framed screenshot: same off-white as the Vibes card, with an even inset like
+           the artifact card's frame. The screenshot fills the inner area edge to edge
+           and is cropped at the bottom (object-fit: cover, anchored to the top). */
+        .card-thumb.framed { background: #F9F9F4; container-type: inline-size; }
         .card-thumb.framed img {
             position: absolute;
-            z-index: 1;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: auto;
-            height: 90%;          /* ~5% margin above and below */
-            max-width: 94%;
-            border-radius: 4px;
-            object-fit: contain;
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.06);
+            top: 1.65cqw;          /* inset scales with the card, matching the artifact card's frame */
+            left: 1.65cqw;
+            width: calc(100% - 3.3cqw);
+            height: calc(100% - 3.3cqw);
+            border-radius: 1.1cqw;
+            object-fit: cover;
+            object-position: top left;
         }
 
         /* Expand affordance — open the case study on its own page. Hover only. */
