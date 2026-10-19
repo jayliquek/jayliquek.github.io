@@ -174,8 +174,7 @@
            blurred purple orb, same position — so the video reads as sitting
            on one continuous canvas rather than a pasted-in clip */
         .card-thumb.inset { background: #060409; }
-        .card-thumb.inset::before,
-        .card-thumb.framed::before {
+        .card-thumb.inset::before {
             content: '';
             position: absolute;
             top: -18%;
@@ -197,18 +196,10 @@
             object-fit: contain;
         }
 
-        /* framed screenshot: same dark canvas + purple orb as the terminal card,
-           but the screenshot stays large, with an even margin around it like
+        /* framed screenshot: indigo backplate (a deeper take on the site's cobalt
+           accent) so the dark window edge stays visible; the screenshot stays large, with an even margin around it like
            the artifact card's border — never shrunk to a small inset */
-        .card-thumb.framed { background: #060409; }
-        .card-thumb.framed::before {   /* wider glow so the purple reads around the screenshot's edges */
-            top: -35%;
-            left: 15%;
-            width: 70%;
-            height: 90%;
-            background: #2B0E66;
-            filter: blur(60px);
-        }
+        .card-thumb.framed { background: #5560D9; }   /* indigo backplate: 3.3:1 against the window edge */
         .card-thumb.framed img {
             position: absolute;
             z-index: 1;
