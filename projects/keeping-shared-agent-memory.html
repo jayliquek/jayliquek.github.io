@@ -230,12 +230,11 @@
         .stats {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;      /* the pair is grouped and centered */
+            justify-content: flex-start;  /* the pair is grouped and left aligned with the text */
             gap: 24px;
-            padding: 0 clamp(16px, 4vw, 48px);
             margin-top: 18px;
         }
-        .stat { text-align: center; min-width: 0; }
+        .stat { text-align: left; min-width: 0; }
         .block-text .stats p.stat-num {
             font-family: 'ZT Bros Oskon 90s', 'Instrument Serif', serif;
             font-weight: 400;
