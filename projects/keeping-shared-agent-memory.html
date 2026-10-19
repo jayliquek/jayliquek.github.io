@@ -623,6 +623,59 @@
             .slide, .screen, .gallery-caption { transition: none; }
             .gate-card.shake { animation: none; }
         }
+
+        /* ── Image zoom: tap an image to open it full screen; tap again to magnify ── */
+        .figure-media img { cursor: zoom-in; }
+        .zoom {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: grid;
+            place-items: center;
+            overflow: auto;
+            overscroll-behavior: contain;
+            background: rgba(14, 14, 14, 0.88);
+            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+            animation: zoom-in 0.2s var(--ease, ease);
+        }
+        .zoom[hidden] { display: none; }
+        .zoom img {
+            display: block;
+            width: auto;
+            height: auto;
+            max-width: min(94vw, 1600px);
+            max-height: 90vh;
+            margin: auto;
+            border-radius: 12px;
+            background: #fff;
+            cursor: zoom-in;
+        }
+        .zoom.is-zoomed { place-items: start; }
+        .zoom.is-zoomed img { max-width: none; max-height: none; cursor: zoom-out; }
+        .zoom-close {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 101;
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border: 0;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.16);
+            color: #fff;
+            font-size: 22px;
+            line-height: 1;
+            cursor: pointer;
+        }
+        .zoom-close:hover { background: rgba(255, 255, 255, 0.28); }
+        body.zoom-open { overflow: hidden; }
+        /* the page reserves scrollbar gutters on both edges; drop them so the overlay reaches the screen edges */
+        html:has(body.zoom-open) { scrollbar-gutter: auto; }
+        @keyframes zoom-in { from { opacity: 0; } to { opacity: 1; } }
+        @media (prefers-reduced-motion: reduce) { .zoom { animation: none; } }
     </style>
 </head>
 <body class="gate-locked">
@@ -931,6 +984,7 @@
         wireInteractives();
         wireReveal();
         wireVideos();
+        wireZoom();
     }
 
     /* ── Footer: previous · all work · next ── */
@@ -1087,6 +1141,67 @@
         els.forEach((el) => io.observe(el));
         // safety: if anything is still hidden after load, reveal it
         window.addEventListener('load', () => setTimeout(() => els.forEach((el) => el.classList.add('in')), 1200));
+    }
+
+    /* ── Image zoom: lightbox with tap-to-magnify ── */
+    function wireZoom() {
+        const box = document.createElement('div');
+        box.className = 'zoom';
+        box.hidden = true;
+        box.setAttribute('role', 'dialog');
+        box.setAttribute('aria-modal', 'true');
+        box.setAttribute('aria-label', 'Image viewer');
+        box.innerHTML = '<button class="zoom-close" type="button" aria-label="Close image">&times;</button><img alt="">';
+        document.body.appendChild(box);
+        const big = box.querySelector('img');
+        const closeBtn = box.querySelector('.zoom-close');
+        let opener = null;
+
+        function open(src, alt, from) {
+            opener = from;
+            big.src = src;
+            big.alt = alt || '';
+            box.classList.remove('is-zoomed');
+            big.style.width = '';
+            box.hidden = false;
+            document.body.classList.add('zoom-open');
+            closeBtn.focus();
+        }
+        function close() {
+            box.hidden = true;
+            document.body.classList.remove('zoom-open');
+            if (opener) opener.focus();
+        }
+        function toggleZoom(e) {
+            if (!box.classList.contains('is-zoomed')) {
+                const r = big.getBoundingClientRect();
+                const fx = (e.clientX - r.left) / r.width, fy = (e.clientY - r.top) / r.height;
+                const w = Math.max(big.naturalWidth || 0, r.width * 2);
+                box.classList.add('is-zoomed');
+                big.style.width = w + 'px';
+                // keep the tapped point under the finger
+                const nr = big.getBoundingClientRect();
+                box.scrollLeft = fx * nr.width - e.clientX + (nr.left + box.scrollLeft);
+                box.scrollTop = fy * nr.height - e.clientY + (nr.top + box.scrollTop);
+            } else {
+                box.classList.remove('is-zoomed');
+                big.style.width = '';
+            }
+        }
+
+        big.addEventListener('click', (e) => { e.stopPropagation(); toggleZoom(e); });
+        box.addEventListener('click', close);
+        closeBtn.addEventListener('click', (e) => { e.stopPropagation(); close(); });
+        document.addEventListener('keydown', (e) => { if (!box.hidden && e.key === 'Escape') close(); });
+
+        document.querySelectorAll('.figure-media img').forEach((img) => {
+            img.tabIndex = 0;
+            img.setAttribute('role', 'button');
+            img.setAttribute('aria-label', 'Zoom image' + (img.alt ? ': ' + img.alt : ''));
+            const go = () => open(img.currentSrc || img.src, img.alt, img);
+            img.addEventListener('click', go);
+            img.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+        });
     }
 
     /* ── Password gate (client-side soft gate) ── */
