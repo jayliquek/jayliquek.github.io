@@ -225,6 +225,7 @@
         .block-list li::marker { color: var(--muted); }
         .block-list.plain { list-style: none; padding-left: 0; }
         .block-list.plain li { padding-left: 0; }
+        .medium { font-weight: 500; }
 
 
         /* Single figure */
@@ -810,8 +811,7 @@
                 type: 'text',
                 kicker: 'Outcomes',
                 paragraphs: [
-                    'Our team released the alpha version of the product which included the guided onboarding feature, with adoption spanning Sales, Legal, Engineering, and Product.',
-                    '**~2,500** weekly active users with **~70%** week over week retention during alpha',
+                    'We launched the alpha with guided onboarding, reaching **~2,500** weekly active users and **~70%** week over week retention across Sales, Legal, Engineering, and Product.',
                 ],
             },
         ],
@@ -851,7 +851,7 @@
     function kickerHTML(k) { return k ? `<p class="kicker">${esc(k)}</p>` : ''; }
 
     function renderText(b) {
-        const rich = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');   // **bold** inline
+        const rich = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<span class="medium">$1</span>');   // **x** = medium-weight emphasis
         const paras = (b.paragraphs || []).map((p) => `<p>${rich(p)}</p>`).join('');
         const list = b.list ? `<ol class="block-list${b.plain ? ' plain' : ''}">${b.list.map((x) => {
             const m = String(x).match(/^([^:]+):\s*(.*)$/);
