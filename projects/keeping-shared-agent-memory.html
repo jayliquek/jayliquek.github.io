@@ -228,11 +228,14 @@
 
         /* Outcome stats: big display numeral over a muted label */
         .stats {
-            display: grid;
-            grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr));
-            gap: 32px 40px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;      /* the pair is grouped and centered */
+            gap: 24px;
+            padding: 0 clamp(16px, 4vw, 48px);
             margin-top: 18px;
         }
+        .stat { text-align: center; min-width: 0; }
         .block-text .stats p.stat-num {
             font-family: 'ZT Bros Oskon 90s', 'Instrument Serif', serif;
             font-weight: 400;
@@ -242,7 +245,7 @@
             color: var(--text);
         }
         .block-text .stats p.stat-label {
-            margin-top: 14px;
+            margin-top: 2px;
             font-size: 16px;
             line-height: 1.4;
             color: var(--muted);
